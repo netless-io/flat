@@ -23,6 +23,7 @@ export enum RequestErrorCode {
     RoomNotIsRunning,
     RoomNotIsEnded,
     RoomNotIsIdle,
+    RoomExists, // (pmi) room already exists, cannot create new room
 
     PeriodicNotFound = 300000,
     PeriodicIsEnded,
@@ -33,6 +34,7 @@ export enum RequestErrorCode {
     UserAlreadyBinding, // already bound, should unbind first
     UserPasswordIncorrect, // user password (for update) incorrect
     UserOrPasswordIncorrect, // user or password (for login) incorrect
+    UserPmiDrained, // user pmi drained
 
     RecordNotFound = 500000,
 
@@ -100,6 +102,7 @@ export const RequestErrorMessage = {
     [RequestErrorCode.RoomNotIsRunning]: "the-room-is-not-in-progress",
     [RequestErrorCode.RoomNotIsEnded]: "the-room-is-not-over-yet",
     [RequestErrorCode.RoomNotIsIdle]: "the-room-has-not-yet-started",
+    [RequestErrorCode.RoomExists]: "the-pmi-room-already-exists",
 
     [RequestErrorCode.PeriodicNotFound]: "periodic-rooms-do-not-exist",
     [RequestErrorCode.PeriodicIsEnded]: "periodic-rooms-have-ended",
@@ -110,6 +113,7 @@ export const RequestErrorMessage = {
     [RequestErrorCode.UserAlreadyBinding]: "user-already-binding",
     [RequestErrorCode.UserPasswordIncorrect]: "user-password-incorrect",
     [RequestErrorCode.UserOrPasswordIncorrect]: "user-account-or-password-incorrect",
+    [RequestErrorCode.UserPmiDrained]: "user-pmi-drained",
 
     [RequestErrorCode.RecordNotFound]: "replay-does-not-exist",
 

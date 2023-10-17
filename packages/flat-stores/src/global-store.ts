@@ -22,6 +22,10 @@ export type Account = {
     countryCode?: string | null;
 };
 
+export type PmiRoom = {
+    roomUUID: string;
+};
+
 /**
  * Properties in Global Store are persisted and shared globally.
  */
@@ -35,6 +39,8 @@ export class GlobalStore {
     public isShowGuide = false;
     public isTurnOffDeviceTest = false;
     public userInfo: UserInfo | null = null;
+    public pmi: string | null = null;
+    public pmiRoomList: PmiRoom[] = [];
 
     // login with password
     public currentAccount: Account | null = null;
@@ -69,6 +75,14 @@ export class GlobalStore {
      * This array holds the rooms that its avatars have been hidden.
      */
     public hideAvatarsRoomUUIDs: string[] | undefined = undefined;
+
+    public get pmiRoomExist(): boolean {
+        return this.pmiRoomList.length > 0;
+    }
+
+    public get pmiRoomUUID(): string {
+        return this.pmiRoomList[0]?.roomUUID;
+    }
 
     public get userUUID(): string | undefined {
         return this.userInfo?.userUUID;
@@ -106,6 +120,14 @@ export class GlobalStore {
             }
         });
     }
+
+    public updatePmi = (pmi: string | null): void => {
+        this.pmi = pmi;
+    };
+
+    public updatePmiRoomList = (pmiRoomList: PmiRoom[]): void => {
+        this.pmiRoomList = pmiRoomList;
+    };
 
     public updateUserInfo = (userInfo: UserInfo | null): void => {
         this.userInfo = userInfo;

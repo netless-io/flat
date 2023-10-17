@@ -35,6 +35,15 @@
 
     &-icon-desc {
         width: 150px;
+
+        .ant-tooltip {
+            max-width: none;
+        }
+    }
+
+    &-icon-desc-help {
+        margin-left: 4px;
+        cursor: help;
     }
 
     &-key {
@@ -126,6 +135,7 @@
 
     >span {
         display: inline-block;
+        max-width: 240px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;

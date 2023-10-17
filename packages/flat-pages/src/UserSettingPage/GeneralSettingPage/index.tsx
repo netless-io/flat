@@ -4,43 +4,45 @@ import "./index.less";
 
 import phoneSVG from "./icons/phone.svg";
 import emailSVG from "./icons/email.svg";
-import userSVG from "./icons/user.svg";
 import lockSVG from "./icons/lock.svg";
 
 import React, { useCallback, useContext, useMemo, useState } from "react";
-import { observer } from "mobx-react-lite";
+import { FlatI18n, useLanguage, useTranslate } from "@netless/flat-i18n";
 import { Button, Checkbox, message, Modal, Radio } from "antd";
+import { observer } from "mobx-react-lite";
 import {
     FlatPrefersColorScheme,
     AppearancePicker,
     errorTips,
     LoginButtonProviderType,
+    SVGCopy,
+    PmiExistTip,
 } from "flat-components";
-import { UserSettingLayoutContainer } from "../UserSettingLayoutContainer";
-import { FlatI18n, useLanguage, useTranslate } from "@netless/flat-i18n";
-
-import { PreferencesStoreContext, GlobalStoreContext } from "../../components/StoreProvider";
-import { useSafePromise } from "../../utils/hooks/lifecycle";
 import {
     LoginPlatform,
+    createOrGetPmi,
     deleteAccount,
     deleteAccountValidate,
     loginCheck,
     removeBinding,
     rename,
 } from "@netless/flat-server-api";
-// import { ConfirmButtons } from "./ConfirmButtons";
+
+import { PreferencesStoreContext, GlobalStoreContext } from "../../components/StoreProvider";
+import { UserSettingLayoutContainer } from "../UserSettingLayoutContainer";
+import { RouteNameType, usePushHistory } from "../../utils/routes";
+import { useSafePromise } from "../../utils/hooks/lifecycle";
 import { uploadAvatar, UploadAvatar } from "./UploadAvatar";
 import { UpdatePasswordModel } from "./UpdatePasswordModel";
-import { BindWeChat } from "./binding/WeChat";
-import { useBindingList } from "./binding";
-import { BindGitHub } from "./binding/GitHub";
-import { RouteNameType, usePushHistory } from "../../utils/routes";
-import { BindGoogle } from "./binding/Google";
+import { FLAT_WEB_BASE_URL } from "../../constants/process";
 import { UpdateEmailModel } from "./UpdateEmailModel";
 import { UpdatePhoneModel } from "./UpdatePhoneModel";
 import { EditableInput } from "./EditableInput";
+import { BindWeChat } from "./binding/WeChat";
+import { BindGitHub } from "./binding/GitHub";
+import { BindGoogle } from "./binding/Google";
 import { BindingField } from "./BindingField";
+import { useBindingList } from "./binding";
 
 enum SelectLanguage {
     Chinese,
@@ -67,6 +69,10 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
     const [showPhoneModel, setShowPhoneModel] = useState(false);
 
     const hasPassword = useMemo(() => globalStore.hasPassword, [globalStore.hasPassword]);
+    const personalLink = useMemo(
+        () => globalStore.pmiRoomExist && `${FLAT_WEB_BASE_URL}/join/${globalStore.pmiRoomUUID}`,
+        [globalStore.pmiRoomExist, globalStore.pmiRoomUUID],
+    );
 
     const loginButtons = useMemo(
         () => process.env.LOGIN_METHODS.split(",") as LoginButtonProviderType[],
@@ -114,6 +120,8 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
                 try {
                     await sp(deleteAccount());
                     globalStore.updateUserInfo(null);
+                    globalStore.updatePmi(null);
+                    globalStore.updatePmiRoomList([]);
                     globalStore.deleteCurrentAccountFromHistory();
                     pushHistory(RouteNameType.LoginPage);
                 } catch (err) {
@@ -151,6 +159,27 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
         [globalStore, refreshBindings, sp, t],
     );
 
+    const handleCopy = useCallback(
+        (text: string) => {
+            navigator.clipboard.writeText(text);
+            void message.success(t("copy-success"));
+        },
+        [t],
+    );
+
+    const handlePmi = useCallback(async () => {
+        try {
+            const { pmi = null } = await createOrGetPmi({ create: true });
+            globalStore.updatePmi(pmi);
+        } catch (err) {
+            errorTips(err);
+        }
+    }, [globalStore]);
+
+    const generatePersonalLink = useCallback(() => {
+        pushHistory(RouteNameType.HomePage);
+    }, [pushHistory]);
+
     return (
         <UserSettingLayoutContainer>
             <div className="general-setting-container">
@@ -158,14 +187,74 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
                     <div>
                         <span className="general-setting-item-title">{t("user-profile")}</span>
 
-                        {EditableInput({
-                            value: name,
-                            icon: userSVG,
-                            desc: t("username"),
-                            setValue: ev => setName(ev.currentTarget.value),
-                            updateValue: changeUserName,
-                            cancelUpdate: () => setName(globalStore.userName || ""),
-                        })}
+                        <div>
+                            {EditableInput({
+                                value: name,
+                                desc: t("username"),
+                                setValue: ev => setName(ev.currentTarget.value),
+                                updateValue: changeUserName,
+                                cancelUpdate: () => setName(globalStore.userName || ""),
+                            })}
+                        </div>
+
+                        <div>
+                            <div className="input-container-bg">
+                                <span className="general-setting-item-icon-desc">
+                                    {t("personal-room-id")}
+                                    <PmiExistTip title={t("pmi-help")} />
+                                </span>
+
+                                {globalStore.pmi ? (
+                                    <>
+                                        <span>{globalStore.pmi}</span>
+                                        <Button
+                                            className="general-setting-item-btn"
+                                            type="link"
+                                            onClick={() => handleCopy(globalStore.pmi!)}
+                                        >
+                                            <SVGCopy />
+                                        </Button>
+                                    </>
+                                ) : (
+                                    <Button
+                                        className="ant-btn-link"
+                                        type="link"
+                                        onClick={handlePmi}
+                                    >
+                                        {t("get-pmi")}
+                                    </Button>
+                                )}
+                            </div>
+                        </div>
+
+                        <div>
+                            <div className="input-container-bg">
+                                <span className="general-setting-item-icon-desc">
+                                    {t("personal-room-link")}
+                                </span>
+
+                                {personalLink ? (
+                                    <>
+                                        <span title={personalLink}>{personalLink}</span>
+                                        <Button
+                                            className="general-setting-item-btn"
+                                            type="link"
+                                            onClick={() => handleCopy(personalLink)}
+                                        >
+                                            <SVGCopy />
+                                        </Button>
+                                    </>
+                                ) : (
+                                    <Button
+                                        className="ant-btn-link"
+                                        type="link"
+                                        onClick={generatePersonalLink}
+                                    >
+                                        {t("get-link")}
+                                    </Button>
+                                )}
+                            </div>
+                        </div>
                     </div>
                     <UploadAvatar onUpload={onUpload} />
                 </div>

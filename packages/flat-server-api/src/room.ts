@@ -7,6 +7,7 @@ export interface CreateOrdinaryRoomPayload {
     beginTime: number;
     region: Region;
     endTime?: number;
+    pmi?: boolean;
 }
 
 export interface CreateOrdinaryRoomResult {

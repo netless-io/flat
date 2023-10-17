@@ -1,23 +1,28 @@
 import "./CreateRoomBox.less";
 
-import React, { useContext, useEffect, useRef, useState, KeyboardEvent } from "react";
-import { observer } from "mobx-react-lite";
-import { Button, Input, Modal, Checkbox, Form, InputRef } from "antd";
-import { RoomType } from "@netless/flat-server-api";
-import { PreferencesStoreContext, GlobalStoreContext } from "../../components/StoreProvider";
-import { useSafePromise } from "../../utils/hooks/lifecycle";
-import { ClassPicker, HomePageHeroButton, Region } from "flat-components";
+import React, { useContext, useEffect, useRef, useState, KeyboardEvent, useCallback } from "react";
+import { ClassPicker, HomePageHeroButton, PmiDesc, PmiExistTip, Region } from "flat-components";
+import { Input, Modal, Checkbox, Form, InputRef, Dropdown, message, Button } from "antd";
+import { MoreOutlined } from "@ant-design/icons";
 import { useTranslate } from "@netless/flat-i18n";
+import { RoomType } from "@netless/flat-server-api";
+import { observer } from "mobx-react-lite";
+
+import { PreferencesStoreContext, GlobalStoreContext } from "../../components/StoreProvider";
+import { RouteNameType, usePushHistory } from "../../utils/routes";
+import { joinRoomHandler } from "../../utils/join-room-handler";
+import { useSafePromise } from "../../utils/hooks/lifecycle";
 
 interface CreateRoomFormValues {
     roomTitle: string;
     roomType: RoomType;
     autoMicOn: boolean;
     autoCameraOn: boolean;
+    pmi?: boolean;
 }
 
 export interface CreateRoomBoxProps {
-    onCreateRoom: (title: string, type: RoomType, region: Region) => Promise<void>;
+    onCreateRoom: (title: string, type: RoomType, region: Region, pmi?: boolean) => Promise<void>;
 }
 
 export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox({ onCreateRoom }) {
@@ -25,6 +30,8 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
     const sp = useSafePromise();
     const globalStore = useContext(GlobalStoreContext);
     const preferencesStore = useContext(PreferencesStoreContext);
+    const pushHistory = usePushHistory();
+
     const [form] = Form.useForm<CreateRoomFormValues>();
 
     const [isLoading, setLoading] = useState(false);
@@ -44,6 +51,8 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
         roomType: RoomType.BigClass,
         autoMicOn: preferencesStore.autoMicOn,
         autoCameraOn: preferencesStore.autoCameraOn,
+        // if there exists pmi room, it will can not be selected
+        pmi: preferencesStore.autoPmiOn && !globalStore.pmiRoomExist,
     };
 
     useEffect(() => {
@@ -62,16 +71,79 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
         };
     }, [isShowModal]);
 
+    const handleCopy = useCallback(
+        (text: string) => {
+            navigator.clipboard.writeText(text);
+            void message.success(t("copy-success"));
+        },
+        [t],
+    );
+
+    const handleCreateRoom = (): void => {
+        if (preferencesStore.autoPmiOn && globalStore.pmiRoomExist) {
+            // enter room directly
+            onJoinRoom(globalStore.pmiRoomUUID);
+        } else {
+            form.setFieldsValue(defaultValues);
+            showModal(true);
+            formValidateStatus();
+        }
+    };
+
+    const onJoinRoom = async (roomUUID: string): Promise<void> => {
+        if (globalStore.isTurnOffDeviceTest || window.isElectron) {
+            await joinRoomHandler(roomUUID, pushHistory);
+        } else {
+            pushHistory(RouteNameType.DevicesTestPage, { roomUUID });
+        }
+    };
+
     return (
         <>
-            <HomePageHeroButton
-                type="begin"
-                onClick={() => {
-                    form.setFieldsValue(defaultValues);
-                    showModal(true);
-                    formValidateStatus();
-                }}
-            />
+            <HomePageHeroButton type="begin" onClick={handleCreateRoom}>
+                {!!globalStore.pmi && (
+                    <Dropdown
+                        overlay={
+                            <div
+                                className="pmi-selector-content"
+                                onClick={e => {
+                                    e.stopPropagation();
+                                }}
+                            >
+                                <Checkbox
+                                    checked={preferencesStore.autoPmiOn}
+                                    className="pmi-selector-item"
+                                    onClick={() =>
+                                        preferencesStore.updateAutoPmiOn(
+                                            !preferencesStore.autoPmiOn,
+                                        )
+                                    }
+                                >
+                                    <PmiDesc
+                                        className="checkbox-item-inner"
+                                        pmi={globalStore.pmi}
+                                        text={t("turn-on-the-pmi")}
+                                    />
+                                </Checkbox>
+                                <Button
+                                    key="copy"
+                                    className="pmi-selector-item"
+                                    type="link"
+                                    onClick={() => handleCopy(globalStore.pmi!)}
+                                >
+                                    {t("copy-pmi")}
+                                </Button>
+                            </div>
+                        }
+                        overlayClassName="pmi-selector"
+                        trigger={["hover"]}
+                    >
+                        <div className="pmi-selector-more" onClick={e => e.stopPropagation()}>
+                            <MoreOutlined />
+                        </div>
+                    </Dropdown>
+                )}
+            </HomePageHeroButton>
             <Modal
                 forceRender // make "form" usable
                 footer={[
@@ -127,6 +199,30 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
                         <Form.Item noStyle name="autoCameraOn" valuePropName="checked">
                             <Checkbox>{t("turn-on-the-camera")}</Checkbox>
                         </Form.Item>
+                        {globalStore.pmi && (
+                            <Form.Item
+                                className="main-room-menu-form-item no-margin"
+                                name="pmi"
+                                valuePropName="checked"
+                            >
+                                <Checkbox
+                                    checked={preferencesStore.autoPmiOn}
+                                    disabled={globalStore.pmiRoomExist}
+                                    onClick={() =>
+                                        preferencesStore.updateAutoPmiOn(
+                                            !preferencesStore.autoPmiOn,
+                                        )
+                                    }
+                                >
+                                    <PmiDesc
+                                        className="checkbox-item-inner"
+                                        pmi={globalStore.pmi}
+                                        text={t("turn-on-the-pmi")}
+                                    />
+                                    {globalStore.pmiRoomExist && <PmiExistTip />}
+                                </Checkbox>
+                            </Form.Item>
+                        )}
                     </Form.Item>
                 </Form>
             </Modal>
@@ -153,7 +249,7 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
         try {
             const values = form.getFieldsValue();
             preferencesStore.updateAutoCameraOn(values.autoCameraOn);
-            await sp(onCreateRoom(values.roomTitle, values.roomType, roomRegion));
+            await sp(onCreateRoom(values.roomTitle, values.roomType, roomRegion, values.pmi));
             setLoading(false);
             showModal(false);
         } catch (e) {
