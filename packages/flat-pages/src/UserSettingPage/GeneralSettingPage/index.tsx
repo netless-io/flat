@@ -6,7 +6,7 @@ import phoneSVG from "./icons/phone.svg";
 import emailSVG from "./icons/email.svg";
 import lockSVG from "./icons/lock.svg";
 
-import React, { useCallback, useContext, useMemo, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { FlatI18n, useLanguage, useTranslate } from "@netless/flat-i18n";
 import { Button, Checkbox, message, Modal, Radio } from "antd";
 import { observer } from "mobx-react-lite";
@@ -20,7 +20,6 @@ import {
 } from "flat-components";
 import {
     LoginPlatform,
-    createOrGetPmi,
     deleteAccount,
     deleteAccountValidate,
     loginCheck,
@@ -70,14 +69,24 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
 
     const hasPassword = useMemo(() => globalStore.hasPassword, [globalStore.hasPassword]);
     const personalLink = useMemo(
-        () => globalStore.pmiRoomExist && `${FLAT_WEB_BASE_URL}/join/${globalStore.pmiRoomUUID}`,
-        [globalStore.pmiRoomExist, globalStore.pmiRoomUUID],
+        () => `${FLAT_WEB_BASE_URL}/join/${globalStore.pmi}`,
+        [globalStore.pmi],
     );
 
     const loginButtons = useMemo(
         () => process.env.LOGIN_METHODS.split(",") as LoginButtonProviderType[],
         [],
     );
+
+    useEffect(() => {
+        const checkPmi = (): void => {
+            if (!globalStore.pmi) {
+                globalStore.updatePmi();
+            }
+        };
+
+        checkPmi();
+    }, [globalStore]);
 
     async function changeUserName(): Promise<void> {
         if (name !== globalStore.userName) {
@@ -167,19 +176,6 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
         [t],
     );
 
-    const handlePmi = useCallback(async () => {
-        try {
-            const { pmi = null } = await createOrGetPmi({ create: true });
-            globalStore.updatePmi(pmi);
-        } catch (err) {
-            errorTips(err);
-        }
-    }, [globalStore]);
-
-    const generatePersonalLink = useCallback(() => {
-        pushHistory(RouteNameType.HomePage);
-    }, [pushHistory]);
-
     return (
         <UserSettingLayoutContainer>
             <div className="general-setting-container">
@@ -204,26 +200,14 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
                                     <PmiExistTip title={t("pmi-help")} />
                                 </span>
 
-                                {globalStore.pmi ? (
-                                    <>
-                                        <span>{globalStore.pmi}</span>
-                                        <Button
-                                            className="general-setting-item-btn"
-                                            type="link"
-                                            onClick={() => handleCopy(globalStore.pmi!)}
-                                        >
-                                            <SVGCopy />
-                                        </Button>
-                                    </>
-                                ) : (
-                                    <Button
-                                        className="ant-btn-link"
-                                        type="link"
-                                        onClick={handlePmi}
-                                    >
-                                        {t("get-pmi")}
-                                    </Button>
-                                )}
+                                <span>{globalStore.pmi}</span>
+                                <Button
+                                    className="general-setting-item-btn"
+                                    type="link"
+                                    onClick={() => handleCopy(globalStore.pmi!)}
+                                >
+                                    <SVGCopy />
+                                </Button>
                             </div>
                         </div>
 
@@ -233,26 +217,14 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
                                     {t("personal-room-link")}
                                 </span>
 
-                                {personalLink ? (
-                                    <>
-                                        <span title={personalLink}>{personalLink}</span>
-                                        <Button
-                                            className="general-setting-item-btn"
-                                            type="link"
-                                            onClick={() => handleCopy(personalLink)}
-                                        >
-                                            <SVGCopy />
-                                        </Button>
-                                    </>
-                                ) : (
-                                    <Button
-                                        className="ant-btn-link"
-                                        type="link"
-                                        onClick={generatePersonalLink}
-                                    >
-                                        {t("get-link")}
-                                    </Button>
-                                )}
+                                <span title={personalLink}>{personalLink}</span>
+                                <Button
+                                    className="general-setting-item-btn"
+                                    type="link"
+                                    onClick={() => handleCopy(personalLink)}
+                                >
+                                    <SVGCopy />
+                                </Button>
                             </div>
                         </div>
                     </div>

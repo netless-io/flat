@@ -56,6 +56,16 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
     };
 
     useEffect(() => {
+        const checkPmi = (): void => {
+            if (!globalStore.pmi) {
+                globalStore.updatePmi();
+            }
+        };
+
+        checkPmi();
+    }, [globalStore]);
+
+    useEffect(() => {
         let ticket = NaN;
         if (isShowModal) {
             // wait a cycle till antd modal updated

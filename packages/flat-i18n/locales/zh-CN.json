@@ -536,8 +536,6 @@
   "user-pmi-drained": "用户PMI已分配完，请联系管理员",
   "pmi-room-exist": "个人房间已存在，请先取消已存在的房间",
   "pmi-help": "你的专属房间号，可使用该固定号码创建房间",
-  "get-link": "创建房间获取邀请链接",
-  "get-pmi": "获取",
   "personal-room-id": "个人房间号",
   "personal-room-link": "个人房间链接",
   "upload-avatar": "上传头像",
