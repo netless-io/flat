@@ -11,9 +11,10 @@ import {
     RoomListItemPrimaryAction,
     RoomListSkeletons,
     RoomStatusType,
+    StopClassConfirmModal,
     errorTips,
 } from "flat-components";
-import { ListRoomsType, RoomStatus, RoomType } from "@netless/flat-server-api";
+import { ListRoomsType, RoomStatus, RoomType, stopClass } from "@netless/flat-server-api";
 import { GlobalStoreContext, RoomStoreContext } from "../../components/StoreProvider";
 import { RoomItem } from "@netless/flat-stores";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
@@ -37,6 +38,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
     const [skeletonsVisible, setSkeletonsVisible] = useState(false);
     const [roomUUIDs, setRoomUUIDs] = useState<string[]>();
     const [cancelModalVisible, setCancelModalVisible] = useState(false);
+    const [stopModalVisible, setStopModalVisible] = useState(false);
     const [inviteModalVisible, setInviteModalVisible] = useState(false);
     const [removeHistoryVisible, setRemoveHistoryVisible] = useState(false);
     const [removeHistoryLoading, setRemoveHistoryLoading] = useState(false);
@@ -188,6 +190,11 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
                                         setCancelModalVisible(true);
                                         break;
                                     }
+                                    case "stop": {
+                                        setCurrentRoom(room);
+                                        setStopModalVisible(true);
+                                        break;
+                                    }
                                     case "invite": {
                                         setCurrentRoom(room);
                                         setInviteModalVisible(true);
@@ -239,6 +246,14 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
                 />
             )}
             {currentRoom && (
+                <StopClassConfirmModal
+                    loading={false}
+                    visible={stopModalVisible}
+                    onCancel={hideStopModal}
+                    onStop={stopRoomHandler}
+                />
+            )}
+            {currentRoom && (
                 <InviteModal
                     baseUrl={FLAT_WEB_BASE_URL}
                     periodicWeeks={periodicInfo?.periodic.weeks}
@@ -279,6 +294,10 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
 
     function hideCancelModal(): void {
         setCancelModalVisible(false);
+    }
+
+    function hideStopModal(): void {
+        setStopModalVisible(false);
     }
 
     function hideInviteModal(): void {
@@ -343,6 +362,27 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
         }
     }
 
+    async function stopRoomHandler(): Promise<void> {
+        const { ownerUUID, roomUUID, roomStatus } = currentRoom!;
+        const isCreator = ownerUUID === globalStore.userUUID;
+        const isStarted = roomStatus === RoomStatus.Started || roomStatus === RoomStatus.Paused;
+        try {
+            if (isCreator && isStarted) {
+                await stopClass(roomUUID);
+
+                if (globalStore.pmiRoomUUID === roomUUID) {
+                    // remove pmi room id list
+                    globalStore.updatePmiRoomList();
+                }
+                void refreshRooms();
+            }
+            setStopModalVisible(false);
+        } catch (e) {
+            console.error(e);
+            errorTips(e);
+        }
+    }
+
     async function removeConfirm(): Promise<void> {
         setRemoveHistoryLoading(true);
         try {
@@ -364,7 +404,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
 
     type SubActions =
         | Array<{ key: "details" | "share" | "delete-history"; text: string }>
-        | Array<{ key: "details" | "modify" | "cancel" | "invite"; text: string }>;
+        | Array<{ key: "details" | "modify" | "cancel" | "stop" | "invite"; text: string }>;
 
     function getSubActions(room: RoomItem): SubActions {
         const result = [{ key: "details", text: t("room-detail") }];
