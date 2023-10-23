@@ -57,7 +57,6 @@ export const MainRoomMenu: FC = () => {
             });
 
             if (pmi) {
-                // update pmi room list
                 globalStore.updatePmiRoomList();
             }
 
