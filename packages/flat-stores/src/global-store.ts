@@ -3,6 +3,8 @@ import {
     LoginProcessResult,
     setFlatAuthToken,
     ServerRegionConfigResult,
+    createOrGetPmi,
+    listPmi,
 } from "@netless/flat-server-api";
 import { autorun } from "mobx";
 import { autoPersistStore } from "./utils/auto-persist-store";
@@ -121,12 +123,12 @@ export class GlobalStore {
         });
     }
 
-    public updatePmi = (pmi: string | null): void => {
-        this.pmi = pmi;
+    public updatePmi = async (pmi?: string | null): Promise<void> => {
+        this.pmi = pmi ?? ((await createOrGetPmi({ create: true }))?.pmi || null);
     };
 
-    public updatePmiRoomList = (pmiRoomList?: PmiRoom[]): void => {
-        this.pmiRoomList = pmiRoomList || [];
+    public updatePmiRoomList = async (pmiRoomList?: PmiRoom[]): Promise<void> => {
+        this.pmiRoomList = pmiRoomList ?? ((await listPmi()) || []);
     };
 
     public updateUserInfo = (userInfo: UserInfo | null): void => {

@@ -14,7 +14,7 @@ import {
     StopClassConfirmModal,
     errorTips,
 } from "flat-components";
-import { ListRoomsType, RoomStatus, RoomType, listPmi, stopClass } from "@netless/flat-server-api";
+import { ListRoomsType, RoomStatus, RoomType, stopClass } from "@netless/flat-server-api";
 import { GlobalStoreContext, RoomStoreContext } from "../../components/StoreProvider";
 import { RoomItem } from "@netless/flat-stores";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
@@ -372,7 +372,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
 
                 if (globalStore.pmiRoomUUID === roomUUID) {
                     // remove pmi room id list
-                    globalStore.updatePmiRoomList(await listPmi());
+                    globalStore.updatePmiRoomList();
                 }
                 void refreshRooms();
             }

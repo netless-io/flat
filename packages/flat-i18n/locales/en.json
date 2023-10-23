@@ -536,8 +536,6 @@
   "user-pmi-drained": "User PMI used up, please contact the administrator",
   "pmi-room-exist": "PMI room already exists, please cancel existing PMI room first",
   "pmi-help": "Your own room number, you can use this fixed number to create a room",
-  "get-link": "Create room to generate link",
-  "get-pmi": "Generate PMI",
   "personal-room-id": "Personal Room ID",
   "personal-room-link": "Personal Room Link",
   "upload-avatar": "Upload Avatar",

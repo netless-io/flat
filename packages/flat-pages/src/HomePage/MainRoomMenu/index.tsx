@@ -3,7 +3,7 @@ import "./MainRoomMenu.less";
 import React, { FC, useContext } from "react";
 import { Col, Row } from "antd";
 import { Region } from "flat-components";
-import { RoomType, listPmi } from "@netless/flat-server-api";
+import { RoomType } from "@netless/flat-server-api";
 import { GlobalStoreContext, RoomStoreContext } from "../../components/StoreProvider";
 import { RouteNameType, usePushHistory } from "../../utils/routes";
 import { CreateRoomBox } from "./CreateRoomBox";
@@ -57,8 +57,7 @@ export const MainRoomMenu: FC = () => {
             });
 
             if (pmi) {
-                // update pmi room list
-                globalStore.updatePmiRoomList(await listPmi());
+                globalStore.updatePmiRoomList();
             }
 
             await onJoinRoom(roomUUID);

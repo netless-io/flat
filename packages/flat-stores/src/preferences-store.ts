@@ -29,7 +29,7 @@ export class PreferencesStore {
     /** selected speaker device id on devices test page */
     public speakerId?: string | null = null;
 
-    public autoPmiOn = true;
+    public autoPmiOn = false;
 
     public prefersColorScheme: FlatPrefersColorScheme = "light";
 

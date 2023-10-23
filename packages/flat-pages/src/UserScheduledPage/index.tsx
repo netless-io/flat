@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { isBefore, addMinutes, roundToNearestMinutes, getDay, addWeeks } from "date-fns";
 import { EditRoomFormValues } from "flat-components";
@@ -58,6 +58,16 @@ export const UserScheduledPage = observer(function UserScheduledPage() {
             pmi: preferencesStore.autoPmiOn && !globalStore.pmiRoomExist,
         };
     });
+
+    useEffect(() => {
+        const checkPmi = (): void => {
+            if (!globalStore.pmi) {
+                globalStore.updatePmi();
+            }
+        };
+
+        checkPmi();
+    }, [globalStore]);
 
     return (
         <EditRoomPage
