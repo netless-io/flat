@@ -88,7 +88,7 @@ export function useLoginState(): LoginState {
         async (authData: LoginProcessResult | null, account?: Account) => {
             globalStore.updateUserInfo(authData);
             globalStore.updatePmi((await createOrGetPmi({ create: true }))?.pmi || null);
-            globalStore.updatePmiRoomList((await listPmi()) || []);
+            globalStore.updatePmiRoomList(await listPmi());
 
             if (!authData) {
                 setLoginResult(null);

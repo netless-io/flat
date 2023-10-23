@@ -1373,7 +1373,7 @@ export class ClassroomStore {
 
                     if (globalStore.pmiRoomUUID === this.roomUUID) {
                         // remove pmi room id list
-                        globalStore.updatePmiRoomList((await listPmi()) || []);
+                        globalStore.updatePmiRoomList(await listPmi());
                     }
                     break;
                 }

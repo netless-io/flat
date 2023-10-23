@@ -125,8 +125,8 @@ export class GlobalStore {
         this.pmi = pmi;
     };
 
-    public updatePmiRoomList = (pmiRoomList: PmiRoom[]): void => {
-        this.pmiRoomList = pmiRoomList;
+    public updatePmiRoomList = (pmiRoomList?: PmiRoom[]): void => {
+        this.pmiRoomList = pmiRoomList || [];
     };
 
     public updateUserInfo = (userInfo: UserInfo | null): void => {

@@ -58,7 +58,7 @@ export const MainRoomMenu: FC = () => {
 
             if (pmi) {
                 // update pmi room list
-                globalStore.updatePmiRoomList((await listPmi()) || []);
+                globalStore.updatePmiRoomList(await listPmi());
             }
 
             await onJoinRoom(roomUUID);
