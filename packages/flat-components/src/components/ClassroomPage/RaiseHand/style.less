@@ -23,7 +23,7 @@
         left: 50%;
         transform: translate(-50%, -50%);
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 50 50'%3E%3Cg filter='url(%23a)'%3E%3Cpath fill='%233381FF' fill-rule='evenodd' d='M2 25c0 12.703 10.297 23 23 23v2C11.193 50 0 38.807 0 25h2Zm46 0C48 12.297 37.703 2 25 2V0c13.807 0 25 11.193 25 25h-2Z' clip-rule='evenodd'/%3E%3C/g%3E%3Cdefs%3E%3Cfilter id='a' width='60.873' height='60.873' x='-5.437' y='-5.437' color-interpolation-filters='sRGB' filterUnits='userSpaceOnUse'%3E%3CfeFlood flood-opacity='0' result='BackgroundImageFix'/%3E%3CfeGaussianBlur in='BackgroundImageFix' stdDeviation='2.718'/%3E%3CfeComposite in2='SourceAlpha' operator='in' result='effect1_backgroundBlur_4735_3980'/%3E%3CfeBlend in='SourceGraphic' in2='effect1_backgroundBlur_4735_3980' result='shape'/%3E%3C/filter%3E%3C/defs%3E%3C/svg%3E"); // cspell:disable-line
-        animation: loading 1.5s infinite linear;
+        animation: none;
         opacity: 0;
         transition: opacity 0.3s ease-in-out;
     }
@@ -38,6 +38,7 @@
     }
 
     &.is-active::after {
+        animation: loading 1.5s infinite linear;
         opacity: 1;
     }
 }
