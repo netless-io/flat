@@ -1,6 +1,6 @@
 import "./style.less";
 
-import React, { PropsWithChildren, ReactElement, useMemo } from "react";
+import React, { PropsWithChildren, ReactElement, useCallback, useMemo, useRef } from "react";
 import { Dropdown, Menu } from "antd";
 import { SVGDown } from "../../FlatIcons";
 
@@ -20,6 +20,7 @@ export interface RoomListProps<T extends string> {
     activeTab?: T;
     onTabActive?: (key: T) => void;
     style?: React.CSSProperties;
+    onScrollToBottom?: () => void;
 }
 
 export function RoomList<T extends string>({
@@ -29,11 +30,29 @@ export function RoomList<T extends string>({
     onTabActive,
     children,
     style,
+    onScrollToBottom,
 }: PropsWithChildren<RoomListProps<T>>): ReactElement {
     const activeTabTitle = useMemo(
         () => filters?.find(tab => tab.key === activeTab)?.title,
         [filters, activeTab],
     );
+
+    const isAtTheBottomRef = useRef(false);
+    const roomListContainerRef = useRef<HTMLDivElement>(null);
+
+    const onScroll = useCallback((): void => {
+        if (roomListContainerRef.current) {
+            const { scrollTop, clientHeight, scrollHeight } = roomListContainerRef.current;
+            const threshold = scrollHeight - 30;
+            const isAtTheBottom = scrollTop + clientHeight >= threshold;
+            if (isAtTheBottomRef.current !== isAtTheBottom) {
+                isAtTheBottomRef.current = isAtTheBottom;
+                if (isAtTheBottom && onScrollToBottom) {
+                    onScrollToBottom();
+                }
+            }
+        }
+    }, [onScrollToBottom]);
 
     return (
         <div className="room-list" style={style}>
@@ -57,7 +76,13 @@ export function RoomList<T extends string>({
                     </Dropdown>
                 )}
             </div>
-            <div className="room-list-body fancy-scrollbar">{children}</div>
+            <div
+                ref={roomListContainerRef}
+                className="room-list-body fancy-scrollbar"
+                onScroll={onScroll}
+            >
+                {children}
+            </div>
         </div>
     );
 }

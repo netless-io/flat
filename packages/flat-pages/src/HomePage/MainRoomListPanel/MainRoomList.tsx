@@ -15,8 +15,8 @@ import {
     errorTips,
 } from "flat-components";
 import { ListRoomsType, RoomStatus, RoomType, stopClass } from "@netless/flat-server-api";
-import { GlobalStoreContext, RoomStoreContext } from "../../components/StoreProvider";
-import { RoomItem } from "@netless/flat-stores";
+import { GlobalStoreContext } from "../../components/StoreProvider";
+import { RoomItem, RoomStore } from "@netless/flat-stores";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import { RouteNameType, usePushHistory } from "../../utils/routes";
 import { joinRoomHandler } from "../../utils/join-room-handler";
@@ -25,18 +25,18 @@ import { FLAT_WEB_BASE_URL } from "../../constants/process";
 import { generateAvatar } from "../../utils/generate-avatar";
 
 export interface MainRoomListProps {
+    roomStore: RoomStore;
     listRoomsType: ListRoomsType;
     isLogin: boolean;
 }
 
 export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
+    roomStore,
     listRoomsType,
     isLogin,
 }) {
     const t = useTranslate();
-    const roomStore = useContext(RoomStoreContext);
     const [skeletonsVisible, setSkeletonsVisible] = useState(false);
-    const [roomUUIDs, setRoomUUIDs] = useState<string[]>();
     const [cancelModalVisible, setCancelModalVisible] = useState(false);
     const [stopModalVisible, setStopModalVisible] = useState(false);
     const [inviteModalVisible, setInviteModalVisible] = useState(false);
@@ -57,10 +57,8 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
     const refreshRooms = useCallback(
         async function refreshRooms(): Promise<void> {
             try {
-                const roomUUIDs = await sp(roomStore.listRooms(listRoomsType, { page: 1 }));
-                setRoomUUIDs(roomUUIDs);
+                await sp(roomStore.listRooms(listRoomsType));
             } catch (e) {
-                setRoomUUIDs([]);
                 errorTips(e);
             }
         },
@@ -80,6 +78,8 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
             window.clearInterval(ticket);
         };
     }, [refreshRooms, isLogin]);
+
+    const roomUUIDs = roomStore.roomUUIDs[listRoomsType];
 
     if (!roomUUIDs) {
         return skeletonsVisible ? <RoomListSkeletons /> : null;
