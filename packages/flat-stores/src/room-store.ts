@@ -11,7 +11,6 @@ import {
     joinRoom,
     JoinRoomResult,
     listRooms,
-    ListRoomsPayload,
     ListRoomsType,
     ordinaryRoomInfo,
     periodicRoomInfo,
@@ -24,6 +23,7 @@ import {
 } from "@netless/flat-server-api";
 import { globalStore } from "./global-store";
 import { preferencesStore } from "./preferences-store";
+import { isToday } from "date-fns";
 
 export interface RoomRecording {
     beginTime: number;
@@ -66,8 +66,47 @@ export interface PeriodicRoomItem {
  * This should be the only central store for all the room info.
  */
 export class RoomStore {
+    public readonly singlePageSize = 50;
+
     public rooms = observable.map<string, RoomItem>();
     public periodicRooms = observable.map<string, PeriodicRoomItem>();
+
+    /** If `fetchMoreRooms()` returns 0 rooms, stop fetching it */
+    public hasMoreRooms: Record<ListRoomsType, boolean> = {
+        all: true,
+        periodic: true,
+        history: true,
+        today: true,
+    };
+
+    /** Don't invoke `fetchMoreRooms()` too many times */
+    public isFetchingRooms = false;
+
+    public get roomUUIDs(): Record<ListRoomsType, string[]> {
+        const roomUUIDs: Record<ListRoomsType, string[]> = {
+            all: [],
+            history: [],
+            periodic: [],
+            today: [],
+        };
+        for (const room of this.rooms.values()) {
+            const beginTime = room.beginTime ?? Date.now();
+            const isHistory = room.roomStatus === RoomStatus.Stopped;
+            const isPeriodic = Boolean(room.periodicUUID);
+            if (isHistory) {
+                roomUUIDs.history.push(room.roomUUID);
+            } else {
+                roomUUIDs.all.push(room.roomUUID);
+            }
+            if (isPeriodic) {
+                roomUUIDs.periodic.push(room.roomUUID);
+            }
+            if (isToday(beginTime)) {
+                roomUUIDs.today.push(room.roomUUID);
+            }
+        }
+        return roomUUIDs;
+    }
 
     public constructor() {
         makeAutoObservable(this);
@@ -111,8 +150,8 @@ export class RoomStore {
     /**
      * @returns a list of room uuids
      */
-    public async listRooms(type: ListRoomsType, payload: ListRoomsPayload): Promise<string[]> {
-        const rooms = await listRooms(type, payload);
+    public async listRooms(type: ListRoomsType): Promise<string[]> {
+        const rooms = await listRooms(type, { page: 1 });
         const roomUUIDs: string[] = [];
         runInAction(() => {
             for (const room of rooms) {
@@ -124,6 +163,45 @@ export class RoomStore {
             }
         });
         return roomUUIDs;
+    }
+
+    public async fetchMoreRooms(type: ListRoomsType): Promise<void> {
+        if (this.isFetchingRooms) {
+            return;
+        }
+
+        const counts = this.roomUUIDs;
+
+        const page = Math.ceil(counts[type].length / this.singlePageSize);
+        const fullPageSize = page * this.singlePageSize;
+        if (counts[type].length >= fullPageSize && this.hasMoreRooms[type]) {
+            runInAction(() => {
+                this.isFetchingRooms = true;
+            });
+
+            try {
+                const rooms = await listRooms(type, {
+                    page: page + 1,
+                });
+
+                this.hasMoreRooms[type] = rooms.length > 0;
+
+                runInAction(() => {
+                    this.isFetchingRooms = false;
+
+                    for (const room of rooms) {
+                        this.updateRoom(room.roomUUID, room.ownerUUID, {
+                            ...room,
+                            periodicUUID: room.periodicUUID || void 0,
+                        });
+                    }
+                });
+            } catch {
+                runInAction(() => {
+                    this.isFetchingRooms = false;
+                });
+            }
+        }
     }
 
     public async cancelRoom(payload: CancelRoomPayload): Promise<void> {
@@ -218,3 +296,7 @@ export class RoomStore {
 }
 
 export const roomStore = new RoomStore();
+
+if (process.env.DEV) {
+    (window as any).roomStore = roomStore;
+}
