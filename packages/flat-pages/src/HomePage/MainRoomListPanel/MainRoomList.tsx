@@ -1,5 +1,5 @@
 import { message } from "antd";
-import React, { Fragment, useCallback, useContext, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import {
     InviteModal,
@@ -27,13 +27,13 @@ import { generateAvatar } from "../../utils/generate-avatar";
 export interface MainRoomListProps {
     roomStore: RoomStore;
     listRoomsType: ListRoomsType;
-    isLogin: boolean;
+    refreshRooms: () => Promise<void>;
 }
 
 export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
     roomStore,
     listRoomsType,
-    isLogin,
+    refreshRooms,
 }) {
     const t = useTranslate();
     const [skeletonsVisible, setSkeletonsVisible] = useState(false);
@@ -53,31 +53,6 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
         const ticket = window.setTimeout(() => setSkeletonsVisible(true), 200);
         return () => window.clearTimeout(ticket);
     }, []);
-
-    const refreshRooms = useCallback(
-        async function refreshRooms(): Promise<void> {
-            try {
-                await sp(roomStore.listRooms(listRoomsType));
-            } catch (e) {
-                errorTips(e);
-            }
-        },
-        [listRoomsType, roomStore, sp],
-    );
-
-    useEffect(() => {
-        if (!isLogin) {
-            return;
-        }
-
-        void refreshRooms();
-
-        const ticket = window.setInterval(refreshRooms, 30 * 1000);
-
-        return () => {
-            window.clearInterval(ticket);
-        };
-    }, [refreshRooms, isLogin]);
 
     const roomUUIDs = roomStore.roomUUIDs[listRoomsType];
 
@@ -429,6 +404,11 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
                 result.push({
                     key: "cancel",
                     text: isCreator ? t("cancel-room") : t("remove-room"),
+                });
+            } else if (isCreator) {
+                result.push({
+                    key: "stop",
+                    text: t("end-the-class"),
                 });
             }
             if (room.roomUUID) {

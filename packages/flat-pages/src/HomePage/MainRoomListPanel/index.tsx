@@ -1,16 +1,21 @@
-import React, { useContext, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { RoomList } from "flat-components";
-import { MainRoomList } from "./MainRoomList";
 import { ListRoomsType } from "@netless/flat-server-api";
 import { useTranslate } from "@netless/flat-i18n";
-import { RoomStoreContext } from "../../components/StoreProvider";
+import { RoomStore } from "@netless/flat-stores";
+import { MainRoomList } from "./MainRoomList";
 
-export const MainRoomListPanel = observer<{ isLogin: boolean }>(function MainRoomListPanel({
-    isLogin,
+interface MainRoomListPanelProps {
+    roomStore: RoomStore;
+    refreshRooms: () => Promise<void>;
+}
+
+export const MainRoomListPanel = observer<MainRoomListPanelProps>(function MainRoomListPanel({
+    roomStore,
+    refreshRooms,
 }) {
     const t = useTranslate();
-    const roomStore = useContext(RoomStoreContext);
     const [activeTab, setActiveTab] = useState<"all" | "today" | "periodic">("all");
     const filters = useMemo<Array<{ key: "all" | "today" | "periodic"; title: string }>>(
         () => [
@@ -38,8 +43,8 @@ export const MainRoomListPanel = observer<{ isLogin: boolean }>(function MainRoo
             onTabActive={setActiveTab}
         >
             <MainRoomList
-                isLogin={isLogin}
                 listRoomsType={activeTab as ListRoomsType}
+                refreshRooms={refreshRooms}
                 roomStore={roomStore}
             />
         </RoomList>

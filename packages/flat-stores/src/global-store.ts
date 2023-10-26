@@ -6,7 +6,7 @@ import {
     createOrGetPmi,
     listPmi,
 } from "@netless/flat-server-api";
-import { autorun } from "mobx";
+import { autorun, runInAction } from "mobx";
 import { autoPersistStore } from "./utils/auto-persist-store";
 
 // clear storage if not match
@@ -124,11 +124,25 @@ export class GlobalStore {
     }
 
     public updatePmi = async (pmi?: string | null): Promise<void> => {
-        this.pmi = pmi ?? ((await createOrGetPmi({ create: true }))?.pmi || null);
+        if (pmi) {
+            this.pmi = pmi;
+        } else {
+            const pmi = (await createOrGetPmi({ create: true }))?.pmi || null;
+            runInAction(() => {
+                this.pmi = pmi;
+            });
+        }
     };
 
     public updatePmiRoomList = async (pmiRoomList?: PmiRoom[]): Promise<void> => {
-        this.pmiRoomList = pmiRoomList ?? ((await listPmi()) || []);
+        if (pmiRoomList) {
+            this.pmiRoomList = pmiRoomList;
+        } else {
+            const pmiRoomList = (await listPmi()) || [];
+            runInAction(() => {
+                this.pmiRoomList = pmiRoomList;
+            });
+        }
     };
 
     public updateUserInfo = (userInfo: UserInfo | null): void => {
