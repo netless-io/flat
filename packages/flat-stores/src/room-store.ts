@@ -97,12 +97,12 @@ export class RoomStore {
                 roomUUIDs.history.push(room.roomUUID);
             } else {
                 roomUUIDs.all.push(room.roomUUID);
-            }
-            if (isPeriodic) {
-                roomUUIDs.periodic.push(room.roomUUID);
-            }
-            if (isToday(beginTime)) {
-                roomUUIDs.today.push(room.roomUUID);
+                if (isToday(beginTime)) {
+                    roomUUIDs.today.push(room.roomUUID);
+                }
+                if (isPeriodic) {
+                    roomUUIDs.periodic.push(room.roomUUID);
+                }
             }
         }
         return roomUUIDs;
@@ -206,6 +206,11 @@ export class RoomStore {
 
     public async cancelRoom(payload: CancelRoomPayload): Promise<void> {
         await cancelRoom(payload);
+        runInAction(() => {
+            if (payload.roomUUID) {
+                this.rooms.delete(payload.roomUUID);
+            }
+        });
     }
 
     public async syncOrdinaryRoomInfo(roomUUID: string): Promise<void> {
