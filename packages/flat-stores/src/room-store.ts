@@ -136,11 +136,14 @@ export class RoomStore {
         // need roomUUID and periodicUUID from server to cache the payload
     }
 
-    public async joinRoom(roomUUID: string): Promise<JoinRoomResult> {
-        const data = await joinRoom(roomUUID);
+    /**
+     * @param uuid May be inviteCode or roomUUID or periodicUUID.
+     */
+    public async joinRoom(uuid: string): Promise<JoinRoomResult> {
+        const data = await joinRoom(uuid);
         globalStore.updateToken(data);
-        this.updateRoom(roomUUID, data.ownerUUID, {
-            roomUUID,
+        this.updateRoom(data.roomUUID, data.ownerUUID, {
+            roomUUID: data.roomUUID,
             ownerUUID: data.ownerUUID,
             roomType: data.roomType,
         });
