@@ -54,7 +54,7 @@ export const UserScheduledPage = observer(function UserScheduledPage() {
                 rate: 7,
                 endTime: addWeeks(scheduleBeginTime, 6),
             },
-            // if there exists pmi room, it will can not be selected
+            // if there exists pmi room, it can not be selected
             pmi: preferencesStore.autoPmiOn && !globalStore.pmiRoomExist,
         };
     });
