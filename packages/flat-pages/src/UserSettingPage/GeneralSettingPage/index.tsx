@@ -17,6 +17,7 @@ import {
     LoginButtonProviderType,
     SVGCopy,
     PmiExistTip,
+    Pmi,
 } from "flat-components";
 import {
     LoginPlatform,
@@ -200,7 +201,8 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
                                     <PmiExistTip title={t("pmi-help")} />
                                 </span>
 
-                                <span>{globalStore.pmi}</span>
+                                <Pmi pmi={globalStore.pmi!} />
+
                                 <Button
                                     className="general-setting-item-btn"
                                     type="link"
