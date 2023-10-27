@@ -110,6 +110,7 @@
   "periodic": "Periodic",
   "today": "Today",
   "tomorrow": "Tomorrow",
+  "pmi-invite-prefix": "{{userName}} invites you to join {{appName}} personal room",
   "invite-begin-time": "Start time: {{time}}",
   "invite-prefix": "{{userName}} invites you to join the {{appName}} room\n\nRoom theme: {{title}}",
   "invite-suffix": "Room ID: {{uuid}}",

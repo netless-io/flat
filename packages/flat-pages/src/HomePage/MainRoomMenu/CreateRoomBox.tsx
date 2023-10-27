@@ -1,7 +1,14 @@
 import "./CreateRoomBox.less";
 
 import React, { useContext, useEffect, useRef, useState, KeyboardEvent, useCallback } from "react";
-import { ClassPicker, HomePageHeroButton, PmiDesc, PmiExistTip, Region } from "flat-components";
+import {
+    ClassPicker,
+    HomePageHeroButton,
+    PmiDesc,
+    PmiExistTip,
+    Region,
+    formatInviteCode,
+} from "flat-components";
 import { Input, Modal, Checkbox, Form, InputRef, Dropdown, message, Button } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 import { useTranslate } from "@netless/flat-i18n";
@@ -12,6 +19,7 @@ import { PreferencesStoreContext, GlobalStoreContext } from "../../components/St
 import { RouteNameType, usePushHistory } from "../../utils/routes";
 import { joinRoomHandler } from "../../utils/join-room-handler";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
+import { FLAT_WEB_BASE_URL } from "../../constants/process";
 
 interface CreateRoomFormValues {
     roomTitle: string;
@@ -51,7 +59,7 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
         roomType: RoomType.BigClass,
         autoMicOn: preferencesStore.autoMicOn,
         autoCameraOn: preferencesStore.autoCameraOn,
-        // if there exists pmi room, it will can not be selected
+        // if there exists pmi room, it can not be selected
         pmi: preferencesStore.autoPmiOn && !globalStore.pmiRoomExist,
     };
 
@@ -83,10 +91,21 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
 
     const handleCopy = useCallback(
         (text: string) => {
-            navigator.clipboard.writeText(text);
+            const copyText =
+                t("pmi-invite-prefix", {
+                    userName: globalStore.userInfo?.name,
+                }) +
+                "\n" +
+                "\n" +
+                t("invite-suffix", { uuid: formatInviteCode("", text) }) +
+                "\n" +
+                "\n" +
+                t("invite-join-link", { link: `${FLAT_WEB_BASE_URL}/join/${text}` });
+
+            navigator.clipboard.writeText(copyText);
             void message.success(t("copy-success"));
         },
-        [t],
+        [globalStore.userInfo?.name, t],
     );
 
     const handleCreateRoom = (): void => {
