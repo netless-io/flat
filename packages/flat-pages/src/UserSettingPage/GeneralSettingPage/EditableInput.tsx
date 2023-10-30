@@ -45,9 +45,11 @@ export function EditableInput({
 
     return (
         <div
-            className={`input-container-bg ${hovering ? "input-container-bg-hover" : ""}`}
+            className={`input-container-bg${
+                hovering && !editing ? " input-container-bg-hover" : ""
+            }${editing ? " input-container-bg-editing" : ""}`}
             onMouseEnter={() => setHovering(true)}
-            onMouseLeave={() => !editing && setHovering(false)}
+            onMouseLeave={() => setHovering(false)}
         >
             {icon && <img alt={icon} className="general-setting-item-icon" src={icon} />}
             <span className="general-setting-item-icon-desc">{desc}</span>
