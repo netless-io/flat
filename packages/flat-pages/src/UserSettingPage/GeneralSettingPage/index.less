@@ -35,10 +35,6 @@
 
     &-icon-desc {
         width: 150px;
-
-        .ant-tooltip {
-            max-width: none;
-        }
     }
 
     &-icon-desc-help {
@@ -120,8 +116,9 @@
     display: inline-block;
     border-radius: 6px;
     transition: all 0.3s ease;
-    padding: 4px;
-    line-height: 38px;
+    padding: 6px;
+    min-height: 38px;
+    line-height: 24px;
 
     img,
     span,
@@ -130,6 +127,7 @@
     }
 
     .ant-input {
+        margin: -7px 0;
         width: 150px;
     }
 
@@ -145,6 +143,7 @@
 
     .ant-btn-link {
         padding: 0;
+        height: auto;
     }
 }
 
@@ -158,7 +157,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--grey-6);
+    background-color: var(--grey-3);
     width: 24px;
     height: 24px;
     border-radius: 50%;

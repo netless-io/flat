@@ -174,22 +174,24 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
                         {renderEndTimePicker(t, form, nextPeriodicRoomEndTime)}
                         {showPmi && updateAutoPmiOn && (
                             <Form.Item
-                                className="edit-room-form-item no-margin"
+                                className="edit-room-form-item no-margin pmi"
                                 name="pmi"
                                 valuePropName="checked"
                             >
-                                <Checkbox
-                                    checked={autoPmiOn}
-                                    disabled={pmiRoomExist}
-                                    onClick={() => updateAutoPmiOn(!autoPmiOn)}
-                                >
-                                    <PmiDesc
-                                        className="edit-room-cycle"
-                                        pmi={pmi!}
-                                        text={t("turn-on-the-pmi")}
-                                    />
+                                <div>
+                                    <Checkbox
+                                        checked={autoPmiOn}
+                                        disabled={pmiRoomExist}
+                                        onClick={() => updateAutoPmiOn(!autoPmiOn)}
+                                    >
+                                        <PmiDesc
+                                            className="edit-room-cycle"
+                                            pmi={pmi!}
+                                            text={t("turn-on-the-pmi")}
+                                        />
+                                    </Checkbox>
                                     {pmiRoomExist && <PmiExistTip />}
-                                </Checkbox>
+                                </div>
                             </Form.Item>
                         )}
                         {type === "schedule" ? (

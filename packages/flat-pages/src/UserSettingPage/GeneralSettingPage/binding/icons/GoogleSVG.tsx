@@ -1,6 +1,7 @@
+import "./index.less";
 import React from "react";
 
-export function GoogleSVG({ color }: { color: string | undefined }): React.ReactElement {
+export function GoogleSVG({ binding }: { binding: boolean }): React.ReactElement {
     const path = [
         {
             d: "M7.34525 12C7.34525 11.492 7.43192 11.0046 7.58525 10.548L4.89325 8.53465C4.35238 9.60963 4.07151 10.7966 4.07325 12C4.07325 13.2453 4.36792 14.42 4.89192 15.4626L7.58258 13.446C7.4257 12.98 7.34554 12.4917 7.34525 12Z",
@@ -20,14 +21,9 @@ export function GoogleSVG({ color }: { color: string | undefined }): React.React
         },
     ];
 
-    if (color) {
-        path.forEach(item => {
-            item.color = color;
-        });
-    }
-
     return (
         <svg
+            className={`binding-google-icon ${binding ? "" : "unbinding"}`}
             fill="none"
             height="24"
             viewBox="0 0 24 24"
