@@ -61,23 +61,29 @@ export const renderPeriodicForm = (t: FlatI18nTFunction, lang: string) =>
                 form.getFieldsValue(["periodic", "type"]);
             return (
                 <div className="edit-room-tips">
-                    {periodic.weeks.length > 0 ? (
-                        <div className="edit-room-tips-title">
-                            {t("every-frequency", { freq: getWeekNames(periodic.weeks, lang) })}
+                    <div>
+                        {t("time")}
+
+                        <div>
+                            {periodic.weeks.length > 0
+                                ? t("every-frequency", { freq: getWeekNames(periodic.weeks, lang) })
+                                : t("no-frequency-selected")}
                         </div>
-                    ) : (
-                        <div>{t("no-frequency-selected")}</div>
-                    )}
-                    <div className="edit-room-tips-type">
-                        {t("room-type")}
-                        {t("colon")}
-                        {t(`class-room-type.${roomType}`)}
                     </div>
-                    <div className="edit-room-tips-inner">
-                        {t("periodic-room-tip", {
-                            date: formatISODayWeekiii(periodic.endTime, lang),
-                            rate: periodic.rate,
-                        })}
+                    <div>
+                        {t("type")}
+
+                        <div>{t(`class-room-type.${roomType}`)}</div>
+                    </div>
+                    <div>
+                        {t("periodic")}
+
+                        <div>
+                            {t("periodic-room-tip", {
+                                date: formatISODayWeekiii(periodic.endTime, lang),
+                                rate: periodic.rate,
+                            })}
+                        </div>
                     </div>
                 </div>
             );

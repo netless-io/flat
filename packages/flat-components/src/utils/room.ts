@@ -14,7 +14,7 @@ export function getWeekName(week: Week, lang?: string): string {
 }
 
 export function formatISODayWeekiii(date: Date, lang?: string): string {
-    return format(date, "yyyy/MM/dd iii", { locale: lang?.startsWith("zh") ? zhCN : enUS });
+    return format(date, "yyyy/MM/dd (iii)", { locale: lang?.startsWith("zh") ? zhCN : enUS });
 }
 
 /**

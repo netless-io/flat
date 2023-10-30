@@ -183,7 +183,7 @@
   "frequency": "重复频率",
   "end-series": "结束重复",
   "no-frequency-selected": "暂未选择频率",
-  "every-frequency": "每 {{freq}}",
+  "every-frequency": "每{{freq}}",
   "colon": "：",
   "no-less-than-one-room": "不能少于 1 个房间",
   "maximum-of-50-rooms-allowed": "最多允许预定 50 个房间",
