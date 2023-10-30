@@ -47,7 +47,7 @@ export function EditableInput({
         <div
             className={`input-container-bg${
                 hovering && !editing ? " input-container-bg-hover" : ""
-            }${editing ? " input-container-bg-editing" : ""}`}
+            }`}
             onMouseEnter={() => setHovering(true)}
             onMouseLeave={() => setHovering(false)}
         >
