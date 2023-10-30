@@ -71,7 +71,7 @@ export const UserScheduledPage = observer(function UserScheduledPage() {
 
     return (
         <EditRoomPage
-            autoPmiOn={preferencesStore.autoPmiOn}
+            autoPmiOn={preferencesStore.autoPmiOn && !globalStore.pmiRoomExist}
             initialValues={defaultValues}
             loading={isLoading}
             pmi={globalStore.pmi}
