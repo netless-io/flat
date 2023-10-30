@@ -230,7 +230,7 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
                         </Form.Item>
                         {globalStore.pmi && (
                             <Form.Item
-                                className="main-room-menu-form-item no-margin"
+                                className="main-room-menu-form-item no-margin pmi"
                                 name="pmi"
                                 valuePropName="checked"
                             >
@@ -248,8 +248,8 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
                                         pmi={globalStore.pmi}
                                         text={t("turn-on-the-pmi")}
                                     />
-                                    {globalStore.pmiRoomExist && <PmiExistTip />}
                                 </Checkbox>
+                                {globalStore.pmiRoomExist && <PmiExistTip />}
                             </Form.Item>
                         )}
                     </Form.Item>

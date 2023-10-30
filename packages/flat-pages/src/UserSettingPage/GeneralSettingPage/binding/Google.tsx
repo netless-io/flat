@@ -85,7 +85,7 @@ export const BindGoogle: React.FC<BindGoogleProps> = ({ name, isBind, onRefresh,
             title={isBind ? t("is-bind", { name }) : t("not-bind")}
             onClick={isBind ? unbind : bindGoogle}
         >
-            {GoogleSVG({ color: isBind ? undefined : "#5d6066" })}
+            {GoogleSVG({ binding: isBind })}
         </span>
     );
 };

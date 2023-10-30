@@ -2,3 +2,9 @@
     margin-left: 4px;
     cursor: help;
 }
+
+// maybe we should not set `max-width` for `.ant-tooltip` in global?
+// it causes we should reset `max-width: none` everywhere!
+.pmi-room-help+div div .ant-tooltip {
+    max-width: none;
+}

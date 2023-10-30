@@ -174,7 +174,7 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
                         {renderEndTimePicker(t, form, nextPeriodicRoomEndTime)}
                         {showPmi && updateAutoPmiOn && (
                             <Form.Item
-                                className="edit-room-form-item no-margin"
+                                className="edit-room-form-item no-margin pmi"
                                 name="pmi"
                                 valuePropName="checked"
                             >
@@ -188,8 +188,8 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
                                         pmi={pmi!}
                                         text={t("turn-on-the-pmi")}
                                     />
-                                    {pmiRoomExist && <PmiExistTip />}
                                 </Checkbox>
+                                {pmiRoomExist && <PmiExistTip />}
                             </Form.Item>
                         )}
                         {type === "schedule" ? (
