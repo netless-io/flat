@@ -178,18 +178,20 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
                                 name="pmi"
                                 valuePropName="checked"
                             >
-                                <Checkbox
-                                    checked={autoPmiOn}
-                                    disabled={pmiRoomExist}
-                                    onClick={() => updateAutoPmiOn(!autoPmiOn)}
-                                >
-                                    <PmiDesc
-                                        className="edit-room-cycle"
-                                        pmi={pmi!}
-                                        text={t("turn-on-the-pmi")}
-                                    />
-                                </Checkbox>
-                                {pmiRoomExist && <PmiExistTip />}
+                                <div>
+                                    <Checkbox
+                                        checked={autoPmiOn}
+                                        disabled={pmiRoomExist}
+                                        onClick={() => updateAutoPmiOn(!autoPmiOn)}
+                                    >
+                                        <PmiDesc
+                                            className="edit-room-cycle"
+                                            pmi={pmi!}
+                                            text={t("turn-on-the-pmi")}
+                                        />
+                                    </Checkbox>
+                                    {pmiRoomExist && <PmiExistTip />}
+                                </div>
                             </Form.Item>
                         )}
                         {type === "schedule" ? (

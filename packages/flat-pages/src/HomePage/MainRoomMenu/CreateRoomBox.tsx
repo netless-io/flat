@@ -234,22 +234,24 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
                                 name="pmi"
                                 valuePropName="checked"
                             >
-                                <Checkbox
-                                    checked={preferencesStore.autoPmiOn}
-                                    disabled={globalStore.pmiRoomExist}
-                                    onClick={() =>
-                                        preferencesStore.updateAutoPmiOn(
-                                            !preferencesStore.autoPmiOn,
-                                        )
-                                    }
-                                >
-                                    <PmiDesc
-                                        className="checkbox-item-inner"
-                                        pmi={globalStore.pmi}
-                                        text={t("turn-on-the-pmi")}
-                                    />
-                                </Checkbox>
-                                {globalStore.pmiRoomExist && <PmiExistTip />}
+                                <div>
+                                    <Checkbox
+                                        checked={preferencesStore.autoPmiOn}
+                                        disabled={globalStore.pmiRoomExist}
+                                        onClick={() =>
+                                            preferencesStore.updateAutoPmiOn(
+                                                !preferencesStore.autoPmiOn,
+                                            )
+                                        }
+                                    >
+                                        <PmiDesc
+                                            className="checkbox-item-inner"
+                                            pmi={globalStore.pmi}
+                                            text={t("turn-on-the-pmi")}
+                                        />
+                                    </Checkbox>
+                                    {globalStore.pmiRoomExist && <PmiExistTip />}
+                                </div>
                             </Form.Item>
                         )}
                     </Form.Item>
