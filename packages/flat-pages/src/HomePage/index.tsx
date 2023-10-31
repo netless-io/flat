@@ -1,6 +1,6 @@
 import "./style.less";
 
-import React, { useCallback, useContext, useEffect } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { ListRoomsType } from "@netless/flat-server-api";
 import { errorTips, useSafePromise } from "flat-components";
@@ -16,25 +16,25 @@ export const HomePage = observer(function HomePage() {
     const pageStore = useContext(PageStoreContext);
     const roomStore = useContext(RoomStoreContext);
 
+    const [activeTab, setActiveTab] = useState<"all" | "today" | "periodic">("all");
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => pageStore.configure(), []);
 
     const isLogin = useLoginCheck();
 
-    // If you stop a class, it will "fly to" the history list,
-    // which means we need 2 refresh list api calls here.
     const refreshRooms = useCallback(
         async function refreshRooms() {
             try {
                 await Promise.all([
-                    sp(roomStore.listRooms(ListRoomsType.All)),
+                    sp(roomStore.listRooms(activeTab as ListRoomsType)),
                     sp(roomStore.listRooms(ListRoomsType.History)),
                 ]);
             } catch (e) {
                 errorTips(e);
             }
         },
-        [roomStore, sp],
+        [activeTab, roomStore, sp],
     );
 
     useEffect(() => {
@@ -55,7 +55,12 @@ export const HomePage = observer(function HomePage() {
         <div className="homepage-layout-horizontal-container">
             <MainRoomMenu />
             <div className="homepage-layout-horizontal-content">
-                <MainRoomListPanel refreshRooms={refreshRooms} roomStore={roomStore} />
+                <MainRoomListPanel
+                    activeTab={activeTab}
+                    refreshRooms={refreshRooms}
+                    roomStore={roomStore}
+                    setActiveTab={setActiveTab}
+                />
                 <MainRoomHistoryPanel refreshRooms={refreshRooms} roomStore={roomStore} />
             </div>
             <AppUpgradeModal />
