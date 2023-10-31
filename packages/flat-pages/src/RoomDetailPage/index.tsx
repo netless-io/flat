@@ -132,6 +132,7 @@ export const RoomDetailPage = observer(function RoomDetailPage() {
                     isPeriodicDetailsPage={false}
                     jumpToPeriodicRoomDetailPage={jumpToPeriodicRoomDetailPage}
                     periodicWeeks={periodicInfo?.periodic.weeks}
+                    pmi={globalStore.pmi}
                     room={roomInfo}
                     roomInfo={roomInfo}
                     showRoomCountVisible={
