@@ -150,7 +150,9 @@ export class RoomStore {
             }
             const isSameRoomUUIDs =
                 this.roomUUIDs[type].length >= roomUUIDs.length &&
-                this.roomUUIDs[type].slice(0, 50).every((uuid, i) => uuid === roomUUIDs[i]);
+                this.roomUUIDs[type]
+                    .slice(0, this.singlePageSize)
+                    .every((uuid, i) => uuid === roomUUIDs[i]);
             if (!isSameRoomUUIDs) {
                 this.roomUUIDs[type] = roomUUIDs;
             }
