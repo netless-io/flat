@@ -23,7 +23,6 @@ import {
 } from "@netless/flat-server-api";
 import { globalStore } from "./global-store";
 import { preferencesStore } from "./preferences-store";
-import { isToday } from "date-fns";
 
 export interface RoomRecording {
     beginTime: number;
@@ -71,6 +70,17 @@ export class RoomStore {
     public rooms = observable.map<string, RoomItem>();
     public periodicRooms = observable.map<string, PeriodicRoomItem>();
 
+    /**
+     * Home page room list data, only contains room UUID.
+     * Each time `listRooms({ page: 1 })` is called, it should update this list.
+     */
+    public roomUUIDs: Record<ListRoomsType, string[]> = {
+        all: [],
+        periodic: [],
+        today: [],
+        history: [],
+    };
+
     /** If `fetchMoreRooms()` returns 0 rooms, stop fetching it */
     public hasMoreRooms: Record<ListRoomsType, boolean> = {
         all: true,
@@ -81,51 +91,6 @@ export class RoomStore {
 
     /** Don't invoke `fetchMoreRooms()` too many times */
     public isFetchingRooms = false;
-
-    public get roomUUIDs(): Record<ListRoomsType, string[]> {
-        const roomUUIDs: Record<ListRoomsType, string[]> = {
-            all: [],
-            history: [],
-            periodic: [],
-            today: [],
-        };
-
-        // periodicUUID -> { roomUUID, timestamp }
-        const periodicRooms = new Map<string, { roomUUID: string; timestamp: number }>();
-
-        for (const room of this.rooms.values()) {
-            const beginTime = room.beginTime ?? Date.now();
-            const isHistory = room.roomStatus === RoomStatus.Stopped;
-            const isPeriodic = Boolean(room.periodicUUID);
-            if (isHistory) {
-                roomUUIDs.history.push(room.roomUUID);
-            } else {
-                if (isToday(beginTime)) {
-                    roomUUIDs.today.push(room.roomUUID);
-                }
-                if (isPeriodic) {
-                    roomUUIDs.periodic.push(room.roomUUID);
-
-                    // Only keep the latest periodic room
-                    const periodic = periodicRooms.get(room.periodicUUID!);
-                    if ((periodic && periodic.timestamp > beginTime) || !periodic) {
-                        periodicRooms.set(room.periodicUUID!, {
-                            roomUUID: room.roomUUID,
-                            timestamp: beginTime,
-                        });
-                    }
-                } else {
-                    // exclude periodic rooms
-                    roomUUIDs.all.push(room.roomUUID);
-                }
-            }
-        }
-
-        // add periodic rooms to `all`
-        roomUUIDs.all.push(...[...periodicRooms.values()].map(room => room.roomUUID));
-
-        return roomUUIDs;
-    }
 
     public constructor() {
         makeAutoObservable(this);
@@ -183,6 +148,14 @@ export class RoomStore {
                     periodicUUID: room.periodicUUID || void 0,
                 });
             }
+            const isSameRoomUUIDs =
+                this.roomUUIDs[type].length >= roomUUIDs.length &&
+                this.roomUUIDs[type]
+                    .slice(0, this.singlePageSize)
+                    .every((uuid, i) => uuid === roomUUIDs[i]);
+            if (!isSameRoomUUIDs) {
+                this.roomUUIDs[type] = roomUUIDs;
+            }
         });
         return roomUUIDs;
     }
@@ -217,6 +190,17 @@ export class RoomStore {
                             periodicUUID: room.periodicUUID || void 0,
                         });
                     }
+
+                    const isSameRoomUUIDs =
+                        counts[type].length >= fullPageSize + rooms.length &&
+                        counts[type]
+                            .slice(fullPageSize, fullPageSize + rooms.length)
+                            .every((uuid, i) => uuid === rooms[i].roomUUID);
+                    if (!isSameRoomUUIDs) {
+                        counts[type] = counts[type]
+                            .slice(0, fullPageSize)
+                            .concat(rooms.map(room => room.roomUUID));
+                    }
                 });
             } catch {
                 runInAction(() => {
@@ -228,11 +212,6 @@ export class RoomStore {
 
     public async cancelRoom(payload: CancelRoomPayload): Promise<void> {
         await cancelRoom(payload);
-        runInAction(() => {
-            if (payload.roomUUID) {
-                this.rooms.delete(payload.roomUUID);
-            }
-        });
     }
 
     public async syncOrdinaryRoomInfo(roomUUID: string): Promise<void> {

@@ -12,10 +12,14 @@ import { StoreProvider } from "@netless/flat-pages/src/components/StoreProvider"
 import { FlatServicesContextProvider } from "@netless/flat-pages/src/components/FlatServicesContext";
 
 /** configure right after import */
-import { configure } from "mobx";
+import { configure, toJS } from "mobx";
 configure({
     isolateGlobalState: true,
 });
+
+if (process.env.DEV) {
+    (window as any).toJS = toJS;
+}
 
 const App: React.FC = () => {
     const language = useLanguage();

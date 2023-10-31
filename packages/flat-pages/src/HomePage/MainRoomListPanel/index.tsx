@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { observer } from "mobx-react-lite";
 import { RoomList } from "flat-components";
 import { ListRoomsType } from "@netless/flat-server-api";
@@ -7,16 +7,19 @@ import { RoomStore } from "@netless/flat-stores";
 import { MainRoomList } from "./MainRoomList";
 
 interface MainRoomListPanelProps {
+    activeTab: "all" | "today" | "periodic";
+    setActiveTab: (activeTab: "all" | "today" | "periodic") => void;
     roomStore: RoomStore;
     refreshRooms: () => Promise<void>;
 }
 
 export const MainRoomListPanel = observer<MainRoomListPanelProps>(function MainRoomListPanel({
+    activeTab,
+    setActiveTab,
     roomStore,
     refreshRooms,
 }) {
     const t = useTranslate();
-    const [activeTab, setActiveTab] = useState<"all" | "today" | "periodic">("all");
     const filters = useMemo<Array<{ key: "all" | "today" | "periodic"; title: string }>>(
         () => [
             {
