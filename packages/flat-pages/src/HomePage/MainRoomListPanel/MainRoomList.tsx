@@ -232,6 +232,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
                 <InviteModal
                     baseUrl={FLAT_WEB_BASE_URL}
                     periodicWeeks={periodicInfo?.periodic.weeks}
+                    pmi={globalStore.pmi}
                     room={currentRoom}
                     userName={globalStore.userName ?? ""}
                     visible={inviteModalVisible}

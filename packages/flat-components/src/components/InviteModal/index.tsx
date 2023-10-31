@@ -19,6 +19,7 @@ export interface InviteModalProps {
     periodicWeeks?: Week[];
     onCopy: (text: string) => void;
     onCancel: () => void;
+    pmi?: string | null;
 }
 
 export const InviteModal: React.FC<InviteModalProps> = ({
@@ -27,6 +28,7 @@ export const InviteModal: React.FC<InviteModalProps> = ({
     periodicWeeks,
     userName,
     baseUrl,
+    pmi,
     onCopy,
     onCancel,
 }) => {
@@ -34,6 +36,7 @@ export const InviteModal: React.FC<InviteModalProps> = ({
     const language = useLanguage();
     const { beginTime, endTime, periodicUUID, roomUUID, inviteCode, title } = room;
     const uuid = periodicUUID || roomUUID;
+    const joinLink = `${baseUrl}/join/${inviteCode === pmi ? inviteCode : uuid}`;
 
     const formattedTimeRange = useMemo<string>(() => {
         if (!beginTime || !endTime) {
@@ -103,9 +106,7 @@ export const InviteModal: React.FC<InviteModalProps> = ({
                 )}
                 <div className="invite-modal-content-item">
                     <span>{t("join-link")}</span>
-                    <span style={{ userSelect: "text" }}>
-                        {baseUrl}/join/{uuid}
-                    </span>
+                    <span style={{ userSelect: "text" }}>{joinLink}</span>
                 </div>
             </div>
         </Modal>
