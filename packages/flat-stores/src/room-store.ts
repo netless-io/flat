@@ -89,6 +89,10 @@ export class RoomStore {
             periodic: [],
             today: [],
         };
+
+        // periodicUUID -> { roomUUID, timestamp }
+        const periodicRooms = new Map<string, { roomUUID: string; timestamp: number }>();
+
         for (const room of this.rooms.values()) {
             const beginTime = room.beginTime ?? Date.now();
             const isHistory = room.roomStatus === RoomStatus.Stopped;
@@ -96,15 +100,30 @@ export class RoomStore {
             if (isHistory) {
                 roomUUIDs.history.push(room.roomUUID);
             } else {
-                roomUUIDs.all.push(room.roomUUID);
                 if (isToday(beginTime)) {
                     roomUUIDs.today.push(room.roomUUID);
                 }
                 if (isPeriodic) {
                     roomUUIDs.periodic.push(room.roomUUID);
+
+                    // Only keep the latest periodic room
+                    const periodic = periodicRooms.get(room.periodicUUID!);
+                    if ((periodic && periodic.timestamp > beginTime) || !periodic) {
+                        periodicRooms.set(room.periodicUUID!, {
+                            roomUUID: room.roomUUID,
+                            timestamp: beginTime,
+                        });
+                    }
+                } else {
+                    // exclude periodic rooms
+                    roomUUIDs.all.push(room.roomUUID);
                 }
             }
         }
+
+        // add periodic rooms to `all`
+        roomUUIDs.all.push(...[...periodicRooms.values()].map(room => room.roomUUID));
+
         return roomUUIDs;
     }
 
