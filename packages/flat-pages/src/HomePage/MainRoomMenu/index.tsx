@@ -56,10 +56,6 @@ export const MainRoomMenu: FC = () => {
                 pmi: !!pmi,
             });
 
-            if (pmi) {
-                globalStore.updatePmiRoomList();
-            }
-
             await onJoinRoom(roomUUID);
         } catch (e) {
             errorTips(e);

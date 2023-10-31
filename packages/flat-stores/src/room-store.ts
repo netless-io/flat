@@ -111,6 +111,10 @@ export class RoomStore {
             ...restPayload,
             roomUUID,
         });
+
+        if (payload.pmi) {
+            globalStore.updatePmiRoomList();
+        }
         return roomUUID;
     }
 
@@ -212,6 +216,10 @@ export class RoomStore {
 
     public async cancelRoom(payload: CancelRoomPayload): Promise<void> {
         await cancelRoom(payload);
+
+        if (payload.roomUUID) {
+            globalStore.updatePmiRoomListByRoomUUID(payload.roomUUID);
+        }
     }
 
     public async syncOrdinaryRoomInfo(roomUUID: string): Promise<void> {

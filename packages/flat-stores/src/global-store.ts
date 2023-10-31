@@ -134,6 +134,12 @@ export class GlobalStore {
         }
     };
 
+    public updatePmiRoomListByRoomUUID = (roomUUID: string): void => {
+        if (this.pmiRoomUUID === roomUUID) {
+            this.updatePmiRoomList();
+        }
+    };
+
     public updatePmiRoomList = async (pmiRoomList?: PmiRoom[]): Promise<void> => {
         if (pmiRoomList) {
             this.pmiRoomList = pmiRoomList;

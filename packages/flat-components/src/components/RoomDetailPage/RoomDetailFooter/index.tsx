@@ -11,7 +11,6 @@ import { useTranslate } from "@netless/flat-i18n";
 export interface RoomDetailFooterProps {
     room: RoomInfo;
     userName: string;
-    pmi?: string | null;
     isCreator: boolean;
     isPeriodicDetailsPage: boolean;
     inviteBaseUrl: string;
@@ -28,7 +27,6 @@ export const RoomDetailFooter = /* @__PURE__ */ observer<RoomDetailFooterProps>(
     function RoomDetailFooter({
         room,
         userName,
-        pmi,
         inviteBaseUrl,
         isCreator,
         isPeriodicDetailsPage,
@@ -92,7 +90,6 @@ export const RoomDetailFooter = /* @__PURE__ */ observer<RoomDetailFooterProps>(
                 <InviteModal
                     baseUrl={inviteBaseUrl}
                     periodicWeeks={periodicWeeks}
-                    pmi={pmi}
                     room={room}
                     userName={userName}
                     visible={isShowInviteModal}
