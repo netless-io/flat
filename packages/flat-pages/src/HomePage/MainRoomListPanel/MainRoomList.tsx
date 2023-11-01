@@ -232,7 +232,6 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
                 <InviteModal
                     baseUrl={FLAT_WEB_BASE_URL}
                     periodicWeeks={periodicInfo?.periodic.weeks}
-                    pmi={globalStore.pmi}
                     room={currentRoom}
                     userName={globalStore.userName ?? ""}
                     visible={inviteModalVisible}
@@ -345,11 +344,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
         try {
             if (isCreator && isStarted) {
                 await stopClass(roomUUID);
-
-                if (globalStore.pmiRoomUUID === roomUUID) {
-                    // remove pmi room id list
-                    globalStore.updatePmiRoomList();
-                }
+                globalStore.updatePmiRoomListByRoomUUID(roomUUID);
                 void refreshRooms();
             }
             setStopModalVisible(false);

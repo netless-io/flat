@@ -1369,11 +1369,7 @@ export class ClassroomStore {
                 case RoomStatus.Stopped: {
                     this.updateRoomStatusLoading(RoomStatusLoadingType.Stopping);
                     await stopClass(this.roomUUID);
-
-                    if (globalStore.pmiRoomUUID === this.roomUUID) {
-                        // remove pmi room id list
-                        globalStore.updatePmiRoomList();
-                    }
+                    globalStore.updatePmiRoomListByRoomUUID(this.roomUUID);
                     break;
                 }
                 default: {

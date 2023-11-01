@@ -1,6 +1,14 @@
 import "./CreateRoomBox.less";
 
-import React, { useContext, useEffect, useRef, useState, KeyboardEvent, useCallback } from "react";
+import React, {
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+    KeyboardEvent,
+    useCallback,
+    useMemo,
+} from "react";
 import {
     ClassPicker,
     HomePageHeroButton,
@@ -46,6 +54,19 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
     const [isShowModal, showModal] = useState(false);
     const [isFormValidated, setIsFormValidated] = useState(false);
 
+    const [pmi, hasPmi] = [globalStore.pmi, useMemo(() => !!globalStore.pmi, [globalStore.pmi])];
+
+    // if there exists pmi room, it can not be selected
+    const defaultPmi = useMemo(
+        () => preferencesStore.autoPmiOn && !globalStore.pmiRoomExist,
+        [globalStore.pmiRoomExist, preferencesStore.autoPmiOn],
+    );
+
+    const canEnterRoomDirectly = useMemo(
+        () => preferencesStore.autoPmiOn && globalStore.pmiRoomExist,
+        [globalStore.pmiRoomExist, preferencesStore.autoPmiOn],
+    );
+
     // @TODO: need to remove region from preferences store
     const [roomRegion] = useState<Region>(preferencesStore.getRegion());
 
@@ -59,19 +80,18 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
         roomType: RoomType.BigClass,
         autoMicOn: preferencesStore.autoMicOn,
         autoCameraOn: preferencesStore.autoCameraOn,
-        // if there exists pmi room, it can not be selected
-        pmi: preferencesStore.autoPmiOn && !globalStore.pmiRoomExist,
+        pmi: defaultPmi,
     };
 
     useEffect(() => {
         const checkPmi = (): void => {
-            if (!globalStore.pmi) {
+            if (!hasPmi) {
                 globalStore.updatePmi();
             }
         };
 
         checkPmi();
-    }, [globalStore]);
+    }, [hasPmi, globalStore]);
 
     useEffect(() => {
         let ticket = NaN;
@@ -90,17 +110,17 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
     }, [isShowModal]);
 
     const handleCopy = useCallback(
-        (text: string) => {
+        (id: string) => {
             const copyText =
                 t("pmi-invite-prefix", {
                     userName: globalStore.userInfo?.name,
                 }) +
                 "\n" +
                 "\n" +
-                t("invite-suffix", { uuid: formatInviteCode("", text) }) +
+                t("invite-suffix", { uuid: formatInviteCode("", id) }) +
                 "\n" +
                 "\n" +
-                t("invite-join-link", { link: `${FLAT_WEB_BASE_URL}/join/${text}` });
+                t("invite-join-link", { link: `${FLAT_WEB_BASE_URL}/join/${id}` });
 
             navigator.clipboard.writeText(copyText);
             void message.success(t("copy-success"));
@@ -109,7 +129,7 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
     );
 
     const handleCreateRoom = (): void => {
-        if (preferencesStore.autoPmiOn && globalStore.pmiRoomExist) {
+        if (canEnterRoomDirectly) {
             // enter room directly
             onJoinRoom(globalStore.pmiRoomUUID);
         } else {
@@ -130,7 +150,7 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
     return (
         <>
             <HomePageHeroButton type="begin" onClick={handleCreateRoom}>
-                {!!globalStore.pmi && (
+                {hasPmi && (
                     <Dropdown
                         overlay={
                             <div
@@ -139,26 +159,18 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
                                     e.stopPropagation();
                                 }}
                             >
-                                <Checkbox
-                                    checked={preferencesStore.autoPmiOn}
-                                    className="pmi-selector-item"
-                                    onClick={() =>
-                                        preferencesStore.updateAutoPmiOn(
-                                            !preferencesStore.autoPmiOn,
-                                        )
-                                    }
-                                >
-                                    <PmiDesc
-                                        className="checkbox-item-inner"
-                                        pmi={globalStore.pmi}
-                                        text={t("turn-on-the-pmi")}
-                                    />
-                                </Checkbox>
+                                {pmiCheckbox({
+                                    autoPmiOn: preferencesStore.autoPmiOn,
+                                    isDisabled: false,
+                                    pmi: pmi!,
+                                    className: "pmi-selector-item",
+                                    updateAutoPmiOn: preferencesStore.updateAutoPmiOn,
+                                })}
                                 <Button
                                     key="copy"
                                     className="pmi-selector-item"
                                     type="link"
-                                    onClick={() => handleCopy(globalStore.pmi!)}
+                                    onClick={() => handleCopy(pmi!)}
                                 >
                                     {t("copy-pmi")}
                                 </Button>
@@ -228,28 +240,19 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
                         <Form.Item noStyle name="autoCameraOn" valuePropName="checked">
                             <Checkbox>{t("turn-on-the-camera")}</Checkbox>
                         </Form.Item>
-                        {globalStore.pmi && (
+                        {pmi && (
                             <Form.Item
                                 className="main-room-menu-form-item no-margin pmi"
                                 name="pmi"
                                 valuePropName="checked"
                             >
                                 <div>
-                                    <Checkbox
-                                        checked={preferencesStore.autoPmiOn}
-                                        disabled={globalStore.pmiRoomExist}
-                                        onClick={() =>
-                                            preferencesStore.updateAutoPmiOn(
-                                                !preferencesStore.autoPmiOn,
-                                            )
-                                        }
-                                    >
-                                        <PmiDesc
-                                            className="checkbox-item-inner"
-                                            pmi={globalStore.pmi}
-                                            text={t("turn-on-the-pmi")}
-                                        />
-                                    </Checkbox>
+                                    {pmiCheckbox({
+                                        autoPmiOn: preferencesStore.autoPmiOn,
+                                        isDisabled: globalStore.pmiRoomExist,
+                                        updateAutoPmiOn: preferencesStore.updateAutoPmiOn,
+                                        pmi: pmi!,
+                                    })}
                                     {globalStore.pmiRoomExist && <PmiExistTip />}
                                 </div>
                             </Form.Item>
@@ -259,6 +262,31 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
             </Modal>
         </>
     );
+
+    function pmiCheckbox({
+        pmi,
+        className,
+        autoPmiOn,
+        isDisabled,
+        updateAutoPmiOn,
+    }: {
+        autoPmiOn: boolean;
+        isDisabled: boolean;
+        updateAutoPmiOn: (value: boolean) => void;
+        pmi: string;
+        className?: string;
+    }): React.ReactNode {
+        return (
+            <Checkbox
+                checked={autoPmiOn}
+                className={className}
+                disabled={isDisabled}
+                onClick={() => updateAutoPmiOn(!autoPmiOn)}
+            >
+                <PmiDesc className="checkbox-item-inner" pmi={pmi} text={t("turn-on-the-pmi")} />
+            </Checkbox>
+        );
+    }
 
     function submitOnEnter(ev: KeyboardEvent<HTMLInputElement>): void {
         if (ev.key === "Enter" && !ev.ctrlKey && !ev.shiftKey && !ev.altKey && !ev.metaKey) {

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { isBefore, addMinutes, roundToNearestMinutes, getDay, addWeeks } from "date-fns";
 import { EditRoomFormValues } from "flat-components";
@@ -37,6 +37,12 @@ export const UserScheduledPage = observer(function UserScheduledPage() {
     const preferencesStore = useContext(PreferencesStoreContext);
     const [isLoading, setLoading] = useState(false);
 
+    // if there exists pmi room, it can not be selected
+    const defaultPmi = useMemo(
+        () => preferencesStore.autoPmiOn && !globalStore.pmiRoomExist,
+        [globalStore.pmiRoomExist, preferencesStore.autoPmiOn],
+    );
+
     const [defaultValues] = useState<EditRoomFormValues>(() => {
         const scheduleBeginTime = getInitialBeginTime();
         return {
@@ -55,7 +61,7 @@ export const UserScheduledPage = observer(function UserScheduledPage() {
                 endTime: addWeeks(scheduleBeginTime, 6),
             },
             // if there exists pmi room, it can not be selected
-            pmi: preferencesStore.autoPmiOn && !globalStore.pmiRoomExist,
+            pmi: defaultPmi,
         };
     });
 
@@ -71,7 +77,7 @@ export const UserScheduledPage = observer(function UserScheduledPage() {
 
     return (
         <EditRoomPage
-            autoPmiOn={preferencesStore.autoPmiOn && !globalStore.pmiRoomExist}
+            autoPmiOn={defaultPmi}
             initialValues={defaultValues}
             loading={isLoading}
             pmi={globalStore.pmi}
