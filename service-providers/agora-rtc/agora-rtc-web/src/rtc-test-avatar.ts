@@ -11,6 +11,9 @@ export interface RTCAvatarConfig {
 export class RTCTestAvatar implements IServiceVideoChatAvatar {
     private static LOW_VOLUME_LEVEL_THRESHOLD = 0.00001;
 
+    /** Stop doing anything when it is false */
+    public enabled = false;
+
     private readonly _rtc: AgoraRTCWeb;
     private readonly _sideEffect = new SideEffectManager();
 
@@ -55,8 +58,15 @@ export class RTCTestAvatar implements IServiceVideoChatAvatar {
                     if (shouldMic && !localMicTrack) {
                         localMicTrack = await this._rtc.createLocalMicTrack();
                     }
+                    if (!this.enabled) {
+                        return;
+                    }
+
                     if (localMicTrack) {
                         await localMicTrack.setEnabled(shouldMic);
+                    }
+                    if (!this.enabled) {
+                        return;
                     }
 
                     const lowVolumeLevelDisposerID = "local-mic-volume-level";
@@ -109,13 +119,16 @@ export class RTCTestAvatar implements IServiceVideoChatAvatar {
                     let localCameraTrack = this._rtc.localCameraTrack;
                     if (shouldCamera && !localCameraTrack) {
                         localCameraTrack = await this._rtc.createLocalCameraTrack();
+                        if (!this.enabled) {
+                            return;
+                        }
                         if (this._el$.value) {
                             localCameraTrack.play(this._el$.value, {
                                 mirror: this._mirrorMode$.value,
                             });
                         }
                     }
-                    if (localCameraTrack) {
+                    if (localCameraTrack && !localCameraTrack.enabled) {
                         await localCameraTrack.setEnabled(shouldCamera);
                     }
                 } catch (e) {

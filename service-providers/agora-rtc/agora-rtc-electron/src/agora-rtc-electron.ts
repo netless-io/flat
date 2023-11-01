@@ -242,6 +242,10 @@ export class AgoraRTCElectron extends IServiceVideoChat {
         return this.localAvatar;
     }
 
+    public stopTesting(): void {
+        // do nothing
+    }
+
     public override getVolumeLevel(uid?: IServiceVideoChatUID): number {
         return this._volumeLevels.get(uid || "0") || 0;
     }
