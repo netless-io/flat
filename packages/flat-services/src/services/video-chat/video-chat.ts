@@ -56,6 +56,7 @@ export abstract class IServiceVideoChat implements IService {
     public abstract getAvatar(uid?: IServiceVideoChatUID): IServiceVideoChatAvatar | undefined;
 
     public abstract getTestAvatar(): IServiceVideoChatAvatar;
+    public abstract stopTesting(): void;
 
     public abstract getVolumeLevel(uid?: IServiceVideoChatUID): number;
 

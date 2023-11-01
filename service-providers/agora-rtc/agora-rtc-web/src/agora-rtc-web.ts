@@ -210,7 +210,15 @@ export class AgoraRTCWeb extends IServiceVideoChat {
 
     private _testAvatar?: RTCTestAvatar;
     public getTestAvatar(): IServiceVideoChatAvatar {
-        return (this._testAvatar ??= new RTCTestAvatar({ rtc: this }));
+        this._testAvatar ??= new RTCTestAvatar({ rtc: this });
+        this._testAvatar.enabled = true;
+        return this._testAvatar;
+    }
+
+    public stopTesting(): void {
+        if (this._testAvatar) {
+            this._testAvatar.enabled = false;
+        }
     }
 
     public getVolumeLevel(uid?: IServiceVideoChatUID): number {
@@ -506,6 +514,7 @@ export class AgoraRTCWeb extends IServiceVideoChat {
     public localCameraTrack?: ICameraVideoTrack;
     public createLocalCameraTrack = singleRun(async (): Promise<ICameraVideoTrack> => {
         if (!this.localCameraTrack) {
+            const prevCameraID = this._cameraID;
             this.localCameraTrack = await AgoraRTC.createCameraVideoTrack({
                 encoderConfig: { width: 384, height: 216 },
                 cameraId: this._cameraID,
@@ -517,7 +526,7 @@ export class AgoraRTCWeb extends IServiceVideoChat {
 
             // If there is setCameraID() called during the promises above,
             // the actually used camera ID may be different, so correct it here.
-            if (this._cameraID) {
+            if (this._cameraID && this._cameraID !== prevCameraID) {
                 this.localCameraTrack.setDevice(this._cameraID);
             }
         }
@@ -527,6 +536,7 @@ export class AgoraRTCWeb extends IServiceVideoChat {
     public localMicTrack?: IMicrophoneAudioTrack;
     public createLocalMicTrack = singleRun(async (): Promise<IMicrophoneAudioTrack> => {
         if (!this.localMicTrack) {
+            const prevMicID = this._micID;
             this.localMicTrack = await AgoraRTC.createMicrophoneAudioTrack({
                 microphoneId: this._micID,
                 // AEC: acoustic echo cancellation
@@ -541,7 +551,7 @@ export class AgoraRTCWeb extends IServiceVideoChat {
 
             // If there is setMicID() called during the promises above,
             // the actually used microphone ID may be different, so correct it here.
-            if (this._micID) {
+            if (this._micID && this._micID !== prevMicID) {
                 this.localMicTrack.setDevice(this._micID);
             }
         }

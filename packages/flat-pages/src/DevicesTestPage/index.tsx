@@ -31,9 +31,13 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
     const [microphoneDevices, setMicrophoneDevices] = useState<IServiceVideoChatDevice[]>([]);
     const [speakerDevices, setSpeakerDevices] = useState<IServiceVideoChatDevice[]>([]);
 
-    const [cameraDeviceId, setCameraDeviceId] = useState<string>("");
-    const [microphoneDeviceId, setMicrophoneDeviceId] = useState<string>("");
-    const [speakerDeviceId, setSpeakerDeviceId] = useState<string>("");
+    const [cameraDeviceId, setCameraDeviceId] = useState<string>(preferencesStore.cameraId || "");
+    const [microphoneDeviceId, setMicrophoneDeviceId] = useState<string>(
+        preferencesStore.microphoneId || "",
+    );
+    const [speakerDeviceId, setSpeakerDeviceId] = useState<string>(
+        preferencesStore.speakerId || "",
+    );
 
     const [isCameraAccessible, setIsCameraAccessible] = useState(true);
     const [isMicrophoneAccessible, setIsMicrophoneAccessible] = useState(true);
@@ -41,11 +45,35 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
 
     const [volume, setVolume] = useState(0);
 
+    // Make 'setDeviceID' happen first when the track was not created.
+    useEffect(() => {
+        if (rtc && cameraDeviceId) {
+            void rtc.setCameraID(cameraDeviceId).catch(() => {
+                setIsCameraAccessible(false);
+            });
+        }
+    }, [rtc, cameraDeviceId]);
+
+    useEffect(() => {
+        if (rtc && microphoneDeviceId) {
+            void rtc.setMicID(microphoneDeviceId).catch(() => {
+                setIsMicrophoneAccessible(false);
+            });
+        }
+    }, [rtc, microphoneDeviceId]);
+
+    useEffect(() => {
+        if (rtc && speakerDeviceId) {
+            void rtc.setSpeakerID(speakerDeviceId).catch(() => {
+                setIsSpeakerAccessible(false);
+            });
+        }
+    }, [rtc, speakerDeviceId]);
+
     useEffect(() => {
         if (!rtc) {
             return;
         }
-        // @FIXME only run once
         const avatar = rtc.getTestAvatar();
         if (avatar) {
             avatar.enableCamera(true);
@@ -62,6 +90,7 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
                 avatar.enableCamera(false);
                 avatar.enableMic(false);
                 avatar.setElement(null);
+                rtc.stopTesting();
             };
         }
         return;
@@ -124,65 +153,32 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
     }, [rtc, sp]);
 
     useEffect(() => {
-        if (rtc && cameraDeviceId) {
-            void rtc.setCameraID(cameraDeviceId).catch(() => {
-                setIsCameraAccessible(false);
-            });
-        }
-    }, [rtc, cameraDeviceId]);
-
-    useEffect(() => {
-        if (rtc && microphoneDeviceId) {
-            void rtc.setMicID(microphoneDeviceId).catch(() => {
-                setIsMicrophoneAccessible(false);
-            });
-        }
-    }, [rtc, microphoneDeviceId]);
-
-    useEffect(() => {
-        if (rtc && speakerDeviceId) {
-            void rtc.setSpeakerID(speakerDeviceId).catch(() => {
-                setIsSpeakerAccessible(false);
-            });
-        }
-    }, [rtc, speakerDeviceId]);
-
-    useEffect(() => {
         // check device id on changes
-        if (cameraDevices.length > 0 && !cameraDeviceId) {
-            const lastCameraId = preferencesStore.cameraId;
-            if (lastCameraId && cameraDevices.find(device => device.deviceId === lastCameraId)) {
-                setCameraDeviceId(lastCameraId);
-            } else {
-                setCameraDeviceId(cameraDevices[0].deviceId);
-            }
+        if (
+            cameraDevices.length > 0 &&
+            !cameraDevices.find(device => device.deviceId === cameraDeviceId)
+        ) {
+            setCameraDeviceId(cameraDevices[0].deviceId);
         }
     }, [preferencesStore, cameraDeviceId, cameraDevices]);
 
     useEffect(() => {
         // check device id on changes
-        if (microphoneDevices.length > 0 && !microphoneDeviceId) {
-            const lastMicrophoneId = preferencesStore.microphoneId;
-            if (
-                lastMicrophoneId &&
-                microphoneDevices.some(device => device.deviceId === lastMicrophoneId)
-            ) {
-                setMicrophoneDeviceId(lastMicrophoneId);
-            } else {
-                setMicrophoneDeviceId(microphoneDevices[0].deviceId);
-            }
+        if (
+            microphoneDevices.length > 0 &&
+            !microphoneDevices.some(device => device.deviceId === microphoneDeviceId)
+        ) {
+            setMicrophoneDeviceId(microphoneDevices[0].deviceId);
         }
     }, [preferencesStore, microphoneDeviceId, microphoneDevices]);
 
     useEffect(() => {
         // check device id on changes
-        if (speakerDevices.length > 0 && !speakerDeviceId) {
-            const lastSpeakerId = preferencesStore.speakerId;
-            if (lastSpeakerId && speakerDevices.some(device => device.deviceId === lastSpeakerId)) {
-                setSpeakerDeviceId(lastSpeakerId);
-            } else {
-                setSpeakerDeviceId(speakerDevices[0].deviceId);
-            }
+        if (
+            speakerDevices.length > 0 &&
+            !speakerDevices.some(device => device.deviceId === speakerDeviceId)
+        ) {
+            setSpeakerDeviceId(speakerDevices[0].deviceId);
         }
     }, [preferencesStore, speakerDeviceId, speakerDevices]);
 
@@ -193,6 +189,7 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
     }, [preferencesStore.mirrorMode, rtc]);
 
     const joinRoom = async (): Promise<void> => {
+        preferencesStore.updateSpeakerId(speakerDeviceId);
         preferencesStore.updateCameraId(cameraDeviceId);
         preferencesStore.updateMicrophoneId(microphoneDeviceId);
         await joinRoomHandler(roomUUID, pushHistory);
