@@ -64,26 +64,26 @@ export const renderPeriodicForm = (t: FlatI18nTFunction, lang: string) =>
                     <div>
                         {t("time")}
 
-                        <div>
+                        <span>
                             {periodic.weeks.length > 0
                                 ? t("every-frequency", { freq: getWeekNames(periodic.weeks, lang) })
                                 : t("no-frequency-selected")}
-                        </div>
+                        </span>
                     </div>
                     <div>
                         {t("type")}
 
-                        <div>{t(`class-room-type.${roomType}`)}</div>
+                        <span>{t(`class-room-type.${roomType}`)}</span>
                     </div>
                     <div>
                         {t("periodic")}
 
-                        <div>
+                        <span>
                             {t("periodic-room-tip", {
                                 date: formatISODayWeekiii(periodic.endTime, lang),
                                 rate: periodic.rate,
                             })}
-                        </div>
+                        </span>
                     </div>
                 </div>
             );

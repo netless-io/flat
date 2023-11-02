@@ -269,7 +269,6 @@
   "delete-room-records-tips": "确定删除当前房间记录？",
   "view-all-rooms-in-periodic-rooms": "查看全部 ({{count}}) 场房间",
   "repeat-frequency": "每{{week}}",
-  "schedule-room-type": "房间类型：{{type}}",
   "schedule-room-detail": "结束于 {{time}} ，共 {{length}} 个房间",
   "more": "更多",
   "pausing": "暂停中...",

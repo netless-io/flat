@@ -269,7 +269,6 @@
   "delete-room-records-tips": "Are you sure to delete the current room record?",
   "repeat-frequency": "Every {{week}}",
   "schedule-room-detail": "Ends at {{time}} with {{length}} rooms",
-  "schedule-room-type": "Room type: {{type}}",
   "view-all-rooms-in-periodic-rooms": "View all ({{count}}) rooms",
   "ending": "Ending...",
   "follow-your-perspective-tips": "Other users will follow your perspective",

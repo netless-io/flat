@@ -51,7 +51,7 @@ export const PeriodicRoomPanel: React.FC<PeriodicRoomPanelProps> = ({
     const yearMonthFormat = formatWithOptions({ locale }, "yyyy/MM");
     const dayFormat = formatWithOptions({ locale }, "dd");
     const timeSuffixFormat = format("HH:mm");
-    const dayWeekFormat = formatWithOptions({ locale }, "yyyy/MM/dd iii");
+    const dayWeekFormat = formatWithOptions({ locale }, "yyyy/MM/dd (iii)");
 
     const hasRunning = rooms.some(room =>
         [RoomStatus.Started, RoomStatus.Paused].includes(room?.roomStatus as RoomStatus),
@@ -159,21 +159,29 @@ export const PeriodicRoomPanel: React.FC<PeriodicRoomPanelProps> = ({
         <>
             <div className="periodic-room-panel-container">
                 <div className="periodic-room-panel-tips">
-                    <div className="periodic-room-panel-tips-title">
-                        {t("repeat-frequency", {
-                            week: getWeekNames(periodicInfo.weeks, language),
-                        })}
+                    <div>
+                        {t("time")}
+
+                        <span>
+                            {t("repeat-frequency", {
+                                week: getWeekNames(periodicInfo.weeks, language),
+                            })}
+                        </span>
                     </div>
-                    <div className="periodic-room-panel-tips-type">
-                        {t("schedule-room-type", {
-                            type: t(`class-room-type.${periodicInfo.roomType}`),
-                        })}
+                    <div>
+                        {t("type")}
+
+                        <span>{t(`class-room-type.${periodicInfo.roomType}`)}</span>
                     </div>
-                    <div className="periodic-room-panel-tips-inner">
-                        {t("schedule-room-detail", {
-                            time: dayWeekFormat(periodicInfo.endTime),
-                            length: rooms.length,
-                        })}
+                    <div>
+                        {t("periodic")}
+
+                        <span>
+                            {t("schedule-room-detail", {
+                                time: dayWeekFormat(periodicInfo.endTime),
+                                length: rooms.length,
+                            })}
+                        </span>
                     </div>
                 </div>
                 <div className="periodic-room-panel-btn-list">

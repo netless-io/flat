@@ -32,24 +32,21 @@
 }
 
 .periodic-room-panel-tips {
-    background-color: var(--grey-0);
-    border-radius: 8px;
-    padding: 12px;
+    padding: 8px 16px;
     margin-bottom: 24px;
-}
+    border-radius: 6px;
+    background-color: #f6f6f6;
+    font-size: 12px;
 
-.periodic-room-panel-tips-title {
-    color: #3381ff;
-}
+    >div {
+        display: flex;
+        justify-content: space-between;
+        line-height: 24px;
+    }
 
-.periodic-room-panel-tips-type {
-    color: var(--text);
-    margin-top: 8px;
-    margin-bottom: 8px;
-}
-
-.periodic-room-panel-tips-inner {
-    color: var(--text);
+    >div+div {
+        margin-top: 4px;
+    }
 }
 
 .periodic-room-panel-table-line {
@@ -62,7 +59,7 @@
     .fancy-scrollbar-mixin();
     flex: 1;
 
-    .ant-table-tbody > tr > td {
+    .ant-table-tbody>tr>td {
         color: var(--text);
         border-bottom: 1px solid transparent;
     }
