@@ -24,6 +24,7 @@ export enum RequestErrorCode {
     RoomNotIsEnded,
     RoomNotIsIdle,
     RoomExists, // (pmi) room already exists, cannot create new room
+    RoomNotFoundAndIsPmi, // room not found and the invite code is pmi
 
     PeriodicNotFound = 300000,
     PeriodicIsEnded,
@@ -103,6 +104,7 @@ export const RequestErrorMessage = {
     [RequestErrorCode.RoomNotIsEnded]: "the-room-is-not-over-yet",
     [RequestErrorCode.RoomNotIsIdle]: "the-room-has-not-yet-started",
     [RequestErrorCode.RoomExists]: "the-pmi-room-already-exists",
+    [RequestErrorCode.RoomNotFoundAndIsPmi]: "wait-for-teacher-to-enter",
 
     [RequestErrorCode.PeriodicNotFound]: "periodic-rooms-do-not-exist",
     [RequestErrorCode.PeriodicIsEnded]: "periodic-rooms-have-ended",
