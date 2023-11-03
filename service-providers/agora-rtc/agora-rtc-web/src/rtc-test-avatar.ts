@@ -128,7 +128,7 @@ export class RTCTestAvatar implements IServiceVideoChatAvatar {
                             });
                         }
                     }
-                    if (localCameraTrack && !localCameraTrack.enabled) {
+                    if (localCameraTrack) {
                         await localCameraTrack.setEnabled(shouldCamera);
                     }
                 } catch (e) {
