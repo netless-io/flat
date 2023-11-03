@@ -46,6 +46,7 @@ export const InviteModal = observer<InviteModalProps>(function InviteModal({
     return (
         <InviteModalImpl
             baseUrl={FLAT_WEB_BASE_URL}
+            isPmi={room.inviteCode === globalStore.pmi}
             periodicWeeks={periodicInfo?.periodic.weeks}
             room={room}
             userName={globalStore.userName ?? ""}

@@ -13,6 +13,7 @@ import { CancelPeriodicRoomModal } from "./CancelPeriodicRoomModal";
 import { useLanguage, useTranslate } from "@netless/flat-i18n";
 
 export interface PeriodicRoomPanelProps {
+    pmi?: string | null;
     rooms: Array<RoomInfo | undefined>;
     userName: string;
     isCreator: boolean;
@@ -31,6 +32,7 @@ export interface PeriodicRoomPanelProps {
 }
 
 export const PeriodicRoomPanel: React.FC<PeriodicRoomPanelProps> = ({
+    pmi,
     rooms,
     userName,
     inviteBaseUrl,
@@ -127,6 +129,7 @@ export const PeriodicRoomPanel: React.FC<PeriodicRoomPanelProps> = ({
                                     <MoreMenu
                                         inviteBaseUrl={inviteBaseUrl}
                                         isCreator={isCreator}
+                                        isPmi={room.inviteCode === pmi}
                                         jumpToModifyOrdinaryRoomPage={() =>
                                             jumpToModifyOrdinaryRoomPage(
                                                 room.roomUUID,

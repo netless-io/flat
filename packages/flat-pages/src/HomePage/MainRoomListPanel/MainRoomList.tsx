@@ -137,6 +137,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
                             endTime={endTime}
                             generateAvatar={generateAvatar}
                             isPeriodic={!!room.periodicUUID}
+                            isPmi={room.inviteCode === globalStore.pmi}
                             menuActions={getSubActions(room)}
                             ownerAvatar={room.ownerAvatarURL}
                             ownerName={room.ownerName}
@@ -231,6 +232,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
             {currentRoom && (
                 <InviteModal
                     baseUrl={FLAT_WEB_BASE_URL}
+                    isPmi={currentRoom.inviteCode === globalStore.pmi}
                     periodicWeeks={periodicInfo?.periodic.weeks}
                     room={currentRoom}
                     userName={globalStore.userName ?? ""}

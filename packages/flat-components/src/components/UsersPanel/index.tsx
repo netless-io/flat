@@ -176,7 +176,9 @@ const Row = /* @__PURE__ */ observer(function Row({
                         <div className="users-panel-list-name-wrapper">
                             <span className="users-panel-list-name">
                                 <span
-                                    className={`users-panel-list-name-content ${isSelf && "is-me"}`}
+                                    className={`users-panel-list-name-content ${
+                                        isSelf ? "is-me" : ""
+                                    }`}
                                 >
                                     {user.name}
                                 </span>
@@ -186,7 +188,9 @@ const Row = /* @__PURE__ */ observer(function Row({
                         </div>
                     ) : (
                         <span className="users-panel-list-name">
-                            <span className={`users-panel-list-name-content ${isSelf && "is-me"}`}>
+                            <span
+                                className={`users-panel-list-name-content ${isSelf ? "is-me" : ""}`}
+                            >
                                 {user.name}
                             </span>
                             {isSelf && <span className="users-panel-is-self">{t("me")}</span>}

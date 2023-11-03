@@ -47,7 +47,9 @@ export const UserScheduledPage = observer(function UserScheduledPage() {
         const scheduleBeginTime = getInitialBeginTime();
         return {
             title: globalStore.userInfo?.name
-                ? t("schedule-room-default-title", { name: globalStore.userInfo.name })
+                ? t(`${defaultPmi ? "pmi-" : ""}schedule-room-default-title`, {
+                      name: globalStore.userInfo.name,
+                  })
                 : "",
             type: RoomType.BigClass,
             isPeriodic: false,

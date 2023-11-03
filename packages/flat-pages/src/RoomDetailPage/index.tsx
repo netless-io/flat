@@ -130,6 +130,7 @@ export const RoomDetailPage = observer(function RoomDetailPage() {
                     inviteBaseUrl={FLAT_WEB_BASE_URL}
                     isCreator={isCreator}
                     isPeriodicDetailsPage={false}
+                    isPmi={roomInfo.inviteCode === globalStore.pmi}
                     jumpToPeriodicRoomDetailPage={jumpToPeriodicRoomDetailPage}
                     periodicWeeks={periodicInfo?.periodic.weeks}
                     room={roomInfo}

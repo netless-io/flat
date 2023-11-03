@@ -12,6 +12,7 @@ export interface MoreMenuProps {
     userName: string;
     inviteBaseUrl: string;
     isCreator: boolean;
+    isPmi?: boolean;
     onCopyInvitation: (text: string) => void;
     onCancelSubPeriodicRoom: () => void;
     jumpToRoomDetailPage: () => void;
@@ -23,6 +24,7 @@ export const MoreMenu: React.FC<MoreMenuProps> = ({
     userName,
     inviteBaseUrl,
     isCreator,
+    isPmi,
     onCopyInvitation,
     onCancelSubPeriodicRoom,
     jumpToRoomDetailPage,
@@ -79,6 +81,7 @@ export const MoreMenu: React.FC<MoreMenuProps> = ({
             />
             <InviteModal
                 baseUrl={inviteBaseUrl}
+                isPmi={isPmi}
                 room={room}
                 userName={userName}
                 visible={inviteRoomVisible}
