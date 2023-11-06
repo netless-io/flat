@@ -248,6 +248,7 @@ export class GlobalStore {
         this.currentAccount = null;
         this.lastLoginCheck = null;
         this.onStageRoomUUIDs = [];
+        this.roomHistory = [];
         document.cookie = "flatJWTToken=; SameSite=Lax; domain=whiteboard.agora.io; max-age=0";
     };
 
