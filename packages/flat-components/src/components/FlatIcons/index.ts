@@ -6,6 +6,7 @@ export * from "./icons/SVGArrowDown";
 export * from "./icons/SVGArrowLeft";
 export * from "./icons/SVGArrowRight";
 export * from "./icons/SVGArrowUp";
+export * from "./icons/SVGChevronDown";
 export * from "./icons/SVGCalendar";
 export * from "./icons/SVGCamera";
 export * from "./icons/SVGCameraMute";

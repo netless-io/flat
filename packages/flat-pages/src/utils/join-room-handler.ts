@@ -13,6 +13,10 @@ export const joinRoomHandler = async (
     try {
         const roomInfo = roomStore.rooms.get(formatRoomUUID);
         const periodicUUID = roomInfo?.periodicUUID;
+        if (formatRoomUUID.length < 32) {
+            roomStore.rememberNextRoom(formatRoomUUID);
+        }
+
         const data = await roomStore.joinRoom(periodicUUID || formatRoomUUID);
         globalStore.updateShowGuide(data.showGuide);
         globalStore.updatePeriodicUUID(roomInfo?.periodicUUID);

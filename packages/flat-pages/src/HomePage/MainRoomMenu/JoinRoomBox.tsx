@@ -2,11 +2,11 @@ import "./JoinRoomBox.less";
 
 import React, { KeyboardEvent, useContext, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Button, Input, Modal, Checkbox, Form, InputRef } from "antd";
-import { PreferencesStoreContext } from "../../components/StoreProvider";
-import { useSafePromise } from "../../utils/hooks/lifecycle";
+import { Button, Input, Modal, Checkbox, Form, InputRef, Dropdown, Menu } from "antd";
 import { useTranslate } from "@netless/flat-i18n";
-import { HomePageHeroButton } from "flat-components";
+import { HomePageHeroButton, SVGChevronDown, formatInviteCode } from "flat-components";
+import { GlobalStoreContext, PreferencesStoreContext } from "../../components/StoreProvider";
+import { useSafePromise } from "../../utils/hooks/lifecycle";
 
 interface JoinRoomFormValues {
     roomUUID: string;
@@ -25,11 +25,13 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
     const t = useTranslate();
     const sp = useSafePromise();
     const preferencesStore = useContext(PreferencesStoreContext);
+    const globalStore = useContext(GlobalStoreContext);
     const [form] = Form.useForm<JoinRoomFormValues>();
 
     const [isLoading, setLoading] = useState(false);
     const [isShowModal, showModal] = useState(false);
     const [isFormValidated, setIsFormValidated] = useState(false);
+    const [dropdown, showDropdown] = useState(false);
     const roomTitleInputRef = useRef<InputRef>(null);
 
     useEffect(() => {
@@ -96,7 +98,41 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
                     >
                         <Input
                             ref={roomTitleInputRef}
+                            autoComplete="off"
                             placeholder={t("enter-room-uuid")}
+                            suffix={
+                                globalStore.roomHistory.length > 0 && (
+                                    <Dropdown
+                                        open={dropdown}
+                                        overlay={
+                                            <Menu
+                                                className="join-room-box-dropdown-menu"
+                                                onClick={e => selectRoomFromHistory(e.key)}
+                                            >
+                                                {globalStore.roomHistory.map(room => (
+                                                    <Menu.Item key={room.uuid}>
+                                                        <span className="room-title">
+                                                            {room.title}
+                                                        </span>
+                                                        <span className="invite-code">
+                                                            {formatInviteCode("", room.uuid)}
+                                                        </span>
+                                                    </Menu.Item>
+                                                ))}
+                                            </Menu>
+                                        }
+                                        overlayClassName="join-room-box-dropdown"
+                                    >
+                                        <Button
+                                            size="small"
+                                            type="text"
+                                            onClick={() => showDropdown(e => !e)}
+                                        >
+                                            <SVGChevronDown active={dropdown} />
+                                        </Button>
+                                    </Dropdown>
+                                )
+                            }
                             onKeyUp={submitOnEnter}
                         />
                     </Form.Item>
@@ -171,5 +207,11 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
         const values = form.getFieldsValue();
         preferencesStore.updateAutoMicOn(values.autoMicOn);
         preferencesStore.updateAutoCameraOn(values.autoCameraOn);
+    }
+
+    function selectRoomFromHistory(uuid: string): void {
+        form.setFieldValue("roomUUID", formatInviteCode("", uuid));
+        showDropdown(false);
+        void form.validateFields();
     }
 });

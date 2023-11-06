@@ -8,8 +8,8 @@ export interface IsPmiRoomResult {
     result: boolean;
 }
 
-export function isPmiRoom(payload: IsPmiRoomPayload): Promise<IsPmiRoomResult> {
-    return postV2<IsPmiRoomPayload, IsPmiRoomResult>("user/is-pmi", payload);
+export function isPmiRoom(payload: IsPmiRoomPayload): Promise<boolean> {
+    return postV2<IsPmiRoomPayload, IsPmiRoomResult>("user/is-pmi", payload).then(e => e.result);
 }
 
 export interface PmiListItem {
