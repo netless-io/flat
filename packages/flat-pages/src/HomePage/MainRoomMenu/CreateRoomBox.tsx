@@ -24,8 +24,6 @@ import { RoomType } from "@netless/flat-server-api";
 import { observer } from "mobx-react-lite";
 
 import { PreferencesStoreContext, GlobalStoreContext } from "../../components/StoreProvider";
-import { RouteNameType, usePushHistory } from "../../utils/routes";
-import { joinRoomHandler } from "../../utils/join-room-handler";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import { FLAT_WEB_BASE_URL } from "../../constants/process";
 
@@ -46,7 +44,6 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
     const sp = useSafePromise();
     const globalStore = useContext(GlobalStoreContext);
     const preferencesStore = useContext(PreferencesStoreContext);
-    const pushHistory = usePushHistory();
 
     const [form] = Form.useForm<CreateRoomFormValues>();
 
@@ -54,16 +51,11 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
     const [isShowModal, showModal] = useState(false);
     const [isFormValidated, setIsFormValidated] = useState(false);
 
-    const [pmi, hasPmi] = [globalStore.pmi, useMemo(() => !!globalStore.pmi, [globalStore.pmi])];
+    const { pmi } = globalStore;
 
     // if there exists pmi room, it can not be selected
     const defaultPmi = useMemo(
         () => preferencesStore.autoPmiOn && !globalStore.pmiRoomExist,
-        [globalStore.pmiRoomExist, preferencesStore.autoPmiOn],
-    );
-
-    const canEnterRoomDirectly = useMemo(
-        () => preferencesStore.autoPmiOn && globalStore.pmiRoomExist,
         [globalStore.pmiRoomExist, preferencesStore.autoPmiOn],
     );
 
@@ -75,7 +67,9 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
 
     const defaultValues: CreateRoomFormValues = {
         roomTitle: globalStore.userInfo?.name
-            ? t("create-room-default-title", { name: globalStore.userInfo.name })
+            ? t(`${defaultPmi ? "pmi-" : ""}create-room-default-title`, {
+                  name: globalStore.userInfo.name,
+              })
             : "",
         roomType: RoomType.BigClass,
         autoMicOn: preferencesStore.autoMicOn,
@@ -84,14 +78,10 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
     };
 
     useEffect(() => {
-        const checkPmi = (): void => {
-            if (!hasPmi) {
-                globalStore.updatePmi();
-            }
-        };
-
-        checkPmi();
-    }, [hasPmi, globalStore]);
+        if (!globalStore.pmi) {
+            globalStore.updatePmi();
+        }
+    }, [globalStore]);
 
     useEffect(() => {
         let ticket = NaN;
@@ -112,7 +102,7 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
     const handleCopy = useCallback(
         (id: string) => {
             const copyText =
-                t("pmi-invite-prefix", {
+                t("pmi-invite-title", {
                     userName: globalStore.userInfo?.name,
                 }) +
                 "\n" +
@@ -129,28 +119,15 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
     );
 
     const handleCreateRoom = (): void => {
-        if (canEnterRoomDirectly) {
-            // enter room directly
-            onJoinRoom(globalStore.pmiRoomUUID);
-        } else {
-            form.setFieldsValue(defaultValues);
-            showModal(true);
-            formValidateStatus();
-        }
-    };
-
-    const onJoinRoom = async (roomUUID: string): Promise<void> => {
-        if (globalStore.isTurnOffDeviceTest || window.isElectron) {
-            await joinRoomHandler(roomUUID, pushHistory);
-        } else {
-            pushHistory(RouteNameType.DevicesTestPage, { roomUUID });
-        }
+        form.setFieldsValue(defaultValues);
+        showModal(true);
+        formValidateStatus();
     };
 
     return (
         <>
             <HomePageHeroButton type="begin" onClick={handleCreateRoom}>
-                {hasPmi && (
+                {!!pmi && (
                     <Dropdown
                         overlay={
                             <div
@@ -278,7 +255,7 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
     }): React.ReactNode {
         return (
             <Checkbox
-                checked={autoPmiOn}
+                checked={isDisabled ? false : autoPmiOn}
                 className={className}
                 disabled={isDisabled}
                 onClick={() => updateAutoPmiOn(!autoPmiOn)}

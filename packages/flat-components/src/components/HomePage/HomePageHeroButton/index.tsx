@@ -33,7 +33,6 @@ export const HomePageHeroButton: React.FC<HomePageHeroButtonProps> = ({
             <span className="home-page-hero-button-text">
                 {t(`home-page-hero-button-type.${type}`)}
             </span>
-
             {children}
         </Button>
     );

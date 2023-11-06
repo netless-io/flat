@@ -17,6 +17,8 @@ export interface InviteModalProps {
     baseUrl: string;
     // repeated weeks for periodic rooms
     periodicWeeks?: Week[];
+    // is self pmi room
+    isPmi?: boolean;
     onCopy: (text: string) => void;
     onCancel: () => void;
 }
@@ -24,6 +26,7 @@ export interface InviteModalProps {
 export const InviteModal: React.FC<InviteModalProps> = ({
     visible,
     room,
+    isPmi,
     periodicWeeks,
     userName,
     baseUrl,
@@ -52,9 +55,8 @@ export const InviteModal: React.FC<InviteModalProps> = ({
 
     const onCopyClicked = (): void => {
         const basePrefixText =
-            t("invite-prefix", { userName, title }) +
-            "\n" +
-            (formattedTimeRange ? t("invite-begin-time", { time: formattedTimeRange }) : "");
+            t(isPmi ? "pmi-invite-prefix" : "invite-prefix", { userName, title }) +
+            (formattedTimeRange ? "\n" + t("invite-begin-time", { time: formattedTimeRange }) : "");
         const baseSuffixText =
             "\n" +
             "\n" +
@@ -64,7 +66,7 @@ export const InviteModal: React.FC<InviteModalProps> = ({
 
         if (periodicUUID) {
             const content = periodicWeeks
-                ? t("repeat-weeks", { weeks: getWeekNames(periodicWeeks, language) })
+                ? "\n" + t("repeat-weeks", { weeks: getWeekNames(periodicWeeks, language) })
                 : "";
 
             onCopy(`${basePrefixText}${content}${baseSuffixText}`);
@@ -84,7 +86,7 @@ export const InviteModal: React.FC<InviteModalProps> = ({
             onOk={onCopyClicked}
         >
             <div className="invite-modal-header">
-                <span>{t("invite-title", { userName })}</span>
+                <span>{t(isPmi ? "pmi-invite-title" : "invite-title", { userName })}</span>
                 <span>{t("join-and-book-by-room-uuid")}</span>
             </div>
             <div className="invite-modal-content">

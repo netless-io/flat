@@ -19,6 +19,7 @@ export interface RoomListItemProps<T extends string> {
     ownerAvatar?: string;
     generateAvatar?: (uid: string) => string;
     status: RoomStatusType;
+    isPmi?: boolean;
     isPeriodic?: boolean;
     menuActions?: Array<RoomListItemAction<T>> | null;
     primaryAction?: RoomListItemPrimaryAction<T> | null;
@@ -35,6 +36,7 @@ export function RoomListItem<T extends string = string>({
     ownerAvatar,
     generateAvatar,
     status,
+    isPmi,
     isPeriodic,
     menuActions,
     primaryAction,
@@ -75,6 +77,7 @@ export function RoomListItem<T extends string = string>({
                             {beginTime && format(beginTime, "yyyy/MM/dd")}
                         </span>
                         <span>{isPeriodic && `(${t("periodic")})`}</span>
+                        <span>{isPmi && `(${t("pmi")})`}</span>
                     </div>
                     <div>
                         <span

@@ -16,6 +16,7 @@ export interface RoomDetailFooterProps {
     inviteBaseUrl: string;
     // repeated weeks for periodic rooms
     periodicWeeks?: Week[];
+    isPmi?: boolean;
     onJoinRoom: () => void;
     onReplayRoom: () => void;
     onModifyRoom: () => void;
@@ -31,6 +32,7 @@ export const RoomDetailFooter = /* @__PURE__ */ observer<RoomDetailFooterProps>(
         isCreator,
         isPeriodicDetailsPage,
         periodicWeeks,
+        isPmi,
         onJoinRoom,
         onReplayRoom,
         onModifyRoom,
@@ -89,6 +91,7 @@ export const RoomDetailFooter = /* @__PURE__ */ observer<RoomDetailFooterProps>(
                 </Button>
                 <InviteModal
                     baseUrl={inviteBaseUrl}
+                    isPmi={isPmi}
                     periodicWeeks={periodicWeeks}
                     room={room}
                     userName={userName}

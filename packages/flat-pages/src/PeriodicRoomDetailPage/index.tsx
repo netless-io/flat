@@ -143,6 +143,7 @@ export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPa
                 jumpToModifyPeriodicRoomPage={jumpToModifyPeriodicRoomPage}
                 jumpToRoomDetailPage={jumpToRoomDetailPage}
                 periodicInfo={periodicInfo.periodic}
+                pmi={globalStore.pmi}
                 rooms={rooms}
                 userName={ownerName}
                 onCancelPeriodicRoom={onCancelPeriodicRoom}
