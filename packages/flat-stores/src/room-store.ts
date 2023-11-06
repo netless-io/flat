@@ -8,6 +8,7 @@ import {
     CreateOrdinaryRoomPayload,
     createPeriodicRoom,
     CreatePeriodicRoomPayload,
+    isPmiRoom,
     joinRoom,
     JoinRoomResult,
     listRooms,
@@ -21,6 +22,7 @@ import {
     RoomStatus,
     RoomType,
 } from "@netless/flat-server-api";
+import { FlatI18n } from "@netless/flat-i18n";
 import { globalStore } from "./global-store";
 import { preferencesStore } from "./preferences-store";
 
@@ -91,6 +93,8 @@ export class RoomStore {
 
     /** Don't invoke `fetchMoreRooms()` too many times */
     public isFetchingRooms = false;
+
+    private roomToRemember = "";
 
     public constructor() {
         makeAutoObservable(this);
@@ -287,6 +291,9 @@ export class RoomStore {
         } else {
             this.rooms.set(roomUUID, { ...roomInfo, roomUUID, ownerUUID });
         }
+        if (this.roomToRemember && this.roomToRemember === roomInfo.inviteCode && roomInfo.title) {
+            this.updateRoomHistory(roomInfo);
+        }
     }
 
     public updatePeriodicRoom(periodicUUID: string, roomInfo: PeriodicRoomInfoResult): void {
@@ -306,6 +313,30 @@ export class RoomStore {
             rooms: roomInfo.rooms.map(room => room.roomUUID),
             inviteCode: roomInfo.periodic.inviteCode,
         });
+    }
+
+    public rememberNextRoom(inviteCode: string): void {
+        this.roomToRemember = inviteCode;
+    }
+
+    private async updateRoomHistory(roomInfo: Partial<RoomItem>): Promise<void> {
+        const { inviteCode, title, ownerName } = roomInfo;
+        if (inviteCode) {
+            if (await isPmiRoom({ pmi: inviteCode })) {
+                globalStore.updateRoomHistory({
+                    uuid: inviteCode,
+                    title: FlatI18n.t("pmi-create-room-default-title", { name: ownerName }),
+                });
+            } else {
+                globalStore.updateRoomHistory({
+                    uuid: inviteCode,
+                    title: title || FlatI18n.t("create-room-default-title", { name: ownerName }),
+                });
+            }
+            runInAction(() => {
+                this.roomToRemember = "";
+            });
+        }
     }
 }
 

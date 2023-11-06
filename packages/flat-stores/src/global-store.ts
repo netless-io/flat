@@ -28,6 +28,12 @@ export type PmiRoom = {
     roomUUID: string;
 };
 
+export type JoinedRoom = {
+    title: string;
+    /** invite code */
+    uuid: string;
+};
+
 /**
  * Properties in Global Store are persisted and shared globally.
  */
@@ -47,6 +53,9 @@ export class GlobalStore {
     // login with password
     public currentAccount: Account | null = null;
     public accountHistory: Account[] = [];
+
+    // remember rooms (through homepage - join room modal)
+    public roomHistory: JoinedRoom[] = [];
 
     public whiteboardRoomUUID: string | null = null;
     public whiteboardRoomToken: string | null = null;
@@ -292,6 +301,14 @@ export class GlobalStore {
                 return false;
             })
             .slice(0, 10); // keep the first ten accounts
+    };
+
+    public updateRoomHistory = (room: JoinedRoom): void => {
+        const index = this.roomHistory.findIndex(o => o.uuid === room.uuid);
+        if (index >= 0) {
+            this.roomHistory.splice(index, 1);
+        }
+        this.roomHistory = [room, ...this.roomHistory].slice(0, 10);
     };
 
     public updateServerRegionConfig = (config: ServerRegionConfig | null): void => {
