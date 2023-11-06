@@ -1,4 +1,4 @@
-import { RequestErrorCode, RoomType, isPmiRoom } from "@netless/flat-server-api";
+import { RequestErrorCode, RoomType } from "@netless/flat-server-api";
 import { roomStore, globalStore } from "@netless/flat-stores";
 import { errorTips, message } from "flat-components";
 import { FlatI18n } from "@netless/flat-i18n";
@@ -37,10 +37,7 @@ export const joinRoomHandler = async (
         }
     } catch (e) {
         // if room not found and is pmi room, show wait for teacher to enter
-        if (
-            e.message.indexOf(RequestErrorCode.RoomNotFound) > -1 &&
-            (await checkPmiRoom(formatRoomUUID))
-        ) {
+        if (e.message.includes(RequestErrorCode.RoomNotFoundAndIsPmi)) {
             void message.info(FlatI18n.t("wait-for-teacher-to-enter"));
             return;
         }
@@ -48,7 +45,3 @@ export const joinRoomHandler = async (
         errorTips(e);
     }
 };
-
-async function checkPmiRoom(uuid: string): Promise<boolean> {
-    return /^[0-9]*$/.test(uuid.replace(/\s+/g, "")) && (await isPmiRoom({ pmi: uuid }))?.result;
-}
