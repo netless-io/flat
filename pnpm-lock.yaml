@@ -162,6 +162,9 @@ importers:
         specifier: ^1.3.2
         version: 1.3.2
     devDependencies:
+      '@electron/notarize':
+        specifier: ^2.1.0
+        version: 2.1.0
       '@types/dotenv-flow':
         specifier: ^3.2.0
         version: 3.2.0
@@ -183,9 +186,6 @@ importers:
       electron-devtools-vendor:
         specifier: ^1.1.0
         version: 1.1.0
-      electron-notarize:
-        specifier: ^1.2.1
-        version: 1.2.1
       file-loader:
         specifier: ^6.2.0
         version: 6.2.0(webpack@5.74.0)
@@ -3259,6 +3259,17 @@ packages:
     optionalDependencies:
       global-agent: 3.0.0
       global-tunnel-ng: 2.7.1
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
+  /@electron/notarize@2.1.0:
+    resolution: {integrity: sha512-Q02xem1D0sg4v437xHgmBLxI2iz/fc0D4K7fiVWHa/AnW8o7D751xyKNXgziA6HrTOme9ul1JfWN5ark8WH1xA==}
+    engines: {node: '>= 10.0.0'}
+    dependencies:
+      debug: 4.3.4
+      fs-extra: 9.1.0
+      promise-retry: 2.0.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -9833,17 +9844,6 @@ packages:
     resolution: {integrity: sha512-wNSAw24vc7LymAmQ8c8wts9QxOK0UrJFw9r45bgFuBRT9jBeKSUJY6my29qAY5K3rylHdZX3Jb15kPH8dFlXvw==}
     dev: true
 
-  /electron-notarize@1.2.1:
-    resolution: {integrity: sha512-u/ECWhIrhkSQpZM4cJzVZ5TsmkaqrRo5LDC/KMbGF0sPkm53Ng59+M0zp8QVaql0obfJy9vlVT+4iOkAi2UDlA==}
-    engines: {node: '>= 10.0.0'}
-    deprecated: Please use @electron/notarize moving forward.  There is no API change, just a package name change
-    dependencies:
-      debug: 4.3.4
-      fs-extra: 9.1.0
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
-
   /electron-osx-sign@0.5.0:
     resolution: {integrity: sha512-icoRLHzFz/qxzDh/N4Pi2z4yVHurlsCAYQvsCSG7fCedJ4UJXBS6PoQyGH71IfcqKupcKeK7HX/NkyfG+v6vlQ==}
     engines: {node: '>=4.0.0'}
@@ -10020,6 +10020,10 @@ packages:
     resolution: {integrity: sha512-/o+BXHmB7ocbHEAs6F2EnG0ogybVVUdkRunTT2glZU9XAaGmhqskrvKwqXuDfNjEO0LZKWdejEEpnq8aM0tOaw==}
     engines: {node: '>=4'}
     hasBin: true
+    dev: true
+
+  /err-code@2.0.3:
+    resolution: {integrity: sha512-2bmlRpNKBxT/CRmPOlyISQpNj+qSeYvcym/uT0Jx2bMOlKLtSy1ZmLuVxSEKKyor/N5yhvp/ZiG1oE3DEYMSFA==}
     dev: true
 
   /errno@0.1.8:
@@ -16116,6 +16120,14 @@ packages:
       bluebird: 3.7.2
     dev: true
 
+  /promise-retry@2.0.1:
+    resolution: {integrity: sha512-y+WKFlBR8BGXnsNlIHFGPZmyDf3DFMoLhaflAnyZgV6rG6xu+JwesTo2Q9R6XwYmtmwAFCkAk3e35jEdoeh/3g==}
+    engines: {node: '>=10'}
+    dependencies:
+      err-code: 2.0.3
+      retry: 0.12.0
+    dev: true
+
   /promise.allsettled@1.0.5:
     resolution: {integrity: sha512-tVDqeZPoBC0SlzJHzWGZ2NKAguVq2oiYj7gbggbiTvH2itHohijTp7njOUA0aQ/nl+0lr/r6egmhoYu63UZ/pQ==}
     engines: {node: '>= 0.4'}
@@ -17899,6 +17911,11 @@ packages:
   /ret@0.1.15:
     resolution: {integrity: sha512-TTlYpa+OL+vMMNG24xSlQGEJ3B/RzEfUlLct7b5G/ytav+wPrplCpVMFuwzXbkecJrb6IYo1iFb0S9v37754mg==}
     engines: {node: '>=0.12'}
+    dev: true
+
+  /retry@0.12.0:
+    resolution: {integrity: sha512-9LkiTwjUh6rT555DtE9rTX+BKByPfrMzEAtnlEtdEwr3Nkffwiihqe2bWADg+OQRjt9gl6ICdmB/ZFDCGAtSow==}
+    engines: {node: '>= 4'}
     dev: true
 
   /retry@0.13.1:

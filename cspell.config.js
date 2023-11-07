@@ -26,6 +26,7 @@ module.exports = {
         // appstore
         "flatmacrelease",
         "provisionprofile",
+        "appstoreconnect",
 
         // wechat
         "wechat",
