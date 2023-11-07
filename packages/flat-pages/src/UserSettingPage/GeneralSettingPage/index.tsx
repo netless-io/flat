@@ -129,10 +129,10 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
             onOk: async () => {
                 try {
                     await sp(deleteAccount());
-                    globalStore.updateUserInfo(null);
-                    globalStore.updatePmi(null);
-                    globalStore.updatePmiRoomList([]);
-                    globalStore.deleteCurrentAccountFromHistory();
+
+                    // reset user status
+                    globalStore.deleteAccount();
+
                     pushHistory(RouteNameType.LoginPage);
                 } catch (err) {
                     errorTips(err);
