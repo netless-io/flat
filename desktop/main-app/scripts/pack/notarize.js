@@ -1,5 +1,5 @@
 const dotenvFlow = require("dotenv-flow");
-const { notarize } = require("electron-notarize");
+const { notarize } = require("@electron/notarize");
 const { autoChooseConfig } = require("../../../../scripts/utils/auto-choose-config");
 
 dotenvFlow.config({
