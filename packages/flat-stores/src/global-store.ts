@@ -48,7 +48,7 @@ export class GlobalStore {
     public isTurnOffDeviceTest = false;
     public userInfo: UserInfo | null = null;
     public pmi: string | null = null;
-    public pmiRoomList: PmiRoom[] = [];
+    public pmiRoomList: PmiRoom[] | null = [];
 
     // login with password
     public currentAccount: Account | null = null;
@@ -88,11 +88,11 @@ export class GlobalStore {
     public hideAvatarsRoomUUIDs: string[] | undefined = undefined;
 
     public get pmiRoomExist(): boolean {
-        return this.pmiRoomList.length > 0;
+        return (this.pmiRoomList && this.pmiRoomList.length > 0) || false;
     }
 
     public get pmiRoomUUID(): string {
-        return this.pmiRoomList[0]?.roomUUID;
+        return (this.pmiRoomList && this.pmiRoomList[0]?.roomUUID) || "";
     }
 
     public get userUUID(): string | undefined {
@@ -132,15 +132,11 @@ export class GlobalStore {
         });
     }
 
-    public updatePmi = async (pmi?: string | null): Promise<void> => {
-        if (pmi) {
+    public updatePmi = async (): Promise<void> => {
+        const pmi = (await createOrGetPmi({ create: true })) || null;
+        runInAction(() => {
             this.pmi = pmi;
-        } else {
-            const pmi = (await createOrGetPmi({ create: true }))?.pmi || null;
-            runInAction(() => {
-                this.pmi = pmi;
-            });
-        }
+        });
     };
 
     public updatePmiRoomListByRoomUUID = (roomUUID: string): void => {
@@ -149,15 +145,11 @@ export class GlobalStore {
         }
     };
 
-    public updatePmiRoomList = async (pmiRoomList?: PmiRoom[]): Promise<void> => {
-        if (pmiRoomList) {
+    public updatePmiRoomList = async (): Promise<void> => {
+        const pmiRoomList = (await listPmi()) || [];
+        runInAction(() => {
             this.pmiRoomList = pmiRoomList;
-        } else {
-            const pmiRoomList = (await listPmi()) || [];
-            runInAction(() => {
-                this.pmiRoomList = pmiRoomList;
-            });
-        }
+        });
     };
 
     public updateUserInfo = (userInfo: UserInfo | null): void => {
@@ -243,12 +235,23 @@ export class GlobalStore {
         }
     };
 
+    public deleteAccount = (): void => {
+        globalStore.updateUserInfo(null);
+        globalStore.deleteCurrentAccountFromHistory();
+
+        this.pmi = null;
+        this.pmiRoomList = null;
+        this.roomHistory = [];
+    };
+
     public logout = (): void => {
         this.userInfo = null;
         this.currentAccount = null;
         this.lastLoginCheck = null;
         this.onStageRoomUUIDs = [];
         this.roomHistory = [];
+        this.pmi = null;
+        this.pmiRoomList = null;
         document.cookie = "flatJWTToken=; SameSite=Lax; domain=whiteboard.agora.io; max-age=0";
     };
 

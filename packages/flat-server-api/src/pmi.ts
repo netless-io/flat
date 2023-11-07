@@ -28,6 +28,8 @@ export interface CreateOrGetPmiResult {
     pmi: string;
 }
 
-export function createOrGetPmi(payload: CreateOrGetPmiPayload): Promise<CreateOrGetPmiResult> {
-    return postV2<CreateOrGetPmiPayload, CreateOrGetPmiResult>("user/pmi", payload);
+export function createOrGetPmi(payload: CreateOrGetPmiPayload): Promise<string> {
+    return postV2<CreateOrGetPmiPayload, CreateOrGetPmiResult>("user/pmi", payload).then(
+        e => e.pmi,
+    );
 }
