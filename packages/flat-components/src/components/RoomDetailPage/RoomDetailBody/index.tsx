@@ -51,7 +51,8 @@ export const RoomDetailBody = /* @__PURE__ */ observer<RoomDetailBodyProps>(
                                 </td>
                                 <td className="room-detail-body-content-right">
                                     <span>
-                                        {formattedBeginTime?.date} {formattedBeginTime?.time} ~ {""}
+                                        {formattedBeginTime?.date} {formattedBeginTime?.time}
+                                        {" ~ "}
                                         {formattedEndTime?.date} {formattedEndTime?.time}
                                     </span>
                                 </td>

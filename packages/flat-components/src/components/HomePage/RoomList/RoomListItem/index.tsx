@@ -69,8 +69,7 @@ export function RoomListItem<T extends string = string>({
                     <h1 className="room-list-item-title">{title}</h1>
                     <div className="room-list-item-time-date">
                         <span className="room-list-item-time">
-                            {beginTime && format(beginTime, "HH:mm")}
-                            {" ~ "}
+                            {beginTime && format(beginTime, "HH:mm")}~
                             {endTime && format(endTime, "HH:mm")}
                         </span>
                         <span className="room-list-item-date">
