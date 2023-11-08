@@ -40,6 +40,10 @@ const useClockTick = (beginTime: number, roomStatus: RoomStatus): string => {
     }, [roomStatus, unmounted]);
 
     return useMemo(() => {
+        if (beginTime > timestamp) {
+            return "00:00";
+        }
+
         const {
             days = 0,
             hours = 0,
