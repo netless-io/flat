@@ -1,3 +1,22 @@
+## [2.3.2](https://github.com/netless-io/flat/compare/v2.3.1...v2.3.2) (2023-11-08)
+
+
+### Features
+
+* **project**: add user pmi ([#2051](https://github.com/netless-io/flat/issues/2051)) ([ef0dd3d2](https://github.com/netless-io/flat/commit/ef0dd3d2d6cf766d9980dbbe671795bad2d0632d))
+
+### Bug Fixes
+
+* **service-providers**: stop using camera on history back ([#2074](https://github.com/netless-io/flat/issues/2074)) ([a21cad4b](https://github.com/netless-io/flat/commit/a21cad4bd208e83a2b874997fe5ab97074261975))
+* **service-providers**: stop using camera when leaving device test ([#2072](https://github.com/netless-io/flat/issues/2072)) ([009e5834](https://github.com/netless-io/flat/commit/009e583404439c3365a2047c1fbf07b00e77445a))
+* **flat-stores**: refresh main room list logic ([#2070](https://github.com/netless-io/flat/issues/2070)) ([16c2db16](https://github.com/netless-io/flat/commit/16c2db16cd8ab28bfecb8a8f4de8279a0e24ca0c))
+* **flat-stores**: fix wrong room list ([#2069](https://github.com/netless-io/flat/issues/2069)) ([b2636de5](https://github.com/netless-io/flat/commit/b2636de52fb7adc3b21d732a6057fa6ecd37a76c))
+* **flat-pages**: fix wrong pmi checkbox initial value ([#2066](https://github.com/netless-io/flat/issues/2066)) ([9e8a3e6e](https://github.com/netless-io/flat/commit/9e8a3e6edbc3f53c4c60e4bbf2ea430c243e966e))
+* **flat-stores**: save uuid instead of invite code on join room ([#2062](https://github.com/netless-io/flat/issues/2062)) ([40664211](https://github.com/netless-io/flat/commit/40664211fbca281b7e8fbe21892d42b09d2a215c))
+* **flat-pages**: add stop class command and refresh list correctly ([#2059](https://github.com/netless-io/flat/issues/2059)) ([883aad5d](https://github.com/netless-io/flat/commit/883aad5dba13b8618777ad1d1c510d2b48669acf))
+
+
+
 ## [2.3.1](https://github.com/netless-io/flat/compare/v2.3.0...v2.3.1) (2023-09-05)
 
 
