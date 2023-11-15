@@ -236,8 +236,8 @@ export class GlobalStore {
     };
 
     public deleteAccount = (): void => {
-        globalStore.updateUserInfo(null);
-        globalStore.deleteCurrentAccountFromHistory();
+        this.updateUserInfo(null);
+        this.deleteCurrentAccountFromHistory();
 
         this.pmi = null;
         this.pmiRoomList = null;

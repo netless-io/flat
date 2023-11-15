@@ -1,4 +1,4 @@
-workspaces:
+packages:
   - "desktop/**"
   - "web/**"
   - "packages/**"
