@@ -9,18 +9,18 @@ const { components, types, renderer, main, flatWeb } = process.env;
 
 const isTrue = v => v === "true";
 
-let workspaces = [];
+let packages = [];
 
 if (isTrue(types)) {
-    workspaces.push("packages/flat-types");
+    packages.push("packages/flat-types");
 }
 
 if (isTrue(components)) {
-    workspaces.push("packages/flat-i18n", "packages/flat-types", "packages/flat-components");
+    packages.push("packages/flat-i18n", "packages/flat-types", "packages/flat-components");
 }
 
 if (isTrue(renderer)) {
-    workspaces.push(
+    packages.push(
         "packages/flat-i18n",
         "packages/flat-types",
         "packages/flat-components",
@@ -29,11 +29,11 @@ if (isTrue(renderer)) {
 }
 
 if (isTrue(main)) {
-    workspaces.push("packages/flat-types", "desktop/main-app");
+    packages.push("packages/flat-types", "desktop/main-app");
 }
 
 if (isTrue(flatWeb)) {
-    workspaces.push(
+    packages.push(
         "packages/flat-i18n",
         "packages/flat-types",
         "packages/flat-components",
@@ -41,19 +41,19 @@ if (isTrue(flatWeb)) {
     );
 }
 
-workspaces = Array.from(new Set(workspaces));
+packages = Array.from(new Set(packages));
 
 // if there are no changes, there is no need to install any dependencies
-if (workspaces.length === 0) {
+if (packages.length === 0) {
     console.log("no changed, no need install dependencies");
     process.exit(1);
 }
 
-console.log(`will install dependencies in: ${workspaces.join(", ")}`);
+console.log(`will install dependencies in: ${packages.join(", ")}`);
 
-const content = { workspaces };
+const content = { packages };
 
-const text = `workspaces:\n  - ${content.workspaces.join("\n  - ")}`;
+const text = `packages:\n  - ${content.packages.join("\n  - ")}`;
 
 fs.writeFileSync(workspacePath, text, {
     encoding: "utf-8",
