@@ -7,11 +7,11 @@ const retentionPackageName = process.argv[2];
 
 switch (retentionPackageName) {
     case "desktop": {
-        content.workspaces = ["desktop/**", "packages/**"];
+        content.packages = ["desktop/**", "packages/**"];
         break;
     }
     case "web": {
-        content.workspaces = ["web/**", "packages/**"];
+        content.packages = ["web/**", "packages/**"];
         break;
     }
     default: {
@@ -19,7 +19,7 @@ switch (retentionPackageName) {
     }
 }
 
-const text = `workspaces:\n  - ${content.workspaces.join("\n  - ")}`;
+const text = `packages:\n  - ${content.packages.join("\n  - ")}`;
 
 fs.writeFileSync(workspacePath, text, {
     encoding: "utf-8",
