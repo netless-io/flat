@@ -50,9 +50,9 @@ export function chooseServer(payload: any, enableFlatServerV2?: boolean): string
 
     let region = defaultRegion;
     if (payload !== null && typeof payload === "object") {
-        // Please check all server api's payload to make sure roomUUID is from the fields: roomUUID, uuid
+        // Please check all server api's payload to make sure roomUUID is from these fields:
         // the "uuid" is maybe an invite code
-        const uuid = payload.roomUUID || payload.uuid || payload.pmi;
+        const uuid = payload.roomUUID || payload.uuid || payload.periodicUUID || payload.pmi;
 
         if (typeof uuid === "string") {
             if ((uuid.length === 11 && uuid[0] === "1") || uuid.startsWith("CN-")) {
