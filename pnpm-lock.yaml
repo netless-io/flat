@@ -292,8 +292,8 @@ importers:
         specifier: ^4.23.2
         version: 4.23.2(react-dom@17.0.2)(react@17.0.2)
       axios:
-        specifier: ^0.27.2
-        version: 0.27.2
+        specifier: ^1.6.0
+        version: 1.6.0
       classnames:
         specifier: ^2.3.1
         version: 2.3.1
@@ -628,8 +628,8 @@ importers:
         specifier: ^4.23.2
         version: 4.23.2(react-dom@17.0.2)(react@17.0.2)
       axios:
-        specifier: ^0.27.2
-        version: 0.27.2
+        specifier: ^1.6.0
+        version: 1.6.0
       classnames:
         specifier: ^2.3.1
         version: 2.3.1
@@ -1132,8 +1132,8 @@ importers:
         specifier: ^4.23.2
         version: 4.23.2(react-dom@17.0.2)(react@17.0.2)
       axios:
-        specifier: ^0.27.2
-        version: 0.27.2
+        specifier: ^1.6.0
+        version: 1.6.0
       classnames:
         specifier: ^2.3.1
         version: 2.3.1
@@ -7254,11 +7254,12 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
-  /axios@0.27.2:
-    resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
+  /axios@1.6.0:
+    resolution: {integrity: sha512-EZ1DYihju9pwVB+jg67ogm+Tmqc6JmhamRN6I4Zt8DfZu5lbcQGw3ozH9lFejSJgs/ibaef3A9PMXPLeefFGJg==}
     dependencies:
       follow-redirects: 1.15.0
       form-data: 4.0.0
+      proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
     dev: false
@@ -8546,6 +8547,7 @@ packages:
 
   /config-chain@1.1.13:
     resolution: {integrity: sha512-qj+f8APARXHrM0hraqXYb2/bOVSV4PvJQlNZ/DVj0QrmNM2q2euizkeuVckQ57J+W0mRH6Hvi+k50M4Jul2VRQ==}
+    requiresBuild: true
     dependencies:
       ini: 1.3.8
       proto-list: 1.2.4
@@ -16226,7 +16228,6 @@ packages:
 
   /proxy-from-env@1.1.0:
     resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
-    dev: true
 
   /prr@1.0.1:
     resolution: {integrity: sha512-yPw4Sng1gWghHQWj0B3ZggWUm4qVbPwPFcRG8KyxiU7J2OHFSoEHKS+EZ3fv5l1t9CyCiop6l/ZYeWbrgoQejw==}
@@ -18451,6 +18452,7 @@ packages:
   /slice-ansi@3.0.0:
     resolution: {integrity: sha512-pSyv7bSTC7ig9Dcgbw9AuRNUb5k5V6oDudjZoMBSr13qpLBG7tB+zgCkARjq7xIUgdz5P1Qe8u+rSGdouOOIyQ==}
     engines: {node: '>=8'}
+    requiresBuild: true
     dependencies:
       ansi-styles: 4.3.0
       astral-regex: 2.0.0

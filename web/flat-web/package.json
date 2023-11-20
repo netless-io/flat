@@ -40,7 +40,7 @@
     "agora-rtc-sdk-ng": "^4.16.0",
     "agora-rtm-sdk": "^1.6.0",
     "antd": "^4.23.2",
-    "axios": "^0.27.2",
+    "axios": "^1.6.0",
     "classnames": "^2.3.1",
     "date-fns": "^2.29.3",
     "emittery": "^1.0.0",
