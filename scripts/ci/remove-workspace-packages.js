@@ -7,11 +7,11 @@ const retentionPackageName = process.argv[2];
 
 switch (retentionPackageName) {
     case "desktop": {
-        content.packages = ["desktop/**", "packages/**"];
+        content.packages = ["desktop/**", "packages/**", "service-providers/**"];
         break;
     }
     case "web": {
-        content.packages = ["web/**", "packages/**"];
+        content.packages = ["web/**", "packages/**", "service-providers/**"];
         break;
     }
     default: {
