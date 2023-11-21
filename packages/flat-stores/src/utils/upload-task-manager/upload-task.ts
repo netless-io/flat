@@ -1,6 +1,6 @@
 import { makeAutoObservable, observable } from "mobx";
 import { v4 as v4uuid } from "uuid";
-import Axios, { CancelTokenSource } from "axios";
+import Axios, { CancelTokenSource, AxiosProgressEvent } from "axios";
 import {
     uploadFinish,
     uploadStart,
@@ -117,8 +117,8 @@ export class UploadTask {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
-                onUploadProgress: (e: ProgressEvent) => {
-                    this.updatePercent(Math.floor((100 * e.loaded) / e.total));
+                onUploadProgress: (e: AxiosProgressEvent) => {
+                    e.total && this.updatePercent(Math.floor((100 * e.loaded) / e.total));
                 },
                 cancelToken: this._cancelTokenSource.token,
             });
