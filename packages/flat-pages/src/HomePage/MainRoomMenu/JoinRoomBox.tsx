@@ -21,6 +21,8 @@ export interface JoinRoomBoxProps {
 const ROOM_UUID_RE =
     /(?:[A-Z]{2}-)?(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)/i;
 
+const INVITE_CODE_RE = /[0-9]{3,4} [0-9]{3} [0-9]{4}/;
+
 export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJoinRoom }) {
     const t = useTranslate();
     const sp = useSafePromise();
@@ -152,7 +154,11 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
     async function extractUUIDFromClipboard(): Promise<string | undefined> {
         const text = await navigator.clipboard.readText();
         const m = ROOM_UUID_RE.exec(text);
-        return m?.[0];
+        if (m) {
+            return m[0];
+        }
+        const m2 = INVITE_CODE_RE.exec(text);
+        return m2?.[0];
     }
 
     async function handleShowModal(): Promise<void> {
