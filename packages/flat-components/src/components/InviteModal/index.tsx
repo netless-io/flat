@@ -37,7 +37,7 @@ export const InviteModal: React.FC<InviteModalProps> = ({
     const language = useLanguage();
     const { beginTime, endTime, periodicUUID, roomUUID, inviteCode, title } = room;
     const uuid = periodicUUID || roomUUID;
-    const joinLink = `${baseUrl}/join/${inviteCode || uuid}`;
+    const joinLink = `${baseUrl}/join/${((room.isPmi || isPmi) && inviteCode) || uuid}`;
 
     const formattedTimeRange = useMemo<string>(() => {
         if (!beginTime || !endTime) {

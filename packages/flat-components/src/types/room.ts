@@ -20,6 +20,7 @@ export type RoomInfo = {
         endTime: number;
         videoURL?: string;
     }>;
+    isPmi?: boolean;
 };
 
 export enum RoomType {
