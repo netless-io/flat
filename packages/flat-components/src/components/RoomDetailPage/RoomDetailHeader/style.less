@@ -33,16 +33,24 @@
     padding-left: 16px;
     padding-right: 8px;
     color: var(--grey-6);
+    white-space: nowrap;
 }
 
 .room-detail-header-content-time-during {
     padding-right: 16px;
     color: var(--grey-6);
+    white-space: nowrap;
+}
+
+.room-detail-header-content-right {
+    white-space: nowrap;
 }
 
 .room-detail-header-content-room-count {
-    cursor: pointer;
+    display: flex;
+    align-items: center;
     color: var(--grey-6);
+    cursor: pointer;
 }
 
 .room-detail-header-content-bottom-cut-line {
@@ -51,10 +59,6 @@
     height: 1px;
     margin-top: 16px;
     background-color: var(--grey-1);
-}
-
-.room-detail-header-content-room-count {
-    display: flex;
 }
 
 .flat-color-scheme-dark {
