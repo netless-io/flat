@@ -26,7 +26,7 @@ export interface InviteModalProps {
 export const InviteModal: React.FC<InviteModalProps> = ({
     visible,
     room,
-    isPmi,
+    isPmi: isSelfPmi,
     periodicWeeks,
     userName,
     baseUrl,
@@ -37,7 +37,8 @@ export const InviteModal: React.FC<InviteModalProps> = ({
     const language = useLanguage();
     const { beginTime, endTime, periodicUUID, roomUUID, inviteCode, title } = room;
     const uuid = periodicUUID || roomUUID;
-    const joinLink = `${baseUrl}/join/${((room.isPmi || isPmi) && inviteCode) || uuid}`;
+    const isPmi = room.isPmi || isSelfPmi;
+    const joinLink = `${baseUrl}/join/${(isPmi && inviteCode) || uuid}`;
 
     const formattedTimeRange = useMemo<string>(() => {
         if (!beginTime || !endTime) {
