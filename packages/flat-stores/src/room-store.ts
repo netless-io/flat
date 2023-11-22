@@ -52,6 +52,7 @@ export interface RoomItem {
     count?: number;
     hasRecord?: boolean;
     recordings?: RoomRecording[];
+    isPmi?: boolean;
 }
 
 // Only keep sub-room ids. sub-room info are stored in ordinaryRooms.
