@@ -71,7 +71,9 @@ export const MoreMenu: React.FC<MoreMenuProps> = ({
                 }}
                 trigger={["click"]}
             >
-                <img alt={t("more")} src={moreMenuSVG} />
+                <button className="periodic-room-panel-more-btn">
+                    <img alt={t("more")} src={moreMenuSVG} />
+                </button>
             </Dropdown>
             <CancelSubPeriodicRoomModal
                 isCreator={isCreator}
