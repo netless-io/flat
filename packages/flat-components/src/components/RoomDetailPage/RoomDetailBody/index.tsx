@@ -1,12 +1,19 @@
-import { SVGCircleInfoOutlined, SVGModeLecture, SVGTime, SVGUserGroup } from "../../FlatIcons";
+import {
+    SVGCircleInfoOutlined,
+    SVGCopy,
+    SVGModeLecture,
+    SVGTime,
+    SVGUserGroup,
+} from "../../FlatIcons";
 import "./style.less";
 
-import React, { useMemo } from "react";
-import { formatInviteCode, formatTime } from "../../../utils/room";
-import { RoomInfo, RoomType } from "../../../types/room";
-import { RoomStatusElement } from "../../RoomStatusElement";
+import React, { useCallback, useMemo } from "react";
+import { Button, message } from "antd";
 import { observer } from "mobx-react-lite";
-import { useTranslate, useLanguage } from "@netless/flat-i18n";
+import { useLanguage, useTranslate } from "@netless/flat-i18n";
+import { RoomInfo, RoomType } from "../../../types/room";
+import { formatInviteCode, formatTime } from "../../../utils/room";
+import { RoomStatusElement } from "../../RoomStatusElement";
 
 export interface RoomDetailBodyProps {
     roomInfo: RoomInfo;
@@ -28,6 +35,14 @@ export const RoomDetailBody = /* @__PURE__ */ observer<RoomDetailBodyProps>(
         const formattedEndTime = useMemo(
             () => (endTime ? formatTime(endTime, language) : null),
             [endTime, language],
+        );
+
+        const handleCopy = useCallback(
+            (text: string) => {
+                navigator.clipboard.writeText(text);
+                void message.success(t("copy-success"));
+            },
+            [t],
         );
 
         return (
@@ -62,8 +77,22 @@ export const RoomDetailBody = /* @__PURE__ */ observer<RoomDetailBodyProps>(
                                     <SVGModeLecture />
                                     <span>{t("room-uuid")}</span>
                                 </td>
-                                <td className="room-detail-body-content-right room-detail-body-selectable">
-                                    {formatInviteCode(uuid, inviteCode)}
+                                <td className="room-detail-body-content-right">
+                                    <span className="room-detail-body-selectable">
+                                        {formatInviteCode(uuid, inviteCode)}
+                                        {inviteCode && (
+                                            <Button
+                                                className="room-detail-body-content-btn"
+                                                title={t("copy")}
+                                                type="link"
+                                                onClick={() =>
+                                                    handleCopy(formatInviteCode(uuid, inviteCode))
+                                                }
+                                            >
+                                                <SVGCopy />
+                                            </Button>
+                                        )}
+                                    </span>
                                 </td>
                             </tr>
                             <tr>
