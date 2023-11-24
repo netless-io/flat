@@ -1,8 +1,9 @@
 .edit-room-form {
+
     &,
     input,
     .ant-select,
-    .ant-picker-input > input {
+    .ant-picker-input>input {
         color: var(--text);
     }
 
@@ -11,7 +12,7 @@
     }
 
     .edit-room-form-label,
-    .ant-form-item-label > label {
+    .ant-form-item-label>label {
         color: var(--text-strong);
     }
 
@@ -27,7 +28,7 @@
         margin-bottom: 0;
     }
 
-    .edit-room-form-item.pmi .ant-checkbox + span {
+    .edit-room-form-item.pmi .ant-checkbox+span {
         padding-right: 0;
     }
 }
@@ -90,12 +91,15 @@
 .edit-room-body {
     overflow: visible;
     background-color: #fff;
+
     .ant-row {
         margin-left: 0 !important;
         margin-right: 0 !important;
+
         .ant-col:first-child {
             padding-left: 0 !important;
         }
+
         .ant-col:last-child {
             padding-right: 0 !important;
         }
@@ -156,6 +160,7 @@
 .edit-room-docs-left {
     display: flex;
     align-items: center;
+
     span {
         color: #7a7b7c;
         font-size: 12px;
@@ -175,6 +180,11 @@
     }
 
     .edit-room-tips {
+        color: var(--text);
         background-color: var(--grey-9);
+    }
+
+    .edit-room-cycle {
+        color: var(--text);
     }
 }

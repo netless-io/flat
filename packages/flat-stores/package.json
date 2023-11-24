@@ -20,7 +20,7 @@
     "prettier": "^2.7.1",
     "react": "^17.0.2",
     "typescript": "^4.8.3",
-    "white-web-sdk": "npm:white-web-sdk-esm@2.16.44"
+    "white-web-sdk": "npm:white-web-sdk-esm@2.16.47"
   },
   "dependencies": {
     "@netless/flat-i18n": "workspace:*",
