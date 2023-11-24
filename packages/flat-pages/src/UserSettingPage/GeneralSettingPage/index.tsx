@@ -219,9 +219,7 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
                                 <span className="general-setting-item-icon-desc">
                                     {t("personal-room-link")}
                                 </span>
-                                <span className="personal-link" title={personalLink}>
-                                    {personalLink}
-                                </span>
+                                <span title={personalLink}>{personalLink}</span>
                                 <Button
                                     className="general-setting-item-btn"
                                     type="link"
