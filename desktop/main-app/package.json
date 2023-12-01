@@ -32,7 +32,7 @@
     "@types/webpack-env": "^1.18.0",
     "dotenv-flow": "^3.2.0",
     "dotenv-flow-webpack": "^1.1.0",
-    "electron": "12.0.15",
+    "electron": "22.3.25",
     "electron-builder": "^22.14.13",
     "electron-devtools-vendor": "^1.1.0",
     "file-loader": "^6.2.0",
