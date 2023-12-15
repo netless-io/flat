@@ -5,6 +5,10 @@ export const SERVER_DOMAINS = process.env.FLAT_SERVER_DOMAINS as unknown as Reco
 
 export const CURRENT_SERVER_DOMAIN = process.env.FLAT_SERVER_DOMAIN;
 
+export const COOKIE_DOMAIN = CURRENT_SERVER_DOMAIN
+    ? CURRENT_SERVER_DOMAIN.slice(CURRENT_SERVER_DOMAIN.indexOf(".") + 1)
+    : "";
+
 export const FLAT_SERVER_BASE_URL = `https://${CURRENT_SERVER_DOMAIN}`;
 
 export const FLAT_SERVER_BASE_URL_V1 = `https://${CURRENT_SERVER_DOMAIN}/v1`;

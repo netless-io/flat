@@ -20,7 +20,7 @@
 
 <div align="center">
     <h1>Agora Flat</h1>
-    <p>Project flat is the Web, Windows and macOS client of <a href="https://flat.whiteboard.agora.io/en/">Agora Flat</a> open source classroom.</p>
+    <p>Project flat is the Web, Windows and macOS client of <a href="https://flat.agora.io/">Agora Flat</a> open source classroom.</p>
     <p><a href="./docs/readme/README-zh.md">中文</a></p>
     <img src="./assets/flat-showcase-en.png">
 </div>
@@ -134,8 +134,8 @@ Licensed under the [MIT license](LICENSE).
 
 When using the Flat or other GitHub logos, be sure to follow the [GitHub logo guidelines][github-logo].
 
-[flat-homepage]: https://flat.whiteboard.agora.io/en/#download
-[flat-web]: https://flat-web.whiteboard.agora.io/
+[flat-homepage]: https://flat.agora.io/#download
+[flat-web]: https://web.flat.agora.io/
 [flat-server]: https://github.com/netless-io/flat-server
 [flat-android]: https://github.com/netless-io/flat-android
 [flat-storybook]: https://netless-io.github.io/flat/
