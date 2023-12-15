@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { RouteNameType, useReplaceHistory } from "./routes";
 import { GlobalStoreContext } from "../components/StoreProvider";
-import { loginCheck } from "@netless/flat-server-api";
+import { loginCheck, COOKIE_DOMAIN } from "@netless/flat-server-api";
 import { errorTips } from "flat-components";
 
 export function useLoginCheck(): boolean {
@@ -60,5 +60,5 @@ export function useLoginCheck(): boolean {
 
 export function saveJWTToken(token: string): void {
     const maxAge = 60 * 60 * 24 * 29; // 29 days
-    document.cookie = `flatJWTToken=${token}; SameSite=Lax; domain=whiteboard.agora.io; max-age=${maxAge}`;
+    document.cookie = `flatJWTToken=${token}; SameSite=Lax; domain=${COOKIE_DOMAIN}; max-age=${maxAge}`;
 }

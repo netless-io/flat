@@ -5,6 +5,7 @@ import {
     ServerRegionConfigResult,
     createOrGetPmi,
     listPmi,
+    COOKIE_DOMAIN,
 } from "@netless/flat-server-api";
 import { autorun, runInAction } from "mobx";
 import { autoPersistStore } from "./utils/auto-persist-store";
@@ -252,7 +253,7 @@ export class GlobalStore {
         this.roomHistory = [];
         this.pmi = null;
         this.pmiRoomList = null;
-        document.cookie = "flatJWTToken=; SameSite=Lax; domain=whiteboard.agora.io; max-age=0";
+        document.cookie = `flatJWTToken=; SameSite=Lax; domain=${COOKIE_DOMAIN}; max-age=0`;
     };
 
     public hideRecordHintTips = (): void => {

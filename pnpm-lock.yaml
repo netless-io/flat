@@ -620,7 +620,7 @@ importers:
         version: link:../flat-stores
       '@netless/sync-player':
         specifier: ^1.0.7
-        version: 1.0.7(white-web-sdk-esm@2.16.47)
+        version: 1.0.7(white-web-sdk-esm@2.16.48)
       '@wopjs/dom':
         specifier: ^0.1.3
         version: 0.1.3
@@ -754,7 +754,7 @@ importers:
         version: link:../flat-services
       '@netless/sync-player':
         specifier: ^1.0.7
-        version: 1.0.7(white-web-sdk-esm@2.16.47)
+        version: 1.0.7(white-web-sdk-esm@2.16.48)
       flat-components:
         specifier: workspace:*
         version: link:../flat-components
@@ -773,10 +773,10 @@ importers:
     devDependencies:
       '@netless/fastboard':
         specifier: 1.0.0-canary.9
-        version: 1.0.0-canary.9(@netless/window-manager@1.0.0-canary.79)(white-web-sdk-esm@2.16.47)
+        version: 1.0.0-canary.9(@netless/window-manager@1.0.0-canary.79)(white-web-sdk-esm@2.16.48)
       '@netless/window-manager':
         specifier: 1.0.0-canary.79
-        version: 1.0.0-canary.79(white-web-sdk-esm@2.16.47)
+        version: 1.0.0-canary.79(white-web-sdk-esm@2.16.48)
       mobx:
         specifier: ^6.6.1
         version: 6.6.2
@@ -790,8 +790,8 @@ importers:
         specifier: ^4.8.3
         version: 4.8.3
       white-web-sdk:
-        specifier: npm:white-web-sdk-esm@2.16.47
-        version: /white-web-sdk-esm@2.16.47
+        specifier: npm:white-web-sdk-esm@2.16.48
+        version: /white-web-sdk-esm@2.16.48
 
   packages/flat-types: {}
 
@@ -927,7 +927,7 @@ importers:
         version: 2.0.1
       '@netless/fastboard':
         specifier: 1.0.0-canary.9
-        version: 1.0.0-canary.9(@netless/window-manager@1.0.0-canary.79)(white-web-sdk-esm@2.16.47)
+        version: 1.0.0-canary.9(@netless/window-manager@1.0.0-canary.79)(white-web-sdk-esm@2.16.48)
       '@netless/flat-i18n':
         specifier: workspace:*
         version: link:../../packages/flat-i18n
@@ -945,7 +945,7 @@ importers:
         version: 0.4.2
       '@netless/window-manager':
         specifier: 1.0.0-canary.79
-        version: 1.0.0-canary.79(white-web-sdk-esm@2.16.47)
+        version: 1.0.0-canary.79(white-web-sdk-esm@2.16.48)
       side-effect-manager:
         specifier: ^1.2.1
         version: 1.2.1
@@ -953,8 +953,8 @@ importers:
         specifier: ^1.3.2
         version: 1.3.2
       white-web-sdk:
-        specifier: npm:white-web-sdk-esm@2.16.47
-        version: /white-web-sdk-esm@2.16.47
+        specifier: npm:white-web-sdk-esm@2.16.48
+        version: /white-web-sdk-esm@2.16.48
     devDependencies:
       prettier:
         specifier: ^2.7.1
@@ -3739,7 +3739,7 @@ packages:
       - supports-color
     dev: true
 
-  /@netless/fastboard-core@1.0.0-canary.9(@netless/window-manager@1.0.0-canary.79)(white-web-sdk-esm@2.16.47):
+  /@netless/fastboard-core@1.0.0-canary.9(@netless/window-manager@1.0.0-canary.79)(white-web-sdk-esm@2.16.48):
     resolution: {integrity: sha512-rzUts95B3ouUKAg0spV4vM6eHmJde1+a4LdWA7niaLYUjri3F0jRbC0xexFw7+B5VAmkVBR0Xj2MAl1dxfXekw==}
     peerDependencies:
       '@netless/window-manager': '>=1.0.0-canary.0'
@@ -3751,19 +3751,19 @@ packages:
         optional: true
     dependencies:
       '@lukeed/uuid': 2.0.1
-      '@netless/synced-store': 2.0.7(white-web-sdk-esm@2.16.47)
-      '@netless/window-manager': 1.0.0-canary.79(white-web-sdk-esm@2.16.47)
-      white-web-sdk: /white-web-sdk-esm@2.16.47
+      '@netless/synced-store': 2.0.7(white-web-sdk-esm@2.16.48)
+      '@netless/window-manager': 1.0.0-canary.79(white-web-sdk-esm@2.16.48)
+      white-web-sdk: /white-web-sdk-esm@2.16.48
 
   /@netless/fastboard-ui@1.0.0-canary.9(@netless/fastboard-core@1.0.0-canary.9):
     resolution: {integrity: sha512-dCB4LjTK54kQ0hVbtcucXqlmT+SMyQjCpodgXnZ+WR5AIDKjRzNpeSwkA56TtC5CH8S3xb9Z2Nc+Jja9FzA6vg==}
     peerDependencies:
       '@netless/fastboard-core': 1.0.0-canary.9
     dependencies:
-      '@netless/fastboard-core': 1.0.0-canary.9(@netless/window-manager@1.0.0-canary.79)(white-web-sdk-esm@2.16.47)
+      '@netless/fastboard-core': 1.0.0-canary.9(@netless/window-manager@1.0.0-canary.79)(white-web-sdk-esm@2.16.48)
       tippy.js: 6.3.7
 
-  /@netless/fastboard@1.0.0-canary.9(@netless/window-manager@1.0.0-canary.79)(white-web-sdk-esm@2.16.47):
+  /@netless/fastboard@1.0.0-canary.9(@netless/window-manager@1.0.0-canary.79)(white-web-sdk-esm@2.16.48):
     resolution: {integrity: sha512-fsSAJ6tL5LVjx1pPtT8B4aAX2fH7N5LiBRwTJCW/EU8YGbF5kD9LbNvD7hh7tqlwN2w6X/EjW3E0Zxq6itaWlg==}
     peerDependencies:
       '@netless/window-manager': '>=1.0.0-canary.0'
@@ -3775,10 +3775,10 @@ packages:
         optional: true
     dependencies:
       '@netless/app-slide': 0.3.0-canary.20
-      '@netless/fastboard-core': 1.0.0-canary.9(@netless/window-manager@1.0.0-canary.79)(white-web-sdk-esm@2.16.47)
+      '@netless/fastboard-core': 1.0.0-canary.9(@netless/window-manager@1.0.0-canary.79)(white-web-sdk-esm@2.16.48)
       '@netless/fastboard-ui': 1.0.0-canary.9(@netless/fastboard-core@1.0.0-canary.9)
-      '@netless/window-manager': 1.0.0-canary.79(white-web-sdk-esm@2.16.47)
-      white-web-sdk: /white-web-sdk-esm@2.16.47
+      '@netless/window-manager': 1.0.0-canary.79(white-web-sdk-esm@2.16.48)
+      white-web-sdk: /white-web-sdk-esm@2.16.48
 
   /@netless/mini-svg-data-uri@0.0.1:
     resolution: {integrity: sha512-HsQ04Yzuh8PV4+N31erOeS2pEC6IHGCO/Y7RNwi3AWaQ5ASRpzUka5TxWE4QEXZoseccthcjVL5XN687b/cwRg==}
@@ -3795,7 +3795,7 @@ packages:
       localforage: 1.10.0
       lodash: 4.17.21
 
-  /@netless/sync-player@1.0.7(white-web-sdk-esm@2.16.47):
+  /@netless/sync-player@1.0.7(white-web-sdk-esm@2.16.48):
     resolution: {integrity: sha512-r4gnHRosOI95NYZwqSedDI8WR4m5mkuO8Ueq9blHOJ1ZjbeB8bMIdmZJ4nLcXKO/EhxEt8xlF8qJelOF7LCsrA==}
     peerDependencies:
       white-web-sdk: '>=2'
@@ -3806,10 +3806,10 @@ packages:
       eventemitter3: 4.0.7
       side-effect-manager: 1.2.1
       video.js: 7.20.3
-      white-web-sdk: /white-web-sdk-esm@2.16.47
+      white-web-sdk: /white-web-sdk-esm@2.16.48
     dev: false
 
-  /@netless/synced-store@2.0.7(white-web-sdk-esm@2.16.47):
+  /@netless/synced-store@2.0.7(white-web-sdk-esm@2.16.48):
     resolution: {integrity: sha512-E5ukXMTLa0Mlhlv9Rcy3MJSAM5kwiLoXQy42OCSIFdBR8jf0BKbSUXSjnA8J+FZq6UidNtGaadDWjhwlM1z5MA==}
     peerDependencies:
       white-web-sdk: '>= 2.16'
@@ -3821,7 +3821,7 @@ packages:
       remitter: 0.2.9
       side-effect-manager: 1.2.1
       value-enhancer: 1.3.2
-      white-web-sdk: /white-web-sdk-esm@2.16.47
+      white-web-sdk: /white-web-sdk-esm@2.16.48
 
   /@netless/telebox-insider@1.0.0-alpha.37:
     resolution: {integrity: sha512-Fazjl/sLaqXPASEvc3ZC+uQSzaCmlmOIpcTwokP//Hn9u4f6C1HvU1veIF1An+s6s44gSYkS9IegYZrGt5cOsg==}
@@ -3840,7 +3840,7 @@ packages:
       html2canvas: 1.4.1
     dev: false
 
-  /@netless/window-manager@1.0.0-canary.79(white-web-sdk-esm@2.16.47):
+  /@netless/window-manager@1.0.0-canary.79(white-web-sdk-esm@2.16.48):
     resolution: {integrity: sha512-Knj/uuX6qmpo7jgrzKapdnmwjNIEzXw12NdsmTnuJV1s4XyTW8KRrUcFe7qt+rvm7f3r/bgeYk+ebnFjICVxQQ==}
     peerDependencies:
       white-web-sdk: ^2.16.0
@@ -3849,7 +3849,7 @@ packages:
         optional: true
     dependencies:
       '@juggle/resize-observer': 3.4.0
-      '@netless/synced-store': 2.0.7(white-web-sdk-esm@2.16.47)
+      '@netless/synced-store': 2.0.7(white-web-sdk-esm@2.16.48)
       '@netless/telebox-insider': 1.0.0-alpha.37
       emittery: 0.11.0
       jspdf: 2.5.1
@@ -3858,7 +3858,7 @@ packages:
       side-effect-manager: 1.2.1
       uuid: 9.0.0
       value-enhancer: 1.3.2
-      white-web-sdk: /white-web-sdk-esm@2.16.47
+      white-web-sdk: /white-web-sdk-esm@2.16.48
 
   /@netless/xml-js@1.6.16:
     resolution: {integrity: sha512-QnSH8y3j3DDEW0S3MalYBmR0opeyaecAkzx0ocKYncMDiOdQkhByJgD7AVhXQqH8bA/PVHU0VFP445AbJq6fDQ==}
@@ -20842,8 +20842,8 @@ packages:
     dependencies:
       isexe: 2.0.0
 
-  /white-web-sdk-esm@2.16.47:
-    resolution: {integrity: sha512-hLye9ML433SjhqjkA3IeX3E3ivcskDFtzP7OodW6TinXa9bMAvxylu7GRgq3Rstj4/vGqk9p/U3erDtObrSp/A==}
+  /white-web-sdk-esm@2.16.48:
+    resolution: {integrity: sha512-feTmUyNB2bXr4BszY4AYy+Z7fLDhf+s0JH/debWln8dpo2QmZzk+sVPfknxIVTCrFMDkFsUYfu8vYdTVs4Vltw==}
     dependencies:
       '@juggle/resize-observer': 3.4.0
       '@netless/canvas-polyfill': 0.0.4
