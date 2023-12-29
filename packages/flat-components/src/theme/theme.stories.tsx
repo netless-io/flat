@@ -4,7 +4,7 @@ import "./colors.less";
 import { useIsomorphicLayoutEffect } from "react-use";
 
 const storyMeta: Meta = {
-    title: "Theme/Colors",
+    title: "Theme/Theme",
     parameters: {
         options: {
             showPanel: false,
