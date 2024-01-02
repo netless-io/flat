@@ -36,7 +36,7 @@ export const Rewards = observer<ShortcutsProps>(function Rewards({ classroom }) 
             }
 
             const audio = new Audio(rewardMP3);
-            audio.volume = 0.5;
+            audio.volume = 0.3;
 
             const svga = await loadAnimation;
             const size = svga.size;
