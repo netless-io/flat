@@ -10,6 +10,13 @@ export interface IServiceTextChatEventData {
         text: string;
         senderID: string;
     };
+    "admin-message": {
+        roomUUID: string;
+        uuid: string;
+        timestamp: number;
+        text: string;
+        senderID: string;
+    };
     "ban": {
         roomUUID: string;
         uuid: string;

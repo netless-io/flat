@@ -13,5 +13,5 @@ export default storyMeta;
 export const Overview: Story<RoomStoppedModalProps> = args => <RoomStoppedModal {...args} />;
 Overview.args = {
     roomStatus: RoomStatus.Stopped,
-    isCreator: false,
+    isExitConfirmModalVisible: false,
 };

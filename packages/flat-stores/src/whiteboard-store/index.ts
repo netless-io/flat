@@ -85,11 +85,9 @@ export class WhiteboardStore {
                 // Room creator do not need to listen to this event
                 // as they are in control of exiting room.
                 // Listening to this may interrupt the stop room process.
-                if (!this.isCreator) {
-                    runInAction(() => {
-                        this.isKicked = true;
-                    });
-                }
+                runInAction(() => {
+                    this.isKicked = true;
+                });
             }),
             config.whiteboard.$Val.phase$.subscribe(() => {
                 const room = this.getRoom();
