@@ -223,13 +223,16 @@ export class AgoraRTM extends IServiceTextChat {
             const handler = (msg: RtmMessage, senderID: string): void => {
                 switch (msg.messageType) {
                     case RtmEngine.MessageType.TEXT: {
-                        this.events.emit("room-message", {
-                            uuid: uuidv4(),
-                            roomUUID,
-                            text: msg.text,
-                            senderID,
-                            timestamp: Date.now(),
-                        });
+                        this.events.emit(
+                            senderID === "flat-server" ? "admin-message" : "room-message",
+                            {
+                                uuid: uuidv4(),
+                                roomUUID,
+                                text: msg.text,
+                                senderID,
+                                timestamp: Date.now(),
+                            },
+                        );
                         break;
                     }
                     case RtmEngine.MessageType.RAW: {

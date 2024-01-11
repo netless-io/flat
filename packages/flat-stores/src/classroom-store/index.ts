@@ -216,6 +216,12 @@ export class ClassroomStore {
             ),
         );
 
+        this.sideEffect.addDisposer(
+            this.rtm.events.on("admin-message", ({ text }) => {
+                void message.info(text);
+            }),
+        );
+
         if (!this.isCreator) {
             this.sideEffect.addDisposer(
                 this.rtm.events.on("update-room-status", event => {
