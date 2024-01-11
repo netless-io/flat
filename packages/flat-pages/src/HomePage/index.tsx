@@ -8,13 +8,18 @@ import { MainRoomMenu } from "./MainRoomMenu";
 import { MainRoomListPanel } from "./MainRoomListPanel";
 import { MainRoomHistoryPanel } from "./MainRoomHistoryPanel";
 import { useLoginCheck } from "../utils/use-login-check";
-import { PageStoreContext, RoomStoreContext } from "../components/StoreProvider";
+import {
+    GlobalStoreContext,
+    PageStoreContext,
+    RoomStoreContext,
+} from "../components/StoreProvider";
 import { AppUpgradeModal } from "../components/AppUpgradeModal";
 
 export const HomePage = observer(function HomePage() {
     const sp = useSafePromise();
     const pageStore = useContext(PageStoreContext);
     const roomStore = useContext(RoomStoreContext);
+    const globalStore = useContext(GlobalStoreContext);
 
     const [activeTab, setActiveTab] = useState<"all" | "today" | "periodic">("all");
 
@@ -43,6 +48,10 @@ export const HomePage = observer(function HomePage() {
         }
 
         void refreshRooms();
+
+        // Refresh PMI room list in case of PMI room is created or deleted in other sessions
+        // this only happen once in the homepage as there's [create room] button
+        void globalStore.updatePmiRoomList();
 
         const ticket = window.setInterval(refreshRooms, 30 * 1000);
 

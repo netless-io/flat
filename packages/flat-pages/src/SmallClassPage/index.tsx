@@ -111,7 +111,7 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
                             {...exitConfirmModalProps}
                         />
                         <RoomStatusStoppedModal
-                            isCreator={classroomStore.isCreator}
+                            isExitConfirmModalVisible={exitConfirmModalProps.visible}
                             isRemoteLogin={classroomStore.isRemoteLogin}
                             roomStatus={classroomStore.roomStatus}
                         />

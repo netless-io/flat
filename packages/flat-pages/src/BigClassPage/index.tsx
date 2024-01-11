@@ -94,7 +94,7 @@ export const BigClassPage = withClassroomStore<BigClassPageProps>(
                             {...exitConfirmModalProps}
                         />
                         <RoomStatusStoppedModal
-                            isCreator={classroomStore.isCreator}
+                            isExitConfirmModalVisible={exitConfirmModalProps.visible}
                             isRemoteLogin={classroomStore.isRemoteLogin}
                             roomStatus={classroomStore.roomStatus}
                         />

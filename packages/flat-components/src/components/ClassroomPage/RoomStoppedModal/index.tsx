@@ -4,8 +4,8 @@ import { useTranslate } from "@netless/flat-i18n";
 import { RoomStatus } from "../../../types/room";
 
 export interface RoomStoppedModalProps {
-    isCreator: boolean;
     isRemoteLogin: boolean;
+    isExitConfirmModalVisible: boolean;
     roomStatus: RoomStatus;
     onExit: () => void;
 }
@@ -16,8 +16,8 @@ export interface RoomStoppedModalProps {
  * **Note**: be sure to use `useCallback` when passing the `onExit` prop.
  */
 export const RoomStoppedModal: FC<RoomStoppedModalProps> = ({
-    isCreator,
     isRemoteLogin,
+    isExitConfirmModalVisible,
     roomStatus,
     onExit,
 }) => {
@@ -33,13 +33,13 @@ export const RoomStoppedModal: FC<RoomStoppedModalProps> = ({
 
     useEffect(() => {
         if (roomStatus === RoomStatus.Stopped) {
-            if (isCreator) {
+            if (isExitConfirmModalVisible) {
                 onExit();
             } else {
                 setVisible(true);
             }
         }
-    }, [roomStatus, isCreator, onExit]);
+    }, [roomStatus]);
 
     useEffect(() => {
         let ticket: number | undefined;

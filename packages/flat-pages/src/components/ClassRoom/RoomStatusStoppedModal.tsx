@@ -5,8 +5,8 @@ import { RoomStatus } from "@netless/flat-server-api";
 import { RouteNameType, usePushHistory } from "../../utils/routes";
 
 export interface RoomStatusStoppedModalProps {
-    isCreator: boolean;
     isRemoteLogin: boolean;
+    isExitConfirmModalVisible: boolean;
     roomStatus: RoomStatus;
 }
 
@@ -14,7 +14,7 @@ export interface RoomStatusStoppedModalProps {
  * Show an info modal on joiner side when room status becomes stopped
  */
 export const RoomStatusStoppedModal = observer<RoomStatusStoppedModalProps>(
-    function RoomStatusStoppedModal({ isCreator, isRemoteLogin, roomStatus }) {
+    function RoomStatusStoppedModal({ isRemoteLogin, isExitConfirmModalVisible, roomStatus }) {
         const pushHistory = usePushHistory();
 
         const onExit = useCallback(() => {
@@ -23,7 +23,7 @@ export const RoomStatusStoppedModal = observer<RoomStatusStoppedModalProps>(
 
         return (
             <RoomStoppedModal
-                isCreator={isCreator}
+                isExitConfirmModalVisible={isExitConfirmModalVisible}
                 isRemoteLogin={isRemoteLogin}
                 roomStatus={roomStatus}
                 onExit={onExit}
