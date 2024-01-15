@@ -218,7 +218,7 @@ export class ClassroomStore {
 
         this.sideEffect.addDisposer(
             this.rtm.events.on("admin-message", ({ text }) => {
-                void message.info(text);
+                void message.info(text, 0);
             }),
         );
 
