@@ -20,6 +20,15 @@ export enum RequestErrorCode {
     RoomNotIsEnded,
     RoomNotIsIdle,
 
+    BadRequest = 210000, // bad request
+    JWTVerifyFailed, // jwt verify failed
+    RoomLimit, // join room reach max user limit
+    RoomExpired, // room expired
+    RoomNotBegin, // join room before begin_time
+
+    InternalError = 220000, // unknown error
+    ForwardFailed, // forward failed
+
     PeriodicNotFound = 300000,
     PeriodicIsEnded,
     PeriodicSubRoomHasRunning,
@@ -72,6 +81,10 @@ export const RequestErrorMessage = {
     [RequestErrorCode.RoomNotIsRunning]: "the-room-is-not-in-progress",
     [RequestErrorCode.RoomNotIsEnded]: "the-room-is-not-over-yet",
     [RequestErrorCode.RoomNotIsIdle]: "the-room-has-not-yet-started",
+
+    [RequestErrorCode.RoomLimit]: "the-room-is-full",
+    [RequestErrorCode.RoomExpired]: "the-room-is-expired",
+    [RequestErrorCode.RoomNotBegin]: "the-room-is-not-started-yet",
 
     [RequestErrorCode.PeriodicNotFound]: "periodic-rooms-do-not-exist",
     [RequestErrorCode.PeriodicIsEnded]: "periodic-rooms-have-ended",
