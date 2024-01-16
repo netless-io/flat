@@ -104,9 +104,9 @@ export interface JoinRoomResult {
     showGuide: boolean;
     region: Region;
     billing?: {
-        ExpireAt: string;
-        MaxUser: number;
-        VIPLevel: number; // 0 = normal, 1 = pro
+        expireAt: string;
+        maxUser: number;
+        vipLevel: number; // 0 = normal, 1 = pro
     };
 }
 
