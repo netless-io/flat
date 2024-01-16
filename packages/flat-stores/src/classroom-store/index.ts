@@ -29,7 +29,7 @@ import {
     IServiceWhiteboard,
 } from "@netless/flat-services";
 import { preferencesStore } from "../preferences-store";
-import { sampleSize } from "lodash-es";
+import { noop, sampleSize } from "lodash-es";
 import { format } from "date-fns";
 
 export * from "./constants";
@@ -1472,7 +1472,11 @@ export class ClassroomStore {
         }
     }
 
+    private hideLastAdminMessage: () => void = noop;
+
     private handleAdminMessage(text: string): void {
+        this.hideLastAdminMessage();
+
         if (text && text[0] === "{") {
             try {
                 const data = JSON.parse(text);
@@ -1492,7 +1496,7 @@ export class ClassroomStore {
                         expireAt,
                         minutes,
                     });
-                    void message.info(info, 0);
+                    this.hideLastAdminMessage = message.info(info, 0);
                     return;
                 }
             } catch (error) {
@@ -1502,7 +1506,7 @@ export class ClassroomStore {
         }
 
         if (text) {
-            void message.info(text, 0);
+            this.hideLastAdminMessage = message.info(text, 0);
         }
     }
 }
