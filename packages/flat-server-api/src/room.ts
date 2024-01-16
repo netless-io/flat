@@ -103,6 +103,11 @@ export interface JoinRoomResult {
     rtmToken: string;
     showGuide: boolean;
     region: Region;
+    billing?: {
+        expireAt: string;
+        maxUser: number;
+        vipLevel: number; // 0 = normal, 1 = pro
+    };
 }
 
 export function joinRoom(uuid: string): Promise<JoinRoomResult> {

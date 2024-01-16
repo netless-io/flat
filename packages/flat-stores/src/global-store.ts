@@ -93,7 +93,7 @@ export class GlobalStore {
     }
 
     public get pmiRoomUUID(): string {
-        return (this.pmiRoomList && this.pmiRoomList[0]?.roomUUID) || "";
+        return (this.pmiRoomExist && this.pmiRoomList![0]?.roomUUID) || "";
     }
 
     public get userUUID(): string | undefined {

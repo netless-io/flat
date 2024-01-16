@@ -29,7 +29,8 @@ import {
     IServiceWhiteboard,
 } from "@netless/flat-services";
 import { preferencesStore } from "../preferences-store";
-import { sampleSize } from "lodash-es";
+import { noop, sampleSize } from "lodash-es";
+import { format } from "date-fns";
 
 export * from "./constants";
 export * from "./chat-store";
@@ -218,9 +219,13 @@ export class ClassroomStore {
 
         this.sideEffect.addDisposer(
             this.rtm.events.on("admin-message", ({ text }) => {
-                void message.info(text);
+                this.handleAdminMessage(text);
             }),
         );
+
+        this.sideEffect.addDisposer(() => {
+            this.hideLastAdminMessage();
+        });
 
         if (!this.isCreator) {
             this.sideEffect.addDisposer(
@@ -1468,6 +1473,44 @@ export class ClassroomStore {
             runInAction(() => {
                 this.isJoinedRTC = true;
             });
+        }
+    }
+
+    private hideLastAdminMessage: () => void = noop;
+
+    private handleAdminMessage(text: string): void {
+        this.hideLastAdminMessage();
+
+        if (text && text[0] === "{") {
+            try {
+                const data = JSON.parse(text);
+                if (data && typeof data === "object") {
+                    const msg = data as {
+                        roomLevel: 0 | 1;
+                        expireAt: string;
+                        leftMinutes: number;
+                        message: string;
+                    };
+                    // TODO: roomType = derive from msg.roomLevel
+                    const roomType = FlatI18n.getInstance().language === "zh-CN" ? "" : "its";
+                    const expireAt = format(new Date(msg.expireAt), "HH:mm");
+                    const minutes = msg.leftMinutes;
+                    const info = FlatI18n.t("the-room-is-about-to-end", {
+                        roomType,
+                        expireAt,
+                        minutes,
+                    });
+                    this.hideLastAdminMessage = message.info(info, 0);
+                    return;
+                }
+            } catch (error) {
+                console.warn(error);
+                // fallback to normal message
+            }
+        }
+
+        if (text) {
+            this.hideLastAdminMessage = message.info(text, 0);
         }
     }
 }
