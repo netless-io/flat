@@ -8,17 +8,13 @@ export const errorTips = (e: unknown): void => {
     }
 
     if (isServerRequestError(e)) {
-        if (e.errorMessage) {
-            void message.error({
-                content: FlatI18n.t(e.errorMessage),
-                key: e.errorCode,
-            });
-        } else {
-            void message.error({
-                content: FlatI18n.t("error-code-error", { code: `${e.errorCode}` }),
-                key: e.errorCode,
-            });
+        let content = e.errorMessage
+            ? FlatI18n.t(e.errorMessage)
+            : FlatI18n.t("error-code-error", { code: `${e.errorCode}` });
+        if (e.serverMessage) {
+            content += " (" + e.serverMessage + ")";
         }
+        void message.error({ content, key: e.errorCode });
     } else if ((e as Error).message) {
         const { message: content, message: key } = e as Error;
         void message.error({ content, key });
