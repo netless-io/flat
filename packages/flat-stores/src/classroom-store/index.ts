@@ -223,6 +223,10 @@ export class ClassroomStore {
             }),
         );
 
+        this.sideEffect.addDisposer(() => {
+            this.hideLastAdminMessage();
+        });
+
         if (!this.isCreator) {
             this.sideEffect.addDisposer(
                 this.rtm.events.on("update-room-status", event => {
