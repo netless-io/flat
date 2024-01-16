@@ -71,6 +71,7 @@
   "student-left-temporarily": "Student has left",
   "user-left-temporarily": "has left",
   "the-room-has-ended-and-is-about-to-exit": "The room has ended and is about to exit...",
+  "the-room-is-about-to-end": "The room is about to reach {{roomType}} duration limit and will end at {{expireAt}} ({{minutes}} minutes left)",
   "you-have-entered-the-room-at-another-device": "You have entered the room at another device",
   "class-picker-text": {
     "BigClass": "Large number of students",
