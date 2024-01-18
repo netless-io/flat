@@ -51,6 +51,8 @@ export class GlobalStore {
     public pmi: string | null = null;
     public pmiRoomList: PmiRoom[] | null = [];
 
+    public requestRefreshRooms = false;
+
     // login with password
     public currentAccount: Account | null = null;
     public accountHistory: Account[] = [];
@@ -319,6 +321,10 @@ export class GlobalStore {
     public updateServerRegionConfig = (config: ServerRegionConfig | null): void => {
         this.serverRegionConfig = config;
     };
+
+    public setRequestRefreshRooms(value = true): void {
+        this.requestRefreshRooms = value;
+    }
 }
 
 export const globalStore = new GlobalStore();

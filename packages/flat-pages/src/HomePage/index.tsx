@@ -60,6 +60,18 @@ export const HomePage = observer(function HomePage() {
         };
     }, [refreshRooms, isLogin]);
 
+    useEffect(() => {
+        if (!isLogin) {
+            return;
+        }
+
+        if (globalStore.requestRefreshRooms) {
+            void refreshRooms();
+            void globalStore.updatePmiRoomList();
+            globalStore.setRequestRefreshRooms(false);
+        }
+    }, [refreshRooms, isLogin, globalStore.requestRefreshRooms]);
+
     return (
         <div className="homepage-layout-horizontal-container">
             <MainRoomMenu />

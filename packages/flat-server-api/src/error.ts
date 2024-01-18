@@ -28,9 +28,10 @@ export enum RequestErrorCode {
 
     BadRequest = 210000, // bad request
     JWTVerifyFailed, // jwt verify failed
-    RoomLimit, // join room reach max user limit
+    RoomUserLimit, // join room reach max user limit
     RoomExpired, // room expired
     RoomNotBegin, // join room before begin_time
+    RoomCreateLimit, // create room reach max limit
 
     InternalError = 220000, // unknown error
     ForwardFailed, // forward failed
@@ -117,9 +118,10 @@ export const RequestErrorMessage = {
 
     [RequestErrorCode.BadRequest]: "bad-request",
     [RequestErrorCode.JWTVerifyFailed]: "jwt-verify-failed",
-    [RequestErrorCode.RoomLimit]: "the-room-is-full",
+    [RequestErrorCode.RoomUserLimit]: "the-room-is-full",
     [RequestErrorCode.RoomExpired]: "the-room-is-expired",
     [RequestErrorCode.RoomNotBegin]: "the-room-is-not-started-yet",
+    [RequestErrorCode.RoomCreateLimit]: "rooms-has-reached-the-limit",
 
     [RequestErrorCode.InternalError]: "unknown-error",
     [RequestErrorCode.ForwardFailed]: "forward-failed",

@@ -38,6 +38,15 @@ export const joinRoomHandler = async (
                 new Error("failed to join room: incorrect room type");
             }
         }
+
+        if (data.billing && data.billing.vipLevel === 0) {
+            void message.info(
+                FlatI18n.t("time-limit-tip", {
+                    roomType: FlatI18n.t("vip-level." + data.billing.vipLevel),
+                    minutes: data.billing.limit,
+                }),
+            );
+        }
     } catch (e) {
         // if room not found and is pmi room, show wait for teacher to enter
         if (e.message.includes(RequestErrorCode.RoomNotFoundAndIsPmi)) {
@@ -46,5 +55,7 @@ export const joinRoomHandler = async (
         }
         pushHistory(RouteNameType.HomePage);
         errorTips(e);
+
+        globalStore.setRequestRefreshRooms(true);
     }
 };

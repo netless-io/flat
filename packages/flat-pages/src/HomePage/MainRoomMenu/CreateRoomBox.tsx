@@ -15,6 +15,7 @@ import {
     PmiDesc,
     PmiExistTip,
     Region,
+    errorTips,
     formatInviteCode,
 } from "flat-components";
 import { Input, Modal, Checkbox, Form, InputRef, Dropdown, message, Button } from "antd";
@@ -290,6 +291,7 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
             showModal(false);
         } catch (e) {
             console.error(e);
+            errorTips(e);
             setLoading(false);
         }
     }

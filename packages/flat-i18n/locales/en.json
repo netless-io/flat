@@ -642,9 +642,15 @@
   "bad-request": "Bad request",
   "jwt-verify-failed": "Login verify failed",
   "forward-failed": "Request failed",
-  "the-room-is-full": "The room is full",
-  "the-room-is-expired": "The room has expired",
-  "the-room-is-not-started-yet": "The room has not started yet",
+  "rooms-has-reached-the-limit": "You have reached the limit of creating rooms this month, upgrade your account to create more rooms",
+  "the-room-is-full": "The room is full, please try again later or contact the owner",
+  "the-room-is-expired": "The room has ended",
+  "the-room-is-not-started-yet": "The room has not started yet, please try again later",
+  "time-limit-tip": "This {{roomType}} room has a limit of {{minutes}} minutes",
+  "vip-level": {
+    "0": "free",
+    "1": ""
+  },
   "members": "Members",
   "staging": "On Stage",
   "stage-on": "You are on stage",
