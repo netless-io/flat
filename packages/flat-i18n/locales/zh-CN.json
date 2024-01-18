@@ -642,9 +642,15 @@
   "bad-request": "请求参数错误",
   "jwt-verify-failed": "登录信息获取失败",
   "forward-failed": "请求出错",
-  "the-room-is-full": "房间人数已达上限",
+  "rooms-has-reached-the-limit": "本月创建免费房间个数已达上限，升级版本享受更多权益",
+  "the-room-is-full": "免费版房间人数已达上限，暂时无法加入，请联系老师解决",
   "the-room-is-expired": "房间已结束",
-  "the-room-is-not-started-yet": "房间还未开始",
+  "the-room-is-not-started-yet": "房间未开始，开课前 5 分钟可进入，已将该房间添加到房间列表",
+  "time-limit-tip": "你已加入{{roomType}} {{minutes}} 分钟限时房间",
+  "vip-level": {
+    "0": "免费版",
+    "1": "专业版"
+  },
   "members": "学生",
   "staging": "上/下台",
   "stage-on": "你已上台",
