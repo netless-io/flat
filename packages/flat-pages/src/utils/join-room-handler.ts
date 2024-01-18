@@ -55,5 +55,7 @@ export const joinRoomHandler = async (
         }
         pushHistory(RouteNameType.HomePage);
         errorTips(e);
+
+        globalStore.setRequestRefreshRooms(true);
     }
 };
