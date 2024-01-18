@@ -5,13 +5,15 @@ import { FlatI18n } from "@netless/flat-i18n";
 export const errorTips = (e: unknown): void => {
     if (process.env.NODE_ENV === "development") {
         console.error(e);
+        // console.error() cannot show properties of the error object
+        console.log(Object.assign({}, e));
     }
 
     if (isServerRequestError(e)) {
         let content = e.errorMessage
             ? FlatI18n.t(e.errorMessage)
             : FlatI18n.t("error-code-error", { code: `${e.errorCode}` });
-        if (e.serverMessage) {
+        if (!e.errorMessage && e.serverMessage) {
             content += " (" + e.serverMessage + ")";
         }
         void message.error({ content, key: e.errorCode });
