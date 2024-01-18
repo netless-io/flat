@@ -26,6 +26,15 @@ export enum RequestErrorCode {
     RoomExists, // (pmi) room already exists, cannot create new room
     RoomNotFoundAndIsPmi, // room not found and the invite code is pmi
 
+    BadRequest = 210000, // bad request
+    JWTVerifyFailed, // jwt verify failed
+    RoomLimit, // join room reach max user limit
+    RoomExpired, // room expired
+    RoomNotBegin, // join room before begin_time
+
+    InternalError = 220000, // unknown error
+    ForwardFailed, // forward failed
+
     PeriodicNotFound = 300000,
     PeriodicIsEnded,
     PeriodicSubRoomHasRunning,
@@ -106,6 +115,15 @@ export const RequestErrorMessage = {
     [RequestErrorCode.RoomExists]: "the-pmi-room-already-exists",
     [RequestErrorCode.RoomNotFoundAndIsPmi]: "wait-for-teacher-to-enter",
 
+    [RequestErrorCode.BadRequest]: "bad-request",
+    [RequestErrorCode.JWTVerifyFailed]: "jwt-verify-failed",
+    [RequestErrorCode.RoomLimit]: "the-room-is-full",
+    [RequestErrorCode.RoomExpired]: "the-room-is-expired",
+    [RequestErrorCode.RoomNotBegin]: "the-room-is-not-started-yet",
+
+    [RequestErrorCode.InternalError]: "unknown-error",
+    [RequestErrorCode.ForwardFailed]: "forward-failed",
+
     [RequestErrorCode.PeriodicNotFound]: "periodic-rooms-do-not-exist",
     [RequestErrorCode.PeriodicIsEnded]: "periodic-rooms-have-ended",
     [RequestErrorCode.PeriodicSubRoomHasRunning]: "periodic-sub-rooms-do-not-exist",
@@ -158,12 +176,14 @@ export const RequestErrorMessage = {
 export class ServerRequestError extends Error {
     public errorCode: RequestErrorCode;
     public errorMessage: string;
+    public serverMessage?: string;
 
-    public constructor(errorCode: RequestErrorCode) {
+    public constructor(errorCode: RequestErrorCode, message?: string) {
         super(`request failed: ${errorCode} (${RequestErrorCode[errorCode]})`);
         this.name = this.constructor.name;
         this.errorCode = errorCode;
         this.errorMessage = RequestErrorMessage[errorCode];
+        this.serverMessage = message;
     }
 }
 

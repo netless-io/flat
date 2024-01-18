@@ -26,6 +26,7 @@ export type FlatServerRawResponseData<T> =
     | {
           status: Status.Failed;
           code: RequestErrorCode;
+          message?: string;
       };
 
 export function setFlatAuthToken(token: string): void {
@@ -122,7 +123,7 @@ export async function requestFlatServer<TPayload, TResult>(
     const data: FlatServerRawResponseData<TResult> = await response.json();
 
     if (data.status !== Status.Success && data.status !== Status.Process) {
-        throw new ServerRequestError(data.code);
+        throw new ServerRequestError(data.code, data.message);
     }
 
     return data;
