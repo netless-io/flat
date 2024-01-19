@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import { matchPath, useLocation } from "react-router-dom";
 import { GlobalStoreContext } from "@netless/flat-pages/src/components/StoreProvider";
+import { joinRoomHandler } from "@netless/flat-pages/src/utils/join-room-handler";
 import { urlProtocolStore } from "../../stores/url-protocol-store";
-import { joinRoomHandler } from "../../pages/utils/join-room-handler";
 import { useAutoRun } from "../mobx";
 import { usePushHistory, RouteNameType, RouteParams } from "../routes";
 import { ClassRouteName, routeConfig } from "../../route-config";

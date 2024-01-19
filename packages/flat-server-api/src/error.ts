@@ -179,13 +179,15 @@ export class ServerRequestError extends Error {
     public errorCode: RequestErrorCode;
     public errorMessage: string;
     public serverMessage?: string;
+    public detail?: unknown;
 
-    public constructor(errorCode: RequestErrorCode, message?: string) {
+    public constructor(errorCode: RequestErrorCode, message?: string, detail?: unknown) {
         super(`request failed: ${errorCode} (${RequestErrorCode[errorCode]})`);
         this.name = this.constructor.name;
         this.errorCode = errorCode;
         this.errorMessage = RequestErrorMessage[errorCode];
         this.serverMessage = message;
+        this.detail = detail;
     }
 }
 

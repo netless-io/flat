@@ -646,6 +646,7 @@
   "the-room-is-full": "免费版房间人数已达上限，暂时无法加入，请联系老师解决",
   "the-room-is-expired": "房间已结束",
   "the-room-is-not-started-yet": "房间未开始，开课前 5 分钟可进入，已将该房间添加到房间列表",
+  "your-room-is-not-started-yet": "房间未开始，开课前 5 分钟可进入",
   "time-limit-tip": "你已加入{{roomType}} {{minutes}} 分钟限时房间",
   "vip-level": {
     "0": "免费版",
