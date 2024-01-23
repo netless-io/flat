@@ -81,7 +81,7 @@ export function RoomListItem<T extends string = string>({
         } else if (diffMinutes !== null && oneHour <= diffMinutes && diffMinutes < 24 * oneHour) {
             const timer = setTimeout(
                 () => forceUpdate(a => (a + 1) | 0),
-                (diffMinutes - oneHour) * 60_000 + ((Math.random() * 3000) | 0),
+                (diffMinutes - oneHour + 1) * 60_000 + ((Math.random() * 3000) | 0),
             );
             return () => clearTimeout(timer);
         }
