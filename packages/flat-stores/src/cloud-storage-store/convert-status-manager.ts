@@ -67,7 +67,7 @@ export class ConvertStatusManager {
                     }
                 }
             } catch (error) {
-                console.error(error);
+                console.warn(error);
                 runInAction(() => {
                     if (file.meta.whiteboardProjector) {
                         file.meta.whiteboardProjector.convertStep = FileConvertStep.Failed;
@@ -76,7 +76,7 @@ export class ConvertStatusManager {
                         file.meta.whiteboardConvert.convertStep = FileConvertStep.Failed;
                     }
                 });
-                await convertFinish({ fileUUID: file.fileUUID });
+                await convertFinish({ fileUUID: file.fileUUID }).catch(console.warn);
                 return;
             }
         }
