@@ -100,6 +100,17 @@ export class FlatServiceProviderFile implements IServiceFile {
             return FileConvertStep.None;
         }
 
+        // The file may already failed (answered by the server) and we never get a task uuid to query the status.
+        if (taskResult.convertStep === FileConvertStep.Failed) {
+            this.toaster.emit(
+                "error",
+                this.flatI18n.t("transcoding-failure-reason", {
+                    reason: this.flatI18n.t("unknown-error"),
+                }),
+            );
+            return FileConvertStep.Failed;
+        }
+
         if (taskResult.convertStep !== FileConvertStep.Done) {
             const serviceName = `file-convert:${ext}` as const;
             const convertService = await this.flatServices.requestService(serviceName, false);
