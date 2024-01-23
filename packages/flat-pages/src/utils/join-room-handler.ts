@@ -1,12 +1,14 @@
-import { RouteNameType, usePushHistory } from "../utils/routes";
+import { RouteNameType } from "../utils/routes";
 import { roomStore, globalStore } from "@netless/flat-stores";
-import { RequestErrorCode, RoomType } from "@netless/flat-server-api";
+import { RequestErrorCode, RoomType, ServerRequestError } from "@netless/flat-server-api";
 import { errorTips, message } from "flat-components";
 import { FlatI18n } from "@netless/flat-i18n";
 
 export const joinRoomHandler = async (
     roomUUID: string,
-    pushHistory: ReturnType<typeof usePushHistory>,
+    // The 'pushHistory()' signature is different in electron and in web.
+    // Use 'any' here since we only use the same part between them.
+    pushHistory: (routeName: any, data?: any) => void,
 ): Promise<void> => {
     const formatRoomUUID = roomUUID.replace(/\s+/g, "");
 
@@ -53,6 +55,20 @@ export const joinRoomHandler = async (
             void message.info(FlatI18n.t("wait-for-teacher-to-enter"));
             return;
         }
+
+        // if room not started, show different message according to owner
+        if (e.errorCode === RequestErrorCode.RoomNotBegin && e.detail) {
+            const { ownerUUID } = e.detail as {
+                uuid: string;
+                beginTime: number;
+                ownerUUID: string;
+            };
+            if (globalStore.userUUID === ownerUUID) {
+                (e as ServerRequestError).errorMessage = "your-room-is-not-started-yet";
+            }
+            // show it in error tips
+        }
+
         pushHistory(RouteNameType.HomePage);
         errorTips(e);
 
