@@ -52,6 +52,9 @@ export class GlobalStore {
     public pmiRoomList: PmiRoom[] | null = [];
 
     public requestRefreshRooms = false;
+    // when get RoomNotBegin error, store the room's UUID here
+    // and show the modal to tell the user which room is added to the list.
+    public roomNotBeginRoomUUID: string | null = null;
 
     // login with password
     public currentAccount: Account | null = null;
@@ -324,6 +327,10 @@ export class GlobalStore {
 
     public setRequestRefreshRooms(value = true): void {
         this.requestRefreshRooms = value;
+    }
+
+    public updateRoomNotBeginRoomUUID(roomUUID: string | null): void {
+        this.roomNotBeginRoomUUID = roomUUID;
     }
 }
 

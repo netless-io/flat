@@ -58,15 +58,21 @@ export const joinRoomHandler = async (
 
         // if room not started, show different message according to owner
         if (e.errorCode === RequestErrorCode.RoomNotBegin && e.detail) {
-            const { ownerUUID } = e.detail as {
+            const { uuid, ownerUUID } = e.detail as {
                 uuid: string;
                 beginTime: number;
                 ownerUUID: string;
             };
             if (globalStore.userUUID === ownerUUID) {
                 (e as ServerRequestError).errorMessage = "your-room-is-not-started-yet";
+                // show it in error tips
+            } else {
+                pushHistory(RouteNameType.HomePage);
+                globalStore.setRequestRefreshRooms(true);
+                // show the modal
+                globalStore.updateRoomNotBeginRoomUUID(uuid);
+                return;
             }
-            // show it in error tips
         }
 
         pushHistory(RouteNameType.HomePage);

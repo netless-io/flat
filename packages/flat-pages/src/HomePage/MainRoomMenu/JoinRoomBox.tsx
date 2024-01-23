@@ -109,19 +109,21 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
                                         overlay={
                                             <Menu
                                                 className="join-room-box-dropdown-menu"
+                                                items={globalStore.roomHistory.map(room => ({
+                                                    key: room.uuid,
+                                                    label: (
+                                                        <>
+                                                            <span className="room-title">
+                                                                {room.title}
+                                                            </span>
+                                                            <span className="invite-code">
+                                                                {formatInviteCode("", room.uuid)}
+                                                            </span>
+                                                        </>
+                                                    ),
+                                                }))}
                                                 onClick={e => selectRoomFromHistory(e.key)}
-                                            >
-                                                {globalStore.roomHistory.map(room => (
-                                                    <Menu.Item key={room.uuid}>
-                                                        <span className="room-title">
-                                                            {room.title}
-                                                        </span>
-                                                        <span className="invite-code">
-                                                            {formatInviteCode("", room.uuid)}
-                                                        </span>
-                                                    </Menu.Item>
-                                                ))}
-                                            </Menu>
+                                            />
                                         }
                                         overlayClassName="join-room-box-dropdown"
                                     >

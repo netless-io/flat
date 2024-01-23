@@ -136,8 +136,10 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
                             beginTime={beginTime}
                             endTime={endTime}
                             generateAvatar={generateAvatar}
+                            inviteCode={room.inviteCode}
                             isPeriodic={!!room.periodicUUID}
                             isPmi={room.inviteCode === globalStore.pmi}
+                            joinEarly={globalStore.serverRegionConfig?.server.joinEarly}
                             menuActions={getSubActions(room)}
                             ownerAvatar={room.ownerAvatarURL}
                             ownerName={room.ownerName}

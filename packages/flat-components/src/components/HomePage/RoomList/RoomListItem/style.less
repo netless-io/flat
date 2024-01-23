@@ -36,7 +36,7 @@
     border-radius: 50%;
     font-size: 0;
 
-    > img {
+    >img {
         width: 100%;
         height: 100%;
         object-fit: cover;
@@ -46,11 +46,15 @@
 .room-list-item-middle {
     flex: 1;
     padding: 4px 8px;
+
+    >div {
+        min-height: 22px;
+    }
 }
 
 .room-list-item-title {
-    display: inline;
-    margin: 0 8px 4px 0;
+    display: inline-block;
+    margin: 0 8px 6px 0;
     font-size: 16px;
     font-weight: 600;
     word-break: break-all;
@@ -62,19 +66,34 @@
 }
 
 .room-list-item-info {
-    & > * {
+    &>* {
         margin-right: 8px;
     }
 }
 
 .room-list-item-time-date {
-    margin-bottom: 4px;
+    margin-bottom: 6px;
     white-space: wrap;
     word-break: break-all;
 
-    > * {
+    >* {
         white-space: nowrap;
         word-break: keep-all;
+    }
+}
+
+.room-list-item-uuid {
+    margin: -6px auto -8px -8px;
+    padding: 4px 8px;
+    border: 0;
+    border-radius: 4px;
+    background-color: transparent;
+    transition: background-color 0.2s;
+    cursor: pointer;
+
+    &.active,
+    &:hover {
+        background-color: var(--grey-0);
     }
 }
 
@@ -83,6 +102,10 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-end;
+
+    >span {
+        margin: 0 4px 2px;
+    }
 }
 
 .room-list-item-more {
@@ -129,5 +152,10 @@
                 background-color: var(--grey-11);
             }
         }
+    }
+
+    .room-list-item-uuid.active,
+    .room-list-item-uuid:hover {
+        background-color: var(--grey-10);
     }
 }

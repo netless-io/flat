@@ -16,6 +16,8 @@ export type ServerRegionConfigResult = {
         region: string;
         regionCode: number;
         env: string;
+        /** in minutes */
+        joinEarly: number;
     };
     whiteboard: {
         appId: string;

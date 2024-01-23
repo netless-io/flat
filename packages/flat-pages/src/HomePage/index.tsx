@@ -14,6 +14,7 @@ import {
     RoomStoreContext,
 } from "../components/StoreProvider";
 import { AppUpgradeModal } from "../components/AppUpgradeModal";
+import { RoomNotBeginModal } from "../components/RoomNotBeginModal";
 
 export const HomePage = observer(function HomePage() {
     const sp = useSafePromise();
@@ -84,6 +85,7 @@ export const HomePage = observer(function HomePage() {
                 />
                 <MainRoomHistoryPanel refreshRooms={refreshRooms} roomStore={roomStore} />
             </div>
+            <RoomNotBeginModal />
             <AppUpgradeModal />
         </div>
     );
