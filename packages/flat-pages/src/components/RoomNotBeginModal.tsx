@@ -16,6 +16,7 @@ export const RoomNotBeginModal = observer<RoomNotBeginModalProps>(function RoomN
     const uuid = globalStore.roomNotBeginRoomUUID;
     const joinEarly = globalStore.serverRegionConfig?.server.joinEarly || 5;
 
+    const hasRoom = uuid && roomStore.rooms.has(uuid);
     const closeModal = (): void => setOpen(false);
 
     useEffect(() => {
@@ -31,10 +32,11 @@ export const RoomNotBeginModal = observer<RoomNotBeginModalProps>(function RoomN
             setOpen(true);
             globalStore.updateRoomNotBeginRoomUUID(null);
         }
-    }, [uuid, roomStore]);
+    }, [uuid, hasRoom]);
 
     return (
         <Modal
+            centered
             className="room-not-begin-modal"
             footer={[
                 <Button key="confirm" type="primary" onClick={closeModal}>
