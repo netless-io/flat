@@ -99,8 +99,8 @@ importers:
         specifier: ^6.6.1
         version: 6.6.1(eslint@8.23.1)
       eslint-plugin-prettier:
-        specifier: ^4.2.1
-        version: 4.2.1(eslint-config-prettier@8.5.0)(eslint@8.23.1)(prettier@2.7.1)
+        specifier: ^5.1.3
+        version: 5.1.3(eslint-config-prettier@8.5.0)(eslint@8.23.1)(prettier@3.2.4)
       eslint-plugin-react:
         specifier: ^7.31.8
         version: 7.31.8(eslint@8.23.1)
@@ -120,8 +120,8 @@ importers:
         specifier: ^13.0.3
         version: 13.0.3
       prettier:
-        specifier: ^2.7.1
-        version: 2.7.1
+        specifier: ^3.2.4
+        version: 3.2.4
       svglint:
         specifier: ^2.1.1
         version: 2.1.1
@@ -571,8 +571,8 @@ importers:
         version: 1.3.2
     devDependencies:
       prettier:
-        specifier: ^2.7.1
-        version: 2.7.1
+        specifier: ^3.2.4
+        version: 3.2.4
       react:
         specifier: ^17.0.2
         version: 17.0.2
@@ -710,8 +710,8 @@ importers:
   packages/flat-server-api:
     devDependencies:
       prettier:
-        specifier: ^2.7.1
-        version: 2.7.1
+        specifier: ^3.2.4
+        version: 3.2.4
       typescript:
         specifier: ^4.8.3
         version: 4.8.3
@@ -735,8 +735,8 @@ importers:
         version: 1.3.2
     devDependencies:
       prettier:
-        specifier: ^2.7.1
-        version: 2.7.1
+        specifier: ^3.2.4
+        version: 3.2.4
       typescript:
         specifier: ^4.8.3
         version: 4.8.3
@@ -781,8 +781,8 @@ importers:
         specifier: ^6.6.1
         version: 6.6.2
       prettier:
-        specifier: ^2.7.1
-        version: 2.7.1
+        specifier: ^3.2.4
+        version: 3.2.4
       react:
         specifier: ^17.0.2
         version: 17.0.2
@@ -813,8 +813,8 @@ importers:
         version: 1.3.2
     devDependencies:
       prettier:
-        specifier: ^2.7.1
-        version: 2.7.1
+        specifier: ^3.2.4
+        version: 3.2.4
       typescript:
         specifier: ^4.8.3
         version: 4.8.3
@@ -835,8 +835,8 @@ importers:
         version: 1.2.1
     devDependencies:
       prettier:
-        specifier: ^2.7.1
-        version: 2.7.1
+        specifier: ^3.2.4
+        version: 3.2.4
       typescript:
         specifier: ^4.8.3
         version: 4.8.3
@@ -857,8 +857,8 @@ importers:
         version: 1.3.2
     devDependencies:
       prettier:
-        specifier: ^2.7.1
-        version: 2.7.1
+        specifier: ^3.2.4
+        version: 3.2.4
       typescript:
         specifier: ^4.8.3
         version: 4.8.3
@@ -882,8 +882,8 @@ importers:
         version: 9.0.0
     devDependencies:
       prettier:
-        specifier: ^2.7.1
-        version: 2.7.1
+        specifier: ^3.2.4
+        version: 3.2.4
       typescript:
         specifier: ^4.8.3
         version: 4.8.3
@@ -898,8 +898,8 @@ importers:
         version: 0.2.9
     devDependencies:
       prettier:
-        specifier: ^2.7.1
-        version: 2.7.1
+        specifier: ^3.2.4
+        version: 3.2.4
       typescript:
         specifier: ^4.8.3
         version: 4.8.3
@@ -914,8 +914,8 @@ importers:
         version: link:../../../packages/flat-server-api
     devDependencies:
       prettier:
-        specifier: ^2.7.1
-        version: 2.7.1
+        specifier: ^3.2.4
+        version: 3.2.4
       typescript:
         specifier: ^4.8.3
         version: 4.8.3
@@ -957,8 +957,8 @@ importers:
         version: /white-web-sdk-esm@2.16.48
     devDependencies:
       prettier:
-        specifier: ^2.7.1
-        version: 2.7.1
+        specifier: ^3.2.4
+        version: 3.2.4
       typescript:
         specifier: ^4.8.3
         version: 4.8.3
@@ -973,8 +973,8 @@ importers:
         version: link:../../packages/flat-services
     devDependencies:
       prettier:
-        specifier: ^2.7.1
-        version: 2.7.1
+        specifier: ^3.2.4
+        version: 3.2.4
       typescript:
         specifier: ^4.8.3
         version: 4.8.3
@@ -989,8 +989,8 @@ importers:
         version: link:../../packages/flat-services
     devDependencies:
       prettier:
-        specifier: ^2.7.1
-        version: 2.7.1
+        specifier: ^3.2.4
+        version: 3.2.4
       typescript:
         specifier: ^4.8.3
         version: 4.8.3
@@ -1017,8 +1017,8 @@ importers:
         version: 1.3.2
     devDependencies:
       prettier:
-        specifier: ^2.7.1
-        version: 2.7.1
+        specifier: ^3.2.4
+        version: 3.2.4
       typescript:
         specifier: ^4.8.3
         version: 4.8.3
@@ -1039,8 +1039,8 @@ importers:
         version: link:../../packages/flat-services
     devDependencies:
       prettier:
-        specifier: ^2.7.1
-        version: 2.7.1
+        specifier: ^3.2.4
+        version: 3.2.4
       typescript:
         specifier: ^4.8.3
         version: 4.8.3
@@ -3915,6 +3915,11 @@ packages:
     dependencies:
       mkdirp: 1.0.4
       rimraf: 3.0.2
+    dev: true
+
+  /@pkgr/core@0.1.1:
+    resolution: {integrity: sha512-cq8o4cWH0ibXh9VGi5P20Tu9XF/0fFXl9EUinr9QfTM7a7p0oTA4iJRCQWppXR1Pg8dSM0UCItCkPwsk9qWWYA==}
+    engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
     dev: true
 
   /@pmmmwh/react-refresh-webpack-plugin@0.4.3(@types/webpack@4.41.32)(webpack@5.74.0):
@@ -10657,14 +10662,17 @@ packages:
       semver: 6.3.0
     dev: true
 
-  /eslint-plugin-prettier@4.2.1(eslint-config-prettier@8.5.0)(eslint@8.23.1)(prettier@2.7.1):
-    resolution: {integrity: sha512-f/0rXLXUt0oFYs8ra4w49wYZBG5GKZpAYsJSm6rnYL5uVDjd+zowwMwVZHnAjf4edNrKpCDYfXDgmRE/Ak7QyQ==}
-    engines: {node: '>=12.0.0'}
+  /eslint-plugin-prettier@5.1.3(eslint-config-prettier@8.5.0)(eslint@8.23.1)(prettier@3.2.4):
+    resolution: {integrity: sha512-C9GCVAs4Eq7ZC/XFQHITLiHJxQngdtraXaM+LoUFoFp/lHNl2Zn8f3WQbe9HvTBBQ9YnKFB0/2Ajdqwo5D1EAw==}
+    engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
-      eslint: '>=7.28.0 || ^8'
+      '@types/eslint': ^8
+      eslint: '>=8.0.0 || ^8'
       eslint-config-prettier: '*'
-      prettier: '>=2.0.0'
+      prettier: '>=3.0.0'
     peerDependenciesMeta:
+      '@types/eslint':
+        optional: true
       eslint:
         optional: true
       eslint-config-prettier:
@@ -10672,8 +10680,9 @@ packages:
     dependencies:
       eslint: 8.23.1
       eslint-config-prettier: 8.5.0(eslint@8.23.1)
-      prettier: 2.7.1
+      prettier: 3.2.4
       prettier-linter-helpers: 1.0.0
+      synckit: 0.8.8
     dev: true
 
   /eslint-plugin-react-hooks@4.5.0(eslint@8.23.1):
@@ -16071,9 +16080,9 @@ packages:
     hasBin: true
     dev: true
 
-  /prettier@2.7.1:
-    resolution: {integrity: sha512-ujppO+MkdPqoVINuDFDRLClm7D78qbDt0/NR+wp5FqEZOoTNAjPHWj17QRhu7geIHJfcNhRk1XVQmF8Bp3ye+g==}
-    engines: {node: '>=10.13.0'}
+  /prettier@3.2.4:
+    resolution: {integrity: sha512-FWu1oLHKCrtpO1ypU6J0SbK2d9Ckwysq6bHj/uaCP26DxrPpppCLQRGVuqAxSTvhF00AcvDRyYrLNW7ocBhFFQ==}
+    engines: {node: '>=14'}
     hasBin: true
     dev: true
 
@@ -17156,6 +17165,7 @@ packages:
       prop-types: 15.8.1
       react: 16.14.0
       scheduler: 0.19.1
+    bundledDependencies: false
 
   /react-dom@17.0.2(react@17.0.2):
     resolution: {integrity: sha512-s4h96KtLDUQlsENhMn1ar8t2bEa+q/YAtj8pPPdIjPDGBDIVNsrD9aXNWqspUe6AzKCIG0C1HZZLqLV7qpOBGA==}
@@ -17460,6 +17470,7 @@ packages:
       loose-envify: 1.4.0
       object-assign: 4.1.1
       prop-types: 15.8.1
+    bundledDependencies: false
 
   /react@17.0.2:
     resolution: {integrity: sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA==}
@@ -19237,6 +19248,14 @@ packages:
       object.getownpropertydescriptors: 2.1.3
     dev: true
 
+  /synckit@0.8.8:
+    resolution: {integrity: sha512-HwOKAP7Wc5aRGYdKH+dw0PRRpbO841v2DENBtjnR5HFWoiNByAl7vrx3p0G/rCyYXQsrxqtX48TImFtPcIHSpQ==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+    dependencies:
+      '@pkgr/core': 0.1.1
+      tslib: 2.6.2
+    dev: true
+
   /tachyons@4.12.0:
     resolution: {integrity: sha512-2nA2IrYFy3raCM9fxJ2KODRGHVSZNTW3BR0YnlGsLUf1DA3pk3YfWZ/DdfbnZK6zLZS+jUenlUGJsKcA5fUiZg==}
     dev: true
@@ -19742,6 +19761,10 @@ packages:
 
   /tslib@2.4.0:
     resolution: {integrity: sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==}
+
+  /tslib@2.6.2:
+    resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
+    dev: true
 
   /tsutils@3.21.0(typescript@4.8.3):
     resolution: {integrity: sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==}

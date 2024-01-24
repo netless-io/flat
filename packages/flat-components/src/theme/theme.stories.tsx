@@ -31,22 +31,28 @@ export const Brand: Story = (_, config) => {
             if (rootRef.current) {
                 try {
                     const styles = window.getComputedStyle(rootRef.current);
-                    const colorHex = colors.reduce((hex, color) => {
-                        colorNum.forEach(i => {
-                            const name = `--${color}-${i}`;
-                            const value = styles.getPropertyValue(name).toUpperCase().trim();
-                            hex[name] = value;
-                            hex[value] = name;
-                        });
-                        return hex;
-                    }, {} as Record<string, string>);
-                    const themeHex = types.reduce((hex, type) => {
-                        kinds.forEach(kind => {
-                            const name = kind ? `--${type}-${kind}` : `--${type}`;
-                            hex[name] = styles.getPropertyValue(name).toUpperCase().trim();
-                        });
-                        return hex;
-                    }, {} as Record<string, string>);
+                    const colorHex = colors.reduce(
+                        (hex, color) => {
+                            colorNum.forEach(i => {
+                                const name = `--${color}-${i}`;
+                                const value = styles.getPropertyValue(name).toUpperCase().trim();
+                                hex[name] = value;
+                                hex[value] = name;
+                            });
+                            return hex;
+                        },
+                        {} as Record<string, string>,
+                    );
+                    const themeHex = types.reduce(
+                        (hex, type) => {
+                            kinds.forEach(kind => {
+                                const name = kind ? `--${type}-${kind}` : `--${type}`;
+                                hex[name] = styles.getPropertyValue(name).toUpperCase().trim();
+                            });
+                            return hex;
+                        },
+                        {} as Record<string, string>,
+                    );
 
                     setColorHex({ ...colorHex, ...themeHex });
                 } catch (e) {

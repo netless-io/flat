@@ -34,8 +34,8 @@ export const CloudStorageUploadTitle = /* @__PURE__ */ React.memo<CloudStorageUp
                     {finishWithError
                         ? t("upload-exception")
                         : isFinish
-                        ? t("upload-completed")
-                        : t("transfer-list")}
+                          ? t("upload-completed")
+                          : t("transfer-list")}
                 </h1>
                 {!isFinish && !finishWithError && total && !Number.isNaN(finished) && (
                     <span className="cloud-storage-upload-title-count">

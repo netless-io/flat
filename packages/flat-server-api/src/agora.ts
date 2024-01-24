@@ -187,15 +187,15 @@ export interface AgoraCloudRecordQueryResponse<T extends "string" | "json" | und
         fileList?: T extends "string"
             ? string
             : T extends undefined
-            ? undefined
-            : Array<{
-                  filename: string;
-                  trackType: "audio" | "video" | "audio_and_video";
-                  uid: string;
-                  mixedAllUser: boolean;
-                  isPlayable: boolean;
-                  sliceStartTime: number;
-              }>;
+              ? undefined
+              : Array<{
+                    filename: string;
+                    trackType: "audio" | "video" | "audio_and_video";
+                    uid: string;
+                    mixedAllUser: boolean;
+                    isPlayable: boolean;
+                    sliceStartTime: number;
+                }>;
         status: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 20;
         sliceStartTime: string;
         extensionServiceState: Array<{

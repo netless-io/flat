@@ -28,13 +28,16 @@ export const Overview: Story = () => {
             try {
                 const styles = window.getComputedStyle(rootRef.current);
                 setColorHex(
-                    colors.reduce((hex, color) => {
-                        colorNum.forEach(i => {
-                            const name = `--${color}-${i}`;
-                            hex[name] = styles.getPropertyValue(name).toUpperCase();
-                        });
-                        return hex;
-                    }, {} as Record<string, string>),
+                    colors.reduce(
+                        (hex, color) => {
+                            colorNum.forEach(i => {
+                                const name = `--${color}-${i}`;
+                                hex[name] = styles.getPropertyValue(name).toUpperCase();
+                            });
+                            return hex;
+                        },
+                        {} as Record<string, string>,
+                    ),
                 );
             } catch (e) {
                 console.error(e);

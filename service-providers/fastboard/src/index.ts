@@ -252,10 +252,10 @@ export class Fastboard extends IServiceWhiteboard {
                             reason === "kickByAdmin"
                                 ? "kickedByAdmin"
                                 : reason === "roomDelete"
-                                ? "roomDeleted"
-                                : reason === "roomBan"
-                                ? "roomBanned"
-                                : "unknown",
+                                  ? "roomDeleted"
+                                  : reason === "roomBan"
+                                    ? "roomBanned"
+                                    : "unknown",
                         );
                         await this.leaveRoom();
                     },
