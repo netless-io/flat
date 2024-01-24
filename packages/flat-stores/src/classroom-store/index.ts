@@ -1443,10 +1443,7 @@ export class ClassroomStore {
                 roomUUID: this.roomUUID,
                 uid: String(globalStore.rtcUID),
                 token: globalStore.rtcToken,
-                mode:
-                    this.roomInfo?.roomType === RoomType.BigClass
-                        ? IServiceVideoChatMode.Broadcast
-                        : IServiceVideoChatMode.Communication,
+                mode: IServiceVideoChatMode.Broadcast,
                 role:
                     this.isCreator ||
                     (globalStore.userUUID && this.onStageUsersStorage?.state[globalStore.userUUID])
