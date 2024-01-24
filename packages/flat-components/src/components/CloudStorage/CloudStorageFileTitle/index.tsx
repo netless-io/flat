@@ -69,8 +69,8 @@ export const CloudStorageFileTitle = /* @__PURE__ */ React.memo<CloudStorageFile
                     isConvertError
                         ? t("transcoding-failure")
                         : isConverting
-                        ? t("transcoding-in-progress")
-                        : ""
+                          ? t("transcoding-in-progress")
+                          : ""
                 }${fileName}`}
                 {...restProps}
                 className={classNames(restProps.className, "cloud-storage-file-title", {

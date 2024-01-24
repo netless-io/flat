@@ -21,14 +21,14 @@ type PickExtraRouteConfig<
 type ExtractRouteParams<T extends RouteNameType, P extends string> = string extends P
     ? Record<string, string>
     : P extends `${infer _Start}:${infer Param}/${infer Rest}`
-    ? Param extends `${infer Param}?`
-        ? { [k in Param]?: PickExtraRouteConfig<T, k> } & ExtractRouteParams<T, Rest>
-        : { [k in Param]: PickExtraRouteConfig<T, k> } & ExtractRouteParams<T, Rest>
-    : P extends `${infer _Start}:${infer Param}`
-    ? Param extends `${infer Param}?`
-        ? { [k in Param]?: PickExtraRouteConfig<T, k> }
-        : { [k in Param]: PickExtraRouteConfig<T, k> }
-    : {};
+      ? Param extends `${infer Param}?`
+          ? { [k in Param]?: PickExtraRouteConfig<T, k> } & ExtractRouteParams<T, Rest>
+          : { [k in Param]: PickExtraRouteConfig<T, k> } & ExtractRouteParams<T, Rest>
+      : P extends `${infer _Start}:${infer Param}`
+        ? Param extends `${infer Param}?`
+            ? { [k in Param]?: PickExtraRouteConfig<T, k> }
+            : { [k in Param]: PickExtraRouteConfig<T, k> }
+        : {};
 /* eslint-enable @typescript-eslint/no-unused-vars */
 
 export type RouteParams<T extends RouteNameType> = ExtractRouteParams<T, RouteConfig[T]["path"]>;

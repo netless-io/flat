@@ -23,7 +23,7 @@ export type FlatI18nTFunction = (
     options?: Record<string, string | number | undefined>,
 ) => string;
 
-export type FlatI18nLanguages = typeof FlatI18n.languages[number];
+export type FlatI18nLanguages = (typeof FlatI18n.languages)[number];
 
 /**
  * NOTE: to use this library, also install https://github.com/antfu/i18n-ally

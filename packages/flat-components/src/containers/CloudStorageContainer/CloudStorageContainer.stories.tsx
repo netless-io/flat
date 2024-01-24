@@ -40,7 +40,7 @@ const fakeStoreImplProps = [
     "fetchMoreCloudStorageData",
 ] as const;
 
-type FakeStoreImplProps = typeof fakeStoreImplProps[number];
+type FakeStoreImplProps = (typeof fakeStoreImplProps)[number];
 
 type FakeStoreConfig = Pick<CloudStorageStore, FakeStoreImplProps>;
 

@@ -135,11 +135,8 @@ export type AbstractWindows = {
 };
 
 // see: https://stackoverflow.com/questions/67114094/typescript-get-type-of-generic-class-parameter
-type GetClassParameterForAbstractWindow<T extends AbstractWindow<any>> = T extends AbstractWindow<
-    infer R
->
-    ? R
-    : unknown;
+type GetClassParameterForAbstractWindow<T extends AbstractWindow<any>> =
+    T extends AbstractWindow<infer R> ? R : unknown;
 
 export type IsMultiInstance<NAME extends constants.WindowsName> =
     GetClassParameterForAbstractWindow<AbstractWindows[NAME]>;

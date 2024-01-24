@@ -10,13 +10,13 @@
     "build": "tsc"
   },
   "devDependencies": {
-    "prettier": "^2.7.1",
+    "prettier": "^3.2.4",
     "typescript": "^4.8.3"
   },
   "dependencies": {
     "@netless/app-slide": "0.3.0-canary.21",
+    "@netless/flat-server-api": "workspace:*",
     "@netless/flat-service-provider-file-convert-netless": "workspace:*",
-    "@netless/flat-services": "workspace:*",
-    "@netless/flat-server-api": "workspace:*"
+    "@netless/flat-services": "workspace:*"
   }
 }
