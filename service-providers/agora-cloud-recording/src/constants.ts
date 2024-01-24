@@ -54,7 +54,7 @@ export const BIG_CLASS_RECORDING_CONFIG: RecordingConfig = {
 };
 
 export const SMALL_CLASS_RECORDING_CONFIG: RecordingConfig = {
-    channelType: AgoraCloudRecordingChannelType.Communication,
+    channelType: AgoraCloudRecordingChannelType.Broadcast,
     transcodingConfig: {
         width: AVATAR_BAR_WIDTH,
         height: AVATAR_HEIGHT,
