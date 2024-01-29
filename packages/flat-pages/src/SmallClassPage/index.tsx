@@ -42,6 +42,7 @@ import { UsersButton } from "../components/UsersButton";
 import { Shortcuts, Rewards } from "../components/Shortcuts";
 import { PreferencesButton } from "../components/PreferencesButton";
 import { useScrollable } from "./utils";
+import { ClosableMessage } from "../components/ClosableMessage";
 
 export type SmallClassPageProps = {};
 
@@ -115,6 +116,7 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
                             isRemoteLogin={classroomStore.isRemoteLogin}
                             roomStatus={classroomStore.roomStatus}
                         />
+                        <ClosableMessage classroom={classroomStore} />
                     </div>
                 </div>
             </div>
@@ -201,6 +203,7 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
                     {classroomStore.roomInfo?.beginTime && (
                         <Timer
                             beginTime={classroomStore.roomInfo.beginTime}
+                            expireAt={classroomStore.expireAt}
                             roomStatus={classroomStore.roomStatus}
                         />
                     )}

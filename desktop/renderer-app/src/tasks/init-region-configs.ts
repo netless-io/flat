@@ -5,9 +5,7 @@ import { errorTips } from "flat-components";
 export const initRegionConfigs = async (): Promise<void> => {
     try {
         const regionConfigs = await getServerRegionConfigs();
-        if (regionConfigs.hash !== globalStore.configHash) {
-            globalStore.updateServerRegionConfig(regionConfigs);
-        }
+        globalStore.updateServerRegionConfig(regionConfigs);
     } catch (error) {
         globalStore.updateServerRegionConfig(null);
         console.error(error);

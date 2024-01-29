@@ -15,12 +15,6 @@ import { windowsBtnContext } from "../components/WindowsBtnContext";
 import { runtime } from "../utils/runtime";
 import { autoUpdate } from "../utils/auto-update";
 
-/** configure right after import */
-import { configure } from "mobx";
-configure({
-    isolateGlobalState: true,
-});
-
 const App: React.FC = () => {
     const language = useLanguage();
 

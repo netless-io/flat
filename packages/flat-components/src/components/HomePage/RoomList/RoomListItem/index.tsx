@@ -71,7 +71,7 @@ export function RoomListItem<T extends string = string>({
 
     // Force update after 1 minute to update the "will start after x minutes" text
     useEffect(() => {
-        if (diffMinutes !== null && joinEarly < diffMinutes && diffMinutes < oneHour) {
+        if (diffMinutes !== null && joinEarly <= diffMinutes && diffMinutes < oneHour) {
             const timer = setTimeout(
                 () => forceUpdate(a => (a + 1) | 0),
                 // Random delay to avoid performance issue
@@ -129,14 +129,14 @@ export function RoomListItem<T extends string = string>({
     let actionView: ReactNode = null;
     if (diffMinutes === null) {
         actionView = primaryView || statusView;
-    } else if (joinEarly < diffMinutes && diffMinutes < oneHour) {
+    } else if (joinEarly <= diffMinutes && diffMinutes < oneHour) {
         actionView = (
             <span className="room-list-item-status-success">
                 {t("will-start-after-minutes", { minutes: diffMinutes })}
             </span>
         );
     } else {
-        actionView = diffMinutes <= joinEarly && primaryView ? primaryView : statusView;
+        actionView = diffMinutes < joinEarly && primaryView ? primaryView : statusView;
     }
 
     return (
@@ -157,7 +157,7 @@ export function RoomListItem<T extends string = string>({
                     <h1 className="room-list-item-title">{title}</h1>
                     <div className="room-list-item-time-date">
                         <span className="room-list-item-time">
-                            {beginTime && format(beginTime, "HH:mm")}~
+                            {beginTime && format(beginTime, "HH:mm")} ~{" "}
                             {endTime && format(endTime, "HH:mm")}
                         </span>
                         <span className="room-list-item-date">{date}</span>
@@ -169,12 +169,10 @@ export function RoomListItem<T extends string = string>({
                             <Tooltip
                                 className="room-list-item-uuid-help"
                                 placement="right"
-                                title={t("click-to-copy")}
+                                title={t("copy")}
                             >
                                 <button
-                                    className={classNames("room-list-item-uuid", {
-                                        active: beginTime && isToday(beginTime),
-                                    })}
+                                    className={classNames("room-list-item-uuid")}
                                     onClick={copyInviteCode}
                                 >
                                     {t("invite-suffix", { uuid: formatInviteCode("", inviteCode) })}

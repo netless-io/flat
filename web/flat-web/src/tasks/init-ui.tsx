@@ -11,11 +11,7 @@ import { AppRoutes } from "@netless/flat-pages/src/AppRoutes";
 import { StoreProvider } from "@netless/flat-pages/src/components/StoreProvider";
 import { FlatServicesContextProvider } from "@netless/flat-pages/src/components/FlatServicesContext";
 
-/** configure right after import */
-import { configure, toJS } from "mobx";
-configure({
-    isolateGlobalState: true,
-});
+import { toJS } from "mobx";
 
 if (process.env.DEV) {
     (window as any).toJS = toJS;

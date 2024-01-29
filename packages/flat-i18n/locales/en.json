@@ -490,6 +490,10 @@
   "recording": "Recording",
   "open-in-browser": "Open in Browser",
   "room-started": "Started: ",
+  "timer-status-0": "Will start: ",
+  "timer-status-1": "Started: ",
+  "timer-status-2": "Will end: ",
+  "timer-status-3": "Ended: ",
   "exit": "Exit",
   "side-panel": {
     "hide": "Hide",

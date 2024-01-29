@@ -29,7 +29,7 @@ import {
     IServiceWhiteboard,
 } from "@netless/flat-services";
 import { preferencesStore } from "../preferences-store";
-import { noop, sampleSize } from "lodash-es";
+import { sampleSize } from "lodash-es";
 import { format } from "date-fns";
 
 export * from "./constants";
@@ -112,6 +112,9 @@ export class ClassroomStore {
     public shareScreenAudioDeviceName = "";
 
     public shareScreenPickerVisible = false;
+
+    public adminMessage = "";
+    public expireAt = 0;
 
     public networkQuality = {
         delay: 0,
@@ -222,10 +225,6 @@ export class ClassroomStore {
                 this.handleAdminMessage(text);
             }),
         );
-
-        this.sideEffect.addDisposer(() => {
-            this.hideLastAdminMessage();
-        });
 
         if (!this.isCreator) {
             this.sideEffect.addDisposer(
@@ -1473,18 +1472,18 @@ export class ClassroomStore {
         }
     }
 
-    private hideLastAdminMessage: () => void = noop;
+    public hideAdminMessage = (): void => {
+        this.adminMessage = "";
+    };
 
     private handleAdminMessage(text: string): void {
-        this.hideLastAdminMessage();
-
         if (text && text[0] === "{") {
             try {
                 const data = JSON.parse(text);
                 if (data && typeof data === "object") {
                     const msg = data as {
                         roomLevel: 0 | 1;
-                        expireAt: string;
+                        expireAt: number;
                         leftMinutes: number;
                         message: string;
                     };
@@ -1497,7 +1496,8 @@ export class ClassroomStore {
                         expireAt,
                         minutes,
                     });
-                    this.hideLastAdminMessage = message.info(info, 0);
+                    this.expireAt = msg.expireAt;
+                    this.adminMessage = info;
                     return;
                 }
             } catch (error) {
@@ -1506,8 +1506,6 @@ export class ClassroomStore {
             }
         }
 
-        if (text) {
-            this.hideLastAdminMessage = message.info(text, 0);
-        }
+        this.adminMessage = text;
     }
 }

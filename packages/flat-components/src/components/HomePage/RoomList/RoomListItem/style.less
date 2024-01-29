@@ -97,6 +97,30 @@
     }
 }
 
+.room-list-item-uuid-help+div {
+    .ant-tooltip-content {
+        left: -12px;
+    }
+
+    .ant-tooltip-arrow {
+        z-index: 3;
+        left: 1px;
+    }
+
+    .ant-tooltip-arrow-content {
+        --antd-arrow-background-color: #fff;
+    }
+
+    .ant-tooltip-inner {
+        min-width: 0;
+        min-height: 0;
+        padding: 5px 13px;
+        border-radius: 4px;
+        color: var(--text);
+        background-color: #fff;
+    }
+}
+
 .room-list-item-right {
     display: flex;
     flex-direction: column;
@@ -157,5 +181,16 @@
     .room-list-item-uuid.active,
     .room-list-item-uuid:hover {
         background-color: var(--grey-10);
+    }
+
+    .room-list-item-uuid-help+div {
+        .ant-tooltip-arrow-content {
+            --antd-arrow-background-color: var(--grey-9);
+        }
+
+        .ant-tooltip-inner {
+            color: var(--text);
+            background-color: var(--grey-9);
+        }
     }
 }
