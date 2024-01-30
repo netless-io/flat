@@ -53,6 +53,10 @@ export interface RoomItem {
     hasRecord?: boolean;
     recordings?: RoomRecording[];
     isPmi?: boolean;
+    billing?: {
+        expireAt: number;
+        vipLevel: 0 | 1;
+    };
 }
 
 // Only keep sub-room ids. sub-room info are stored in ordinaryRooms.
@@ -139,6 +143,7 @@ export class RoomStore {
             roomUUID: data.roomUUID,
             ownerUUID: data.ownerUUID,
             roomType: data.roomType,
+            billing: data.billing,
         });
         return data;
     }

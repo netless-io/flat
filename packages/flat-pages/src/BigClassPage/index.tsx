@@ -36,6 +36,7 @@ import { ExtraPadding } from "../components/ExtraPadding";
 import { UsersButton } from "../components/UsersButton";
 import { Shortcuts, Rewards } from "../components/Shortcuts";
 import { PreferencesButton } from "../components/PreferencesButton";
+import { ClosableMessage } from "../components/ClosableMessage";
 
 export type BigClassPageProps = {};
 
@@ -98,6 +99,7 @@ export const BigClassPage = withClassroomStore<BigClassPageProps>(
                             isRemoteLogin={classroomStore.isRemoteLogin}
                             roomStatus={classroomStore.roomStatus}
                         />
+                        <ClosableMessage classroom={classroomStore} />
                     </div>
                 </div>
             </div>
@@ -111,6 +113,7 @@ export const BigClassPage = withClassroomStore<BigClassPageProps>(
                     {classroomStore.roomInfo?.beginTime && (
                         <Timer
                             beginTime={classroomStore.roomInfo.beginTime}
+                            expireAt={classroomStore.expireAt}
                             roomStatus={classroomStore.roomStatus}
                         />
                     )}

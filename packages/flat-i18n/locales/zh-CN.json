@@ -490,6 +490,10 @@
   "recording": "录制",
   "open-in-browser": "请在浏览器中打开",
   "room-started": "已上课：",
+  "timer-status-0": "距离上课：",
+  "timer-status-1": "开始上课：",
+  "timer-status-2": "剩余时间：",
+  "timer-status-3": "已结束：",
   "exit": "退出",
   "side-panel": {
     "hide": "折叠",
