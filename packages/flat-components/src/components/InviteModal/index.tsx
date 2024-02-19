@@ -51,7 +51,7 @@ export const InviteModal: React.FC<InviteModalProps> = ({
                 ? onlySuffixTimeFormat(endTime)
                 : completeTimeFormat(endTime);
 
-        return `${formatBeginTime}~${formatEndTime}`;
+        return `${formatBeginTime} ~ ${formatEndTime}`;
     }, [beginTime, endTime]);
 
     const onCopyClicked = (): void => {
@@ -97,7 +97,7 @@ export const InviteModal: React.FC<InviteModalProps> = ({
                 </div>
                 <div className="invite-modal-content-item">
                     <span>{t("room-uuid")}</span>
-                    <span style={{ userSelect: "text" }}>{formatInviteCode(uuid, inviteCode)}</span>
+                    <span>{formatInviteCode(uuid, inviteCode)}</span>
                 </div>
                 {formattedTimeRange && (
                     <div className="invite-modal-content-item">
@@ -107,7 +107,7 @@ export const InviteModal: React.FC<InviteModalProps> = ({
                 )}
                 <div className="invite-modal-content-item">
                     <span>{t("join-link")}</span>
-                    <span style={{ userSelect: "text" }}>{joinLink}</span>
+                    <span>{joinLink}</span>
                 </div>
             </div>
         </Modal>

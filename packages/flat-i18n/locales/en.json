@@ -323,6 +323,7 @@
   "periodic-rooms-do-not-exist": "Periodic room does not exist",
   "periodic-rooms-have-ended": "Periodic room has ended",
   "periodic-sub-rooms-do-not-exist": "Periodic sub-room does not exist",
+  "periodic-cannot-use-pmi": "Periodic room cannot use PMI",
   "replay-does-not-exist": "Replay does not exist",
   "request-error": "Request error",
   "request-failed": "Request failed",

@@ -87,7 +87,7 @@ export const RoomDetailFooter = /* @__PURE__ */ observer<RoomDetailFooterProps>(
                     {t("invitation")}
                 </Button>
                 <Button className="room-detail-footer-btn" type="primary" onClick={onJoinRoom}>
-                    {isCreator && room.roomStatus === RoomStatus.Idle ? t("begin") : t("join-room")}
+                    {t("join-room")}
                 </Button>
                 <InviteModal
                     baseUrl={inviteBaseUrl}

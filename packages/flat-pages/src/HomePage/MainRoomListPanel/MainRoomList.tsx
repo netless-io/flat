@@ -81,53 +81,20 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
                 const primaryAction = (
                     roomStatus?: RoomStatus,
                 ): RoomListItemPrimaryAction<"replay" | "join" | "begin"> | null => {
-                    let primaryAction: RoomListItemPrimaryAction<
-                        "replay" | "join" | "begin"
-                    > | null;
-                    switch (roomStatus) {
-                        case RoomStatus.Idle: {
-                            const isCreator = room.ownerUUID === globalStore.userUUID;
-                            primaryAction = isCreator
-                                ? {
-                                      key: "begin",
-                                      text: t("begin"),
-                                      type: "primary",
-                                  }
-                                : {
-                                      key: "join",
-                                      text: t("join"),
-                                      type: "primary",
-                                  };
-                            break;
-                        }
-                        case RoomStatus.Started:
-                        case RoomStatus.Paused: {
-                            primaryAction = {
-                                key: "join",
-                                text: t("join"),
-                                type: "primary",
-                            };
-                            break;
-                        }
-                        case RoomStatus.Stopped: {
-                            primaryAction = room.hasRecord
-                                ? {
-                                      key: "replay",
-                                      text: t("replay"),
-                                  }
-                                : null;
-                            break;
-                        }
-                        default: {
-                            primaryAction = {
-                                key: "begin",
-                                text: t("begin"),
-                                type: "primary",
-                            };
-                            break;
-                        }
+                    if (roomStatus === RoomStatus.Stopped) {
+                        return room.hasRecord
+                            ? {
+                                  key: "replay",
+                                  text: t("replay"),
+                              }
+                            : null;
+                    } else {
+                        return {
+                            key: "join",
+                            text: t("join"),
+                            type: "primary",
+                        };
                     }
-                    return primaryAction;
                 };
 
                 return (

@@ -333,6 +333,7 @@
   "periodic-rooms-do-not-exist": "周期性房间不存在",
   "periodic-rooms-have-ended": "周期性房间已结束",
   "periodic-sub-rooms-do-not-exist": "周期性子房间不存在",
+  "periodic-cannot-use-pmi": "周期性房间不能使用个人房间号",
   "user-does-not-exist": "用户不存在",
   "user-room-list-is-not-empty": "用户房间列表不为空",
   "user-already-binding": "用户已绑定",
