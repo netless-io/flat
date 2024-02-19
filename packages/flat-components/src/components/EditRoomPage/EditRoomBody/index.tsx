@@ -96,7 +96,7 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
     const [isShowEditSubmitConfirm, showEditSubmitConfirm] = useState(false);
 
     const [isPeriodic, setIsPeriodic] = useState(false);
-    const showPmi = useMemo(() => !!pmi && !isPeriodic, [isPeriodic, pmi]);
+    const enablePmi = useMemo(() => !!pmi && !isPeriodic, [isPeriodic, pmi]);
 
     // @TODO: need to remove
     const [region] = useState<Region>(initialValues.region);
@@ -172,16 +172,16 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
                             nextPeriodicRoomEndTime,
                         )}
                         {renderEndTimePicker(t, form, nextPeriodicRoomEndTime)}
-                        {showPmi && updateAutoPmiOn && (
+                        {updateAutoPmiOn && (
                             <Form.Item
                                 className="edit-room-form-item no-margin pmi"
                                 name="pmi"
                                 valuePropName="checked"
                             >
-                                <div>
+                                <div title={t("periodic-cannot-use-pmi")}>
                                     <Checkbox
-                                        checked={autoPmiOn}
-                                        disabled={pmiRoomExist}
+                                        checked={enablePmi && autoPmiOn}
+                                        disabled={pmiRoomExist || !enablePmi}
                                         onClick={() => updateAutoPmiOn(!autoPmiOn)}
                                     >
                                         <PmiDesc

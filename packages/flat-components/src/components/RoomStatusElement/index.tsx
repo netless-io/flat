@@ -8,18 +8,24 @@ export interface RoomStatusElementProps {
     room: RoomInfo;
 }
 
+const statusMap: Record<"running" | "stopped" | "upcoming", "started" | "stopped" | "idle"> = {
+    running: "started",
+    stopped: "stopped",
+    upcoming: "idle",
+};
+
 export const RoomStatusElement: React.FC<RoomStatusElementProps> = ({ room }) => {
     const t = useTranslate();
-    switch (room.roomStatus) {
-        case RoomStatus.Started:
-        case RoomStatus.Paused: {
-            return <span className="room-status-started">{t("room-status.running")}</span>;
-        }
-        case RoomStatus.Stopped: {
-            return <span className="room-status-stopped">{t("room-status.stopped")}</span>;
-        }
-        default: {
-            return <span className="room-status-idle">{t("room-status.upcoming")}</span>;
-        }
+
+    const now = Date.now();
+    let status: "running" | "stopped" | "upcoming";
+    if (room.beginTime && now < room.beginTime) {
+        status = "upcoming";
+    } else if (room.roomStatus === RoomStatus.Stopped || (room.endTime && now > room.endTime)) {
+        status = "stopped";
+    } else {
+        status = "running";
     }
+
+    return <span className={"room-status-" + statusMap[status]}>{t("room-status." + status)}</span>;
 };
