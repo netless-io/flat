@@ -1,6 +1,6 @@
 import { RouteNameType } from "../utils/routes";
 import { roomStore, globalStore } from "@netless/flat-stores";
-import { RequestErrorCode, RoomType, ServerRequestError } from "@netless/flat-server-api";
+import { RequestErrorCode, RoomType } from "@netless/flat-server-api";
 import { errorTips, message } from "flat-components";
 import { FlatI18n } from "@netless/flat-i18n";
 
@@ -56,24 +56,18 @@ export const joinRoomHandler = async (
             return;
         }
 
-        // if room not started, show different message according to owner
-        if (e.errorCode === RequestErrorCode.RoomNotBegin && e.detail) {
-            const { title, ownerUUID, ownerName } = e.detail as {
+        // if room not started, show different tips
+        if (e.errorCode === RequestErrorCode.RoomNotBeginAndAddList && e.detail) {
+            const roomNotBegin = e.detail as {
                 title: string;
                 uuid: string;
                 beginTime: number;
                 ownerUUID: string;
                 ownerName?: string;
             };
-            if (globalStore.userUUID === ownerUUID) {
-                (e as ServerRequestError).errorMessage = "your-room-is-not-started-yet";
-                // show it in error tips
-            } else {
-                pushHistory(RouteNameType.HomePage);
-                // show the modal
-                globalStore.updateRoomNotBegin({ title, ownerName });
-                return;
-            }
+            pushHistory(RouteNameType.HomePage);
+            globalStore.updateRoomNotBegin(roomNotBegin);
+            return;
         }
 
         pushHistory(RouteNameType.HomePage);
