@@ -656,7 +656,6 @@
   "room-not-begin-title-post": "before it starts",
   "room-has-been-added": "has been added to rooms list",
   "the-room-is-not-started-yet": "The room has not started yet, please try again later",
-  "your-room-is-not-started-yet": "Your room has not started yet, please try again later",
   "will-start-after-minutes": "will start after {{minutes}} minutes",
   "time-limit-tip": "This {{roomType}} room has a limit of {{minutes}} minutes",
   "vip-level": {
