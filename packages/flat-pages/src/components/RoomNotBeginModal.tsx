@@ -1,38 +1,23 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useMemo } from "react";
 import { Button, Modal } from "antd";
 import { observer } from "mobx-react-lite";
-import { RoomStoreContext, GlobalStoreContext } from "./StoreProvider";
 import { useLanguage, useTranslate } from "@netless/flat-i18n";
+import { GlobalStoreContext } from "./StoreProvider";
 
 export interface RoomNotBeginModalProps {}
 
 export const RoomNotBeginModal = observer<RoomNotBeginModalProps>(function RoomNotBeginModal({}) {
     const t = useTranslate();
     const lang = useLanguage();
-    const [title, setTitle] = useState("");
-    const [open, setOpen] = useState(false);
-    const roomStore = useContext(RoomStoreContext);
     const globalStore = useContext(GlobalStoreContext);
-    const uuid = globalStore.roomNotBeginRoomUUID;
+
+    const title = useMemo((): string => {
+        const { title, ownerName } = globalStore.roomNotBegin || {};
+        return title || (ownerName && t("create-room-default-title", { name: ownerName })) || "";
+    }, [globalStore.roomNotBegin]);
+
     const joinEarly = globalStore.serverRegionConfig?.server.joinEarly || 5;
-
-    const hasRoom = uuid && roomStore.rooms.has(uuid);
-    const closeModal = (): void => setOpen(false);
-
-    useEffect(() => {
-        if (!open && uuid && roomStore.rooms.has(uuid)) {
-            const { title, ownerName } = roomStore.rooms.get(uuid)!;
-            if (title) {
-                setTitle(title);
-            } else if (ownerName) {
-                setTitle(t("create-room-default-title", { name: ownerName }));
-            } else {
-                setTitle("");
-            }
-            setOpen(true);
-            globalStore.updateRoomNotBeginRoomUUID(null);
-        }
-    }, [uuid, hasRoom]);
+    const closeModal = (): void => globalStore.updateRoomNotBegin(null);
 
     return (
         <Modal
@@ -43,7 +28,7 @@ export const RoomNotBeginModal = observer<RoomNotBeginModalProps>(function RoomN
                     {t("confirm")}
                 </Button>,
             ]}
-            open={open}
+            open={!!globalStore.roomNotBegin}
             title={[
                 t("room-not-begin-title-pre"),
                 <em key="room-not-begin-minutes" className="room-not-begin-early-minutes">

@@ -32,6 +32,7 @@ export enum RequestErrorCode {
     RoomExpired, // room expired
     RoomNotBegin, // join room before begin_time
     RoomCreateLimit, // create room reach max limit
+    RoomNotBeginAndAddList, // join room before begin_time, and just added to the room list
 
     InternalError = 220000, // unknown error
     ForwardFailed, // forward failed
@@ -122,6 +123,7 @@ export const RequestErrorMessage = {
     [RequestErrorCode.RoomExpired]: "the-room-is-expired",
     [RequestErrorCode.RoomNotBegin]: "the-room-is-not-started-yet",
     [RequestErrorCode.RoomCreateLimit]: "rooms-has-reached-the-limit",
+    [RequestErrorCode.RoomNotBeginAndAddList]: "the-room-is-not-started-yet",
 
     [RequestErrorCode.InternalError]: "unknown-error",
     [RequestErrorCode.ForwardFailed]: "forward-failed",
