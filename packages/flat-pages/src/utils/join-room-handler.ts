@@ -50,6 +50,8 @@ export const joinRoomHandler = async (
             );
         }
     } catch (e) {
+        globalStore.updateRequestRefreshRooms(true);
+
         // if room not found and is pmi room, show wait for teacher to enter
         if (e.errorCode === RequestErrorCode.RoomNotFoundAndIsPmi) {
             void message.info(FlatI18n.t("wait-for-teacher-to-enter"));
@@ -67,12 +69,7 @@ export const joinRoomHandler = async (
             };
             pushHistory(RouteNameType.HomePage);
             globalStore.updateRoomNotBegin(roomNotBegin);
-            globalStore.updateRequestRefreshRooms(true);
             return;
-        }
-
-        if (e.errorCode === RequestErrorCode.RoomNotBegin) {
-            globalStore.updateRequestRefreshRooms(true);
         }
 
         pushHistory(RouteNameType.HomePage);
