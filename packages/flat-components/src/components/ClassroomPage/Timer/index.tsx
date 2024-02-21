@@ -59,7 +59,7 @@ const useClockTick = (beginTime: number, expireAt: number | undefined): [TimerSt
     return useMemo(() => {
         if (beginTime > timestamp) {
             return [TimerStatus.Prepare, formatInterval(timestamp, beginTime)];
-        } else if (expireAt && expireAt - timestamp < 5 * 60_000) {
+        } else if (expireAt && 0 <= expireAt - timestamp && expireAt - timestamp < 5 * 60_000) {
             return [TimerStatus.WillEnd, formatInterval(timestamp, expireAt)];
         } else if (expireAt && expireAt < timestamp) {
             return [TimerStatus.Ended, formatInterval(expireAt, timestamp)];
