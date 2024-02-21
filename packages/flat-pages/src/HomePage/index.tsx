@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 import { ListRoomsType } from "@netless/flat-server-api";
 import { errorTips, useSafePromise } from "flat-components";
 import { MainRoomMenu } from "./MainRoomMenu";
-import { MainRoomListPanel } from "./MainRoomListPanel";
+import { ActiveTabType, MainRoomListPanel } from "./MainRoomListPanel";
 import { MainRoomHistoryPanel } from "./MainRoomHistoryPanel";
 import { useLoginCheck } from "../utils/use-login-check";
 import {
@@ -22,7 +22,7 @@ export const HomePage = observer(function HomePage() {
     const roomStore = useContext(RoomStoreContext);
     const globalStore = useContext(GlobalStoreContext);
 
-    const [activeTab, setActiveTab] = useState<"all" | "today" | "periodic">("all");
+    const [activeTab, setActiveTab] = useState<ActiveTabType>(ListRoomsType.All);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => pageStore.configure(), []);
@@ -33,7 +33,7 @@ export const HomePage = observer(function HomePage() {
         async function refreshRooms() {
             try {
                 await Promise.all([
-                    sp(roomStore.listRooms(activeTab as ListRoomsType)),
+                    sp(roomStore.listRooms(activeTab)),
                     sp(roomStore.listRooms(ListRoomsType.History)),
                 ]);
             } catch (e) {
@@ -60,6 +60,13 @@ export const HomePage = observer(function HomePage() {
             window.clearInterval(ticket);
         };
     }, [refreshRooms, isLogin]);
+
+    useEffect(() => {
+        if (isLogin && globalStore.requestRefreshRooms) {
+            void refreshRooms();
+            globalStore.updateRequestRefreshRooms(false);
+        }
+    }, [refreshRooms, isLogin, globalStore.requestRefreshRooms]);
 
     return (
         <div className="homepage-layout-horizontal-container">

@@ -52,6 +52,7 @@ export class GlobalStore {
     public pmiRoomList: PmiRoom[] | null = [];
 
     public roomNotBegin: { title?: string; ownerName?: string } | null = null;
+    public requestRefreshRooms = false;
 
     // login with password
     public currentAccount: Account | null = null;
@@ -324,6 +325,10 @@ export class GlobalStore {
 
     public updateRoomNotBegin(value: { title?: string; ownerName?: string } | null): void {
         this.roomNotBegin = value;
+    }
+
+    public updateRequestRefreshRooms(value: boolean): void {
+        this.requestRefreshRooms = value;
     }
 }
 

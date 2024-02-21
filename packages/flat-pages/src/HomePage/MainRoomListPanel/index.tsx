@@ -6,9 +6,11 @@ import { useTranslate } from "@netless/flat-i18n";
 import { RoomStore } from "@netless/flat-stores";
 import { MainRoomList } from "./MainRoomList";
 
+export type ActiveTabType = Exclude<ListRoomsType, ListRoomsType.History>;
+
 interface MainRoomListPanelProps {
-    activeTab: "all" | "today" | "periodic";
-    setActiveTab: (activeTab: "all" | "today" | "periodic") => void;
+    activeTab: ActiveTabType;
+    setActiveTab: (activeTab: ActiveTabType) => void;
     roomStore: RoomStore;
     refreshRooms: () => Promise<void>;
 }
@@ -20,18 +22,18 @@ export const MainRoomListPanel = observer<MainRoomListPanelProps>(function MainR
     refreshRooms,
 }) {
     const t = useTranslate();
-    const filters = useMemo<Array<{ key: "all" | "today" | "periodic"; title: string }>>(
+    const filters = useMemo<Array<{ key: ActiveTabType; title: string }>>(
         () => [
             {
-                key: "all",
+                key: ListRoomsType.All,
                 title: t("all"),
             },
             {
-                key: "today",
+                key: ListRoomsType.Today,
                 title: t("today"),
             },
             {
-                key: "periodic",
+                key: ListRoomsType.Periodic,
                 title: t("periodic"),
             },
         ],
@@ -46,7 +48,7 @@ export const MainRoomListPanel = observer<MainRoomListPanelProps>(function MainR
             onTabActive={setActiveTab}
         >
             <MainRoomList
-                listRoomsType={activeTab as ListRoomsType}
+                listRoomsType={activeTab}
                 refreshRooms={refreshRooms}
                 roomStore={roomStore}
             />
