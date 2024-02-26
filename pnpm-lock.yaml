@@ -772,8 +772,8 @@ importers:
         version: 9.0.0
     devDependencies:
       '@netless/fastboard':
-        specifier: 1.0.0-canary.9
-        version: 1.0.0-canary.9(@netless/window-manager@1.0.0-canary.79)(white-web-sdk-esm@2.16.48)
+        specifier: 1.0.0-canary.10
+        version: 1.0.0-canary.10(@netless/window-manager@1.0.0-canary.79)(white-web-sdk-esm@2.16.48)
       '@netless/window-manager':
         specifier: 1.0.0-canary.79
         version: 1.0.0-canary.79(white-web-sdk-esm@2.16.48)
@@ -926,8 +926,8 @@ importers:
         specifier: ^2.0.1
         version: 2.0.1
       '@netless/fastboard':
-        specifier: 1.0.0-canary.9
-        version: 1.0.0-canary.9(@netless/window-manager@1.0.0-canary.79)(white-web-sdk-esm@2.16.48)
+        specifier: 1.0.0-canary.10
+        version: 1.0.0-canary.10(@netless/window-manager@1.0.0-canary.79)(white-web-sdk-esm@2.16.48)
       '@netless/flat-i18n':
         specifier: workspace:*
         version: link:../../packages/flat-i18n
@@ -3739,8 +3739,8 @@ packages:
       - supports-color
     dev: true
 
-  /@netless/fastboard-core@1.0.0-canary.9(@netless/window-manager@1.0.0-canary.79)(white-web-sdk-esm@2.16.48):
-    resolution: {integrity: sha512-rzUts95B3ouUKAg0spV4vM6eHmJde1+a4LdWA7niaLYUjri3F0jRbC0xexFw7+B5VAmkVBR0Xj2MAl1dxfXekw==}
+  /@netless/fastboard-core@1.0.0-canary.10(@netless/window-manager@1.0.0-canary.79)(white-web-sdk-esm@2.16.48):
+    resolution: {integrity: sha512-mb27wALzpAE/5KlupHyljOCtFrV8SphoYr2uIh1swvY3um4c6HoLS8pqgS2LhgY3ciL1MLrOs9C47fgv/T3P6g==}
     peerDependencies:
       '@netless/window-manager': '>=1.0.0-canary.0'
       white-web-sdk: '>=2.16.0'
@@ -3755,16 +3755,16 @@ packages:
       '@netless/window-manager': 1.0.0-canary.79(white-web-sdk-esm@2.16.48)
       white-web-sdk: /white-web-sdk-esm@2.16.48
 
-  /@netless/fastboard-ui@1.0.0-canary.9(@netless/fastboard-core@1.0.0-canary.9):
-    resolution: {integrity: sha512-dCB4LjTK54kQ0hVbtcucXqlmT+SMyQjCpodgXnZ+WR5AIDKjRzNpeSwkA56TtC5CH8S3xb9Z2Nc+Jja9FzA6vg==}
+  /@netless/fastboard-ui@1.0.0-canary.10(@netless/fastboard-core@1.0.0-canary.10):
+    resolution: {integrity: sha512-SM2wyKisdyDMZmQdwCa+DvnPLRdrB8vVLwx/OJArP1G4cQlo/RQHldInYt9/z6DcOJsezOGMmBnYYmpL4DolbQ==}
     peerDependencies:
-      '@netless/fastboard-core': 1.0.0-canary.9
+      '@netless/fastboard-core': 1.0.0-canary.10
     dependencies:
-      '@netless/fastboard-core': 1.0.0-canary.9(@netless/window-manager@1.0.0-canary.79)(white-web-sdk-esm@2.16.48)
+      '@netless/fastboard-core': 1.0.0-canary.10(@netless/window-manager@1.0.0-canary.79)(white-web-sdk-esm@2.16.48)
       tippy.js: 6.3.7
 
-  /@netless/fastboard@1.0.0-canary.9(@netless/window-manager@1.0.0-canary.79)(white-web-sdk-esm@2.16.48):
-    resolution: {integrity: sha512-fsSAJ6tL5LVjx1pPtT8B4aAX2fH7N5LiBRwTJCW/EU8YGbF5kD9LbNvD7hh7tqlwN2w6X/EjW3E0Zxq6itaWlg==}
+  /@netless/fastboard@1.0.0-canary.10(@netless/window-manager@1.0.0-canary.79)(white-web-sdk-esm@2.16.48):
+    resolution: {integrity: sha512-ZvkKnMe+qxuptSfn8nUU5zUWL/K16K1U+PGbliql8t504vZSZvvykXK1BMvBS3kA1C+LXtdQdBOiIE4q36k3Sg==}
     peerDependencies:
       '@netless/window-manager': '>=1.0.0-canary.0'
       white-web-sdk: '>=2.16.0'
@@ -3775,8 +3775,8 @@ packages:
         optional: true
     dependencies:
       '@netless/app-slide': 0.3.0-canary.21
-      '@netless/fastboard-core': 1.0.0-canary.9(@netless/window-manager@1.0.0-canary.79)(white-web-sdk-esm@2.16.48)
-      '@netless/fastboard-ui': 1.0.0-canary.9(@netless/fastboard-core@1.0.0-canary.9)
+      '@netless/fastboard-core': 1.0.0-canary.10(@netless/window-manager@1.0.0-canary.79)(white-web-sdk-esm@2.16.48)
+      '@netless/fastboard-ui': 1.0.0-canary.10(@netless/fastboard-core@1.0.0-canary.10)
       '@netless/window-manager': 1.0.0-canary.79(white-web-sdk-esm@2.16.48)
       white-web-sdk: /white-web-sdk-esm@2.16.48
 
@@ -17165,7 +17165,6 @@ packages:
       prop-types: 15.8.1
       react: 16.14.0
       scheduler: 0.19.1
-    bundledDependencies: false
 
   /react-dom@17.0.2(react@17.0.2):
     resolution: {integrity: sha512-s4h96KtLDUQlsENhMn1ar8t2bEa+q/YAtj8pPPdIjPDGBDIVNsrD9aXNWqspUe6AzKCIG0C1HZZLqLV7qpOBGA==}
@@ -17470,7 +17469,6 @@ packages:
       loose-envify: 1.4.0
       object-assign: 4.1.1
       prop-types: 15.8.1
-    bundledDependencies: false
 
   /react@17.0.2:
     resolution: {integrity: sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA==}
