@@ -10,6 +10,7 @@ import { WHITEBOARD_RATIO } from "../constants";
 import { globalStore } from "../global-store";
 import { RoomItem, RoomRecording, roomStore } from "../room-store";
 import { getRoomRecordings, makeVideoPlayer } from "./utils";
+import { clamp } from "lodash-es";
 
 export interface ClassroomReplayStoreConfig {
     roomUUID: string;
@@ -243,6 +244,13 @@ export class ClassroomReplayStore {
         this.tempTimestamp = timestamp;
         this.sideEffect.setTimeout(this.seekNow, 100, "seek");
     };
+
+    public fastForward(ms: number): void {
+        if (this.currentRecording) {
+            const { beginTime, endTime } = this.currentRecording;
+            this.seek(clamp(this.currentTimestamp + ms, beginTime, endTime - 100));
+        }
+    }
 
     private seekNow = (): void => {
         if (this.currentRecording && this.syncPlayer) {
