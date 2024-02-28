@@ -7,7 +7,15 @@ import React, { useCallback, useEffect, useState } from "react";
 import { LoadingOutlined } from "@ant-design/icons";
 import { FlatI18nTFunction, useTranslate } from "@netless/flat-i18n";
 import { ClassroomReplayStore, RoomRecording } from "@netless/flat-stores";
-import { SVGPause, SVGPlay, SVGRecordList, SVGShare, useSafePromise } from "flat-components";
+import {
+    SVGFastForward15,
+    SVGPause,
+    SVGPlay,
+    SVGRecordList,
+    SVGRewind15,
+    SVGShare,
+    useSafePromise,
+} from "flat-components";
 import { FLAT_WEB_BASE_URL } from "../constants/process";
 
 export interface ReplayListProps {
@@ -66,9 +74,21 @@ export const ReplayList = observer<ReplayListProps>(function ReplayList({ classr
             )}
             <Button
                 disabled={!currentRecording || loading}
+                onClick={() => classroomReplayStore.fastForward(-15_000)}
+            >
+                <SVGRewind15 />
+            </Button>
+            <Button
+                disabled={!currentRecording || loading}
                 onClick={classroomReplayStore.togglePlayPause}
             >
                 {classroomReplayStore.isPlaying ? <SVGPause /> : <SVGPlay />}
+            </Button>
+            <Button
+                disabled={!currentRecording || loading}
+                onClick={() => classroomReplayStore.fastForward(15_000)}
+            >
+                <SVGFastForward15 />
             </Button>
             {currentRecording && (
                 <Tag color={loading ? "yellow" : "blue"}>
