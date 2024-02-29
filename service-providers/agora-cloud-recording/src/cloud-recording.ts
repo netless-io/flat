@@ -51,7 +51,7 @@ export class AgoraCloudRecording extends IServiceRecording {
     public async joinRoom(config: IServiceRecordingJoinRoomConfig): Promise<void> {
         this.roomInfo = config;
         this.recordingState = loadCloudRecordingState(config.roomID);
-        await this.queryRecordingStatus();
+        await this.queryRecordingStatus(true);
     }
 
     public async leaveRoom(): Promise<void> {
@@ -170,7 +170,7 @@ export class AgoraCloudRecording extends IServiceRecording {
         });
     }
 
-    private async queryRecordingStatus(): Promise<void> {
+    private async queryRecordingStatus(joinRoom = false): Promise<void> {
         if (this.recordingState === null || this.roomID === null) {
             this.$Val.isRecording$.setValue(false);
             return;
@@ -187,6 +187,9 @@ export class AgoraCloudRecording extends IServiceRecording {
             });
             const isRecording = 1 <= serverResponse.status && serverResponse.status <= 5;
             this.$Val.isRecording$.setValue(isRecording);
+            if (joinRoom && isRecording) {
+                this.startReportingEndTime();
+            }
         } catch {
             this.recordingState = null;
             this.$Val.isRecording$.setValue(false);
