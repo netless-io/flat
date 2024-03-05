@@ -267,6 +267,9 @@ importers:
       '@netless/flat-service-provider-agora-rtm':
         specifier: workspace:*
         version: link:../../service-providers/agora-rtm
+      '@netless/flat-service-provider-agora-rtm2':
+        specifier: workspace:*
+        version: link:../../service-providers/agora-rtm2
       '@netless/flat-service-provider-fastboard':
         specifier: workspace:*
         version: link:../../service-providers/fastboard
@@ -612,6 +615,9 @@ importers:
       '@netless/flat-service-provider-agora-rtm':
         specifier: workspace:*
         version: link:../../service-providers/agora-rtm
+      '@netless/flat-service-provider-agora-rtm2':
+        specifier: workspace:*
+        version: link:../../service-providers/agora-rtm2
       '@netless/flat-services':
         specifier: workspace:*
         version: link:../flat-services
@@ -847,8 +853,8 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/flat-services
       agora-rtc-sdk-ng:
-        specifier: 4.16.0
-        version: 4.16.0
+        specifier: ^4.20.0
+        version: 4.21.0
       side-effect-manager:
         specifier: ^1.2.1
         version: 1.2.1
@@ -874,6 +880,31 @@ importers:
       agora-rtm-sdk:
         specifier: ^1.6.0
         version: 1.6.0
+      side-effect-manager:
+        specifier: ^1.2.1
+        version: 1.2.1
+      uuid:
+        specifier: ^9.0.0
+        version: 9.0.0
+    devDependencies:
+      prettier:
+        specifier: ^3.2.4
+        version: 3.2.4
+      typescript:
+        specifier: ^4.8.3
+        version: 4.8.3
+
+  service-providers/agora-rtm2:
+    dependencies:
+      '@netless/flat-server-api':
+        specifier: workspace:*
+        version: link:../../packages/flat-server-api
+      '@netless/flat-services':
+        specifier: workspace:*
+        version: link:../../packages/flat-services
+      agora-rtm:
+        specifier: ^2.1.10
+        version: 2.1.10
       side-effect-manager:
         specifier: ^1.2.1
         version: 1.2.1
@@ -1066,6 +1097,9 @@ importers:
       '@netless/flat-service-provider-agora-rtm':
         specifier: workspace:*
         version: link:../../service-providers/agora-rtm
+      '@netless/flat-service-provider-agora-rtm2':
+        specifier: workspace:*
+        version: link:../../service-providers/agora-rtm2
       '@netless/flat-service-provider-fastboard':
         specifier: workspace:*
         version: link:../../service-providers/fastboard
@@ -1090,9 +1124,6 @@ importers:
       '@zip.js/zip.js':
         specifier: ^2.6.29
         version: 2.6.29
-      agora-rtc-sdk-ng:
-        specifier: ^4.16.0
-        version: 4.16.0
       agora-rtm-sdk:
         specifier: ^1.6.0
         version: 1.6.0
@@ -1196,6 +1227,37 @@ packages:
   /7zip-bin@5.1.1:
     resolution: {integrity: sha512-sAP4LldeWNz0lNzmTird3uWfFDWWTeg6V/MsmyyLR9X1idwKBWIgt/ZvinqQldJm3LecKEs1emkbquO6PCiLVQ==}
     dev: true
+
+  /@agora-js/media@4.21.0:
+    resolution: {integrity: sha512-X4aV84/gB4O7GOOkwP3+NGTHtT2IVkpa4DFBTlBNl7hrkjDwUeanzCQZyva92Zyw59N0NI6dKh9CjJKoIL5Now==}
+    dependencies:
+      '@agora-js/report': 4.21.0
+      '@agora-js/shared': 4.21.0
+      agora-rte-extension: 1.2.4
+      axios: 1.7.2
+      pako: 2.1.0
+      webrtc-adapter: 8.2.0
+    transitivePeerDependencies:
+      - debug
+    dev: false
+
+  /@agora-js/report@4.21.0:
+    resolution: {integrity: sha512-c8KIdomuPItwvri431z5CPT7L4m+jLJrwWWt/QS3JN+sp/t49NnoOIyKQf3y5xCbyNPCNNeGofrwkaIRu4YE8g==}
+    dependencies:
+      '@agora-js/shared': 4.21.0
+      axios: 1.7.2
+    transitivePeerDependencies:
+      - debug
+    dev: false
+
+  /@agora-js/shared@4.21.0:
+    resolution: {integrity: sha512-oqaiuIhG9ai/NXUDEmj9b3uGxxU9I0OZZszNaJexjakJuVZPM7ypzrCLUi5SzkTh++QOf68yuvD488fjq5WQsA==}
+    dependencies:
+      axios: 1.7.2
+      ua-parser-js: 0.7.38
+    transitivePeerDependencies:
+      - debug
+    dev: false
 
   /@ampproject/remapping@2.2.0:
     resolution: {integrity: sha512-qRmjj8nj9qmLTQXXmaR1cck3UXSRMPrbsLJAasZpF+t3riI71BXed5ebIOYwQntykeZuhjsdweEc9BxH5Jc26w==}
@@ -6589,19 +6651,36 @@ packages:
       - supports-color
     dev: false
 
-  /agora-rtc-sdk-ng@4.16.0:
-    resolution: {integrity: sha512-Wyoyzb0+ewRfMtyDxnJqHVQqBQYO4IkZsmlfzomXt69FA1rAr5yhQBxy1LxO/mwE9mm1XIC/9Yz5dEjL2d4ehg==}
+  /agora-rtc-sdk-ng@4.21.0:
+    resolution: {integrity: sha512-EAZMdhbqIXl/PtFqEQn0O5Pmj3Tt+4oTXtd76MK1CozgbcDsc0TmFZK3qM25eaKqhzTz1wiVCwzBCWs3pF5OpQ==}
     dependencies:
-      agora-rte-extension: 1.2.3
+      '@agora-js/media': 4.21.0
+      '@agora-js/report': 4.21.0
+      '@agora-js/shared': 4.21.0
+      agora-rte-extension: 1.2.4
+      axios: 1.7.2
+      formdata-polyfill: 4.0.10
+      ua-parser-js: 0.7.38
+      webrtc-adapter: 8.2.0
+    transitivePeerDependencies:
+      - debug
     dev: false
 
-  /agora-rte-extension@1.2.3:
-    resolution: {integrity: sha512-k3yNrYVyzJRoQJjaJUktKUI1XRtf8J1XsW8OzYKFqGlS8WQRMsES1+Phj2rfuEriiLObfuyuCimG6KHQCt5tiw==}
+  /agora-rte-extension@1.2.4:
+    resolution: {integrity: sha512-0ovZz1lbe30QraG1cU+ji7EnQ8aUu+Hf3F+a8xPml3wPOyUQEK6CTdxV9kMecr9t+fIDrGeW7wgJTsM1DQE7Nw==}
     dev: false
 
   /agora-rtm-sdk@1.6.0:
     resolution: {integrity: sha512-A0KmHxIHwIb5r1cWEJXMQX8UkCb07Xs5JLX6Hy6PsRWcvxWu66GPqdTx0rP4TmoQ4pEN2LJYGatjxWD79ZZ6Pw==}
     deprecated: this package has been deprecated
+    dev: false
+
+  /agora-rtm@2.1.10:
+    resolution: {integrity: sha512-Rc6frRI4ah3T8cJM+xggjaSgD5OXaLrh0q98fbGmZ9N92GFxz6xH4XJmmZ4/8UcK9pzvJeu/A6JOxN+fLI2Bcw==}
+    dependencies:
+      agora-rtc-sdk-ng: 4.21.0
+    transitivePeerDependencies:
+      - debug
     dev: false
 
   /airbnb-js-shims@2.2.1:
@@ -7234,6 +7313,16 @@ packages:
     resolution: {integrity: sha512-7i24Ri4pmDRfJTR7LDBhsOTtcm+9kjX5WiY1X3wIisx6G9So3pfMkEiU7emUBe46oceVImccTEM3k6C5dbVW8A==}
     dependencies:
       follow-redirects: 1.15.3
+      form-data: 4.0.0
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
+    dev: false
+
+  /axios@1.7.2:
+    resolution: {integrity: sha512-2A8QhOMrbomlDuiLeK9XibIBzuHeRcqqNOHp0Cyp5EoJ1IFDh+XZH3A6BkXtv0K4gFGCI0Y4BM7B1wOEi0Rmgw==}
+    dependencies:
+      follow-redirects: 1.15.6
       form-data: 4.0.0
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
@@ -11186,6 +11275,14 @@ packages:
     dependencies:
       pend: 1.2.0
 
+  /fetch-blob@3.2.0:
+    resolution: {integrity: sha512-7yAQpD2UMJzLi1Dqv7qFYnPbaPx7ZfFK6PiIxQ4PfkGPyNyl2Ugx+a/umUonmKqjhM4DnfbMvdX6otXq83soQQ==}
+    engines: {node: ^12.20 || >= 14.13}
+    dependencies:
+      node-domexception: 1.0.0
+      web-streams-polyfill: 3.3.3
+    dev: false
+
   /fflate@0.4.8:
     resolution: {integrity: sha512-FJqqoDBR00Mdj9ppamLa/Y7vxm+PRmNWA67N846RvsoYVMKB4q3y/de5PA7gUmRMYK/8CMz2GDZQmCRN1wBcWA==}
 
@@ -11402,6 +11499,16 @@ packages:
 
   /follow-redirects@1.15.3:
     resolution: {integrity: sha512-1VzOtuEM8pC9SFU1E+8KfTjZyMztRsgEfwQl44z8A25uy13jSzTj6dyK2Df52iV0vgHCfBwLhDWevLn95w5v6Q==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dev: false
+
+  /follow-redirects@1.15.6:
+    resolution: {integrity: sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==}
     engines: {node: '>=4.0'}
     peerDependencies:
       debug: '*'
@@ -11630,6 +11737,13 @@ packages:
     resolution: {integrity: sha512-wzsgA6WOq+09wrU1tsJ09udeR/YZRaeArL9e1wPbFg3GG2yDnC2ldKpxs4xunpFF9DgqCqOIra3bc1HWrJ37Ww==}
     engines: {node: '>=0.4.x'}
     dev: true
+
+  /formdata-polyfill@4.0.10:
+    resolution: {integrity: sha512-buewHzMvYL29jdeQTVILecSaZKnt/RJWjoZCF5OW60Z67/GmSLBkOFM7qh1PI3zFNtJbaZL5eQu1vLfazOwj4g==}
+    engines: {node: '>=12.20.0'}
+    dependencies:
+      fetch-blob: 3.2.0
+    dev: false
 
   /formstream@1.1.1:
     resolution: {integrity: sha512-yHRxt3qLFnhsKAfhReM4w17jP+U1OlhUjnKPPtonwKbIJO7oBP0MvoxkRUwb8AU9n0MIkYy5X5dK6pQnbj+R2Q==}
@@ -14874,6 +14988,11 @@ packages:
       minimatch: 3.1.2
     dev: true
 
+  /node-domexception@1.0.0:
+    resolution: {integrity: sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==}
+    engines: {node: '>=10.5.0'}
+    dev: false
+
   /node-downloader-helper@2.1.4:
     resolution: {integrity: sha512-Cbc5jwGTe58apFIPjxgcUzX0Se+pcUgdbym6G+sk2yb1m/qwxYTLmD4C2xEHTJO9YkZ/eRujMJPl3WW+7fVksQ==}
     engines: {node: '>=14.18'}
@@ -15515,6 +15634,10 @@ packages:
   /pako@1.0.11:
     resolution: {integrity: sha512-4hLB8Py4zZce5s4yd9XzopqwVv/yGNhV1Bl8NTmCq1763HeK2+EwVTv+leGeL13Dnh2wfbqowVPXCIO0z4taYw==}
     dev: true
+
+  /pako@2.1.0:
+    resolution: {integrity: sha512-w+eufiZ1WuJYgPXbV/PO3NCMEc3xqylkKHzp8bxp1uW4qaSNQUkwmLLEc3kKsfz8lpV1F8Ht3U1Cm+9Srog2ug==}
+    dev: false
 
   /parallel-transform@1.2.0:
     resolution: {integrity: sha512-P2vSmIu38uIlvdcU7fDkyrxj33gTUy/ABO5ZUbGowxNCopBq/OoD42bP4UmMrJoPyk4Uqf0mu3mtWBhHCZD8yg==}
@@ -18217,6 +18340,10 @@ packages:
       get-ready: 1.0.0
     dev: true
 
+  /sdp@3.2.0:
+    resolution: {integrity: sha512-d7wDPgDV3DDiqulJjKiV2865wKsJ34YI+NDREbm+FySq6WuKOikwyNQcm+doLAZ1O6ltdO0SeKle2xMpN3Brgw==}
+    dev: false
+
   /seedrandom@3.0.5:
     resolution: {integrity: sha512-8OwmbklUNzwezjGInmZ+2clQmExQPvomqjL7LFqOYqtmuxRgQYqOD3mHaU+MvZn5FLUeVxVfQjwLZW/n/JFuqg==}
 
@@ -19868,6 +19995,10 @@ packages:
     engines: {node: '>=4.2.0'}
     hasBin: true
 
+  /ua-parser-js@0.7.38:
+    resolution: {integrity: sha512-fYmIy7fKTSFAhG3fuPlubeGaMoAd6r0rSnfEsO5nEY55i26KSLt9EH7PLQiiqPUhNqYIJvSkTy1oArIcXAbPbA==}
+    dev: false
+
   /ua-parser-js@1.0.2:
     resolution: {integrity: sha512-00y/AXhx0/SsnI51fTc0rLRmafiGOM4/O+ny10Ps7f+j/b8p/ZY11ytMgznXkOVo4GQ+KwQG5UQLkLGirsACRg==}
     dev: false
@@ -20570,6 +20701,11 @@ packages:
     resolution: {integrity: sha512-wYxSGajtmoP4WxfejAPIr4l0fVh+jeMXZb08wNc0tMg6xsfZXj3cECqIK0G7ZAqUq0PP8WlMDtaOGVBTAWztNw==}
     dev: true
 
+  /web-streams-polyfill@3.3.3:
+    resolution: {integrity: sha512-d2JWLCivmZYTSIoge9MsgFCZrt571BikcWGYkjC1khllbTeDlGqZ2D8vD8E/lJa8WGWbb7Plm8/XJYV7IJHZZw==}
+    engines: {node: '>= 8'}
+    dev: false
+
   /webidl-conversions@3.0.1:
     resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
     dev: true
@@ -20803,6 +20939,13 @@ packages:
       - esbuild
       - uglify-js
     dev: true
+
+  /webrtc-adapter@8.2.0:
+    resolution: {integrity: sha512-umxCMgedPAVq4Pe/jl3xmelLXLn4XZWFEMR5Iipb5wJ+k1xMX0yC4ZY9CueZUU1MjapFxai1tFGE7R/kotH6Ww==}
+    engines: {node: '>=6.0.0', npm: '>=3.10.0'}
+    dependencies:
+      sdp: 3.2.0
+    dev: false
 
   /whatwg-url@5.0.0:
     resolution: {integrity: sha512-saE57nupxk6v3HY35+jzBwYa0rKSy0XR8JSxZPwgLr7ys0IBzhGviA1/TUGJLmSVqs8pb9AnvICXEuOHLprYTw==}
