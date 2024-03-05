@@ -827,6 +827,7 @@ export class ClassroomStore {
 
     public async destroy(): Promise<void> {
         this.sideEffect.flushAll();
+        (window as any).classroomStore = null;
 
         await this.stopRecording();
 
