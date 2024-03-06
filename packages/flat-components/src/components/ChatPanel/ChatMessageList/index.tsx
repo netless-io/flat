@@ -90,8 +90,15 @@ export const ChatMessageList = /* @__PURE__ */ observer<ChatMessageListProps>(
                         latestMessage!.timestamp > prev.latestMessage.timestamp
                     ) {
                         // user sent a new message
-                        // scroll to the bottom
-                        setScrollToIndex(messageCount - 1);
+                        // scroll to the bottom only if the user is the last message's sender or is at bottom
+                        if (latestMessage?.senderID === userUUID) {
+                            setScrollToIndex(messageCount - 1);
+                        } else {
+                            const div = document.querySelector(".chat-message-list");
+                            if (div && div.scrollTop + div.clientHeight >= div.scrollHeight - 30) {
+                                setScrollToIndex(messageCount - 1);
+                            }
+                        }
                     } else {
                         // history messages loaded
                         // stay at the last position
@@ -157,7 +164,7 @@ export const ChatMessageList = /* @__PURE__ */ observer<ChatMessageListProps>(
                                 {() => (
                                     <List
                                         ref={registerChild}
-                                        className="fancy-scrollbar"
+                                        className="chat-message-list fancy-scrollbar"
                                         height={height}
                                         rowCount={messages.length}
                                         rowHeight={cellCache.rowHeight}
