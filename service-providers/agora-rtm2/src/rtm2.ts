@@ -329,7 +329,7 @@ export class AgoraRTM2 extends IServiceTextChat {
                     this.events.emit("member-left", { roomUUID, userUUID: event.publisher });
                 }
 
-                // When the user list exceeds Anounce Max (default to 50), it will aggregate
+                // When the user list exceeds Announce Max (default to 50), it will aggregate
                 // the events and send them in the "interval" field.
                 if (event.interval) {
                     const { join, leave, timeout } = event.interval;
