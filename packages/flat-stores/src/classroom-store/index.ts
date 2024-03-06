@@ -170,7 +170,7 @@ export class ClassroomStore {
             roomUUID: this.roomUUID,
             ownerUUID: this.ownerUUID,
             userUUID: this.userUUID,
-            isInRoom: userUUID => this.rtm.members.has(userUUID),
+            isInRoom: userUUID => this.rtm.members.has(userUUID) || config.whiteboard.has(userUUID),
         });
 
         this.whiteboardStore = new WhiteboardStore({
@@ -515,39 +515,63 @@ export class ClassroomStore {
             user.wbOperate = !!whiteboardStorage.state[user.userUUID];
         });
 
+        const refreshUsers = (userUUIDs: string[]): void => {
+            const set = new Set(userUUIDs);
+            this.users.updateUsers(user => {
+                if (!set.has(user.userUUID)) {
+                    return true;
+                }
+                if (user.userUUID === this.ownerUUID || onStageUsersStorage.state[user.userUUID]) {
+                    user.isSpeak = true;
+                    user.wbOperate = !!whiteboardStorage.state[user.userUUID];
+                    user.isRaiseHand = false;
+                    const deviceState = deviceStateStorage.state[user.userUUID];
+                    if (deviceState) {
+                        user.camera = deviceState.camera;
+                        user.mic = deviceState.mic;
+                    } else {
+                        user.camera = false;
+                        user.mic = false;
+                    }
+                    set.delete(user.userUUID);
+                    if (set.size === 0) {
+                        return false;
+                    }
+                }
+                // not on stage, but has whiteboard access
+                if (whiteboardStorage.state[user.userUUID]) {
+                    user.wbOperate = true;
+                    set.delete(user.userUUID);
+                    if (set.size === 0) {
+                        return false;
+                    }
+                }
+                return true;
+            });
+        };
+
         this.sideEffect.addDisposer(
             this.rtm.events.on("member-joined", async ({ userUUID }) => {
                 await this.users.addUser(userUUID, this.isUsersPanelVisible);
-                this.users.updateUsers(user => {
-                    if (user.userUUID === userUUID) {
-                        if (userUUID === this.ownerUUID || onStageUsersStorage.state[userUUID]) {
-                            user.isSpeak = true;
-                            user.wbOperate = !!whiteboardStorage.state[userUUID];
-                            user.isRaiseHand = false;
-                            const deviceState = deviceStateStorage.state[user.userUUID];
-                            if (deviceState) {
-                                user.camera = deviceState.camera;
-                                user.mic = deviceState.mic;
-                            } else {
-                                user.camera = false;
-                                user.mic = false;
-                            }
-                            return false;
-                        }
-                        // not on stage, but has whiteboard access
-                        if (whiteboardStorage.state[userUUID]) {
-                            user.wbOperate = true;
-                            return false;
-                        }
-                    }
-                    return true;
-                });
+                refreshUsers([userUUID]);
             }),
         );
 
         this.sideEffect.addDisposer(
             this.rtm.events.on("member-left", ({ userUUID }) => {
                 this.users.removeUser(userUUID);
+            }),
+        );
+
+        this.sideEffect.addDisposer(
+            this.whiteboardStore.whiteboard.events.on("members", async (userUUIDs: string[]) => {
+                userUUIDs = userUUIDs.filter(userUUID => !this.users.cachedUsers.has(userUUID));
+                if (userUUIDs.length > 0) {
+                    for (const userUUID of userUUIDs) {
+                        await this.users.addUser(userUUID, this.isUsersPanelVisible);
+                    }
+                    refreshUsers(userUUIDs);
+                }
             }),
         );
 

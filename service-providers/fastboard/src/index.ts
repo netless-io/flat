@@ -242,6 +242,18 @@ export class Fastboard extends IServiceWhiteboard {
                     onPhaseChanged: phase => {
                         this._roomPhase$.setValue(phase);
                     },
+                    onRoomStateChanged: state => {
+                        if (state.roomMembers) {
+                            const members: string[] = [];
+                            for (const member of state.roomMembers) {
+                                const uid = member.payload?.uid;
+                                if (uid) {
+                                    members.push(uid);
+                                }
+                            }
+                            this.events.emit("members", members);
+                        }
+                    },
                     onDisconnectWithError: error => {
                         this.toaster.emit("error", this.flatI18n.t("on-disconnect-with-error"));
                         console.error(error);
@@ -341,6 +353,15 @@ export class Fastboard extends IServiceWhiteboard {
                 }
             }),
         );
+    }
+
+    public override has(uid: string): boolean {
+        const app = this._app$.value;
+        if (app) {
+            return app.room.state.roomMembers.some(member => member.payload?.uid === uid);
+        } else {
+            return false;
+        }
     }
 
     public async leaveRoom(): Promise<void> {

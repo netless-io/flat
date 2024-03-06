@@ -13,6 +13,7 @@ export interface IServiceWhiteboardEventData {
     scrollPage: number;
     maxScrollPage: number;
     userScroll: void;
+    members: string[];
 }
 
 export type IServiceWhiteboardEventName = Extract<keyof IServiceWhiteboardEventData, string>;
