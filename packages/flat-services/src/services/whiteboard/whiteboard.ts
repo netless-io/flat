@@ -57,6 +57,8 @@ export abstract class IServiceWhiteboard {
 
     public abstract joinRoom(config: IServiceWhiteboardJoinRoomConfig): Promise<void>;
 
+    public abstract has(uid: string): boolean;
+
     public abstract leaveRoom(): Promise<void>;
 
     public abstract render(el: HTMLElement): void;
