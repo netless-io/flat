@@ -72,6 +72,14 @@ export const joinRoomHandler = async (
             return;
         }
 
+        // show room not started with custom {joinEarly} minutes
+        if (e.errorCode === RequestErrorCode.RoomNotBegin) {
+            const minutes = globalStore.serverRegionConfig?.server.joinEarly || 5;
+            void message.info(FlatI18n.t("the-room-is-not-started-yet", { minutes }));
+            pushHistory(RouteNameType.HomePage);
+            return;
+        }
+
         pushHistory(RouteNameType.HomePage);
         errorTips(e);
     }
