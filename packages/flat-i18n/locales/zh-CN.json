@@ -655,7 +655,7 @@
   "minutes": "{{minutes}}分钟",
   "room-not-begin-title-post": "可进入",
   "room-has-been-added": "已加入房间列表",
-  "the-room-is-not-started-yet": "房间未开始，开课前 5 分钟可进入",
+  "the-room-is-not-started-yet": "房间未开始，开课前 {{minutes}} 分钟可进入",
   "will-start-after-minutes": "{{minutes}} 分钟后开始",
   "time-limit-tip": "你已加入{{roomType}} {{minutes}} 分钟限时房间",
   "vip-level": {

@@ -655,7 +655,7 @@
   "minutes": "{{minutes}} minutes",
   "room-not-begin-title-post": "before it starts",
   "room-has-been-added": "has been added to rooms list",
-  "the-room-is-not-started-yet": "Room not started, accessible 5 minutes before class starts",
+  "the-room-is-not-started-yet": "Room not started, accessible {{minutes}} minutes before class starts",
   "will-start-after-minutes": "In {{minutes}} minutes",
   "time-limit-tip": "This {{roomType}} room has a limit of {{minutes}} minutes",
   "vip-level": {
