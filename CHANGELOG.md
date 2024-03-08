@@ -1,3 +1,20 @@
+## [2.3.3](https://github.com/netless-io/flat/compare/v2.3.2...v2.3.3) (2024-03-08)
+
+
+### Bug Fixes
+
+* **service-providers**: reporting end time on recovering record ([#2124](https://github.com/netless-io/flat/issues/2124)) ([2eded3b1](https://github.com/netless-io/flat/commit/2eded3b1))
+* **flat-components**: ended timer logic error ([#2120](https://github.com/netless-io/flat/issues/2120)) ([a74e5ba7](https://github.com/netless-io/flat/commit/a74e5ba7))
+* **flat-pages**: refresh rooms list on any join room error ([#2118](https://github.com/netless-io/flat/issues/2118)) ([e8bf66c7](https://github.com/netless-io/flat/commit/e8bf66c7))
+* **flat-pages**: refresh rooms list on room not begin error ([#2117](https://github.com/netless-io/flat/issues/2117)) ([57383114](https://github.com/netless-io/flat/commit/57383114))
+* **flat-pages**: room not begin modal wrong logic ([#2116](https://github.com/netless-io/flat/issues/2116)) ([282cef22](https://github.com/netless-io/flat/commit/282cef22))
+* **flat-services**: correct message when failed to convert file ([#2108](https://github.com/netless-io/flat/issues/2108)) ([2a171617](https://github.com/netless-io/flat/commit/2a171617))
+* **flat-pages**: show room stopped modal on creator side ([#2100](https://github.com/netless-io/flat/issues/2100)) ([294f7c2a](https://github.com/netless-io/flat/commit/294f7c2a))
+* **flat-components**: start storybook failed ([#2098](https://github.com/netless-io/flat/issues/2098)) ([c88560e8](https://github.com/netless-io/flat/commit/c88560e8))
+* **flat-stores**: fix wrong target ([#2085](https://github.com/netless-io/flat/issues/2085)) ([e9ace808](https://github.com/netless-io/flat/commit/e9ace808))
+
+
+
 ## [2.3.2](https://github.com/netless-io/flat/compare/v2.3.1...v2.3.2) (2023-11-08)
 
 
@@ -881,6 +898,3 @@
 ### Reverts
 
 * Revert "feat(desktop): customize url protocol to join room on homepage (#749)" (#751) ([b58da8d](https://github.com/netless-io/Flat-native/commit/b58da8d98681907ad1e0ceb0993d6133f86b37aa)), closes [#749](https://github.com/netless-io/Flat-native/issues/749) [#751](https://github.com/netless-io/Flat-native/issues/751)
-
-
-
