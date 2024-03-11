@@ -21,7 +21,7 @@ log.trimEnd().split("\n").forEach(line => {
     const type = match[3];
     const scope = match[4];
     const message = match[5].replace(/\#(\d+)/, "[#$1](https://github.com/netless-io/flat/issues/$1)");
-    const item = `* **${scope}**: ${message} ([${abbr}](https://github.com/netless-io/flat/commit/${commit}))`;
+    const item = `* **${scope}**: ${message} ([${abbr}](https://github.com/netless-io/flat/commit/${abbr}))`;
     if (type === "feat") features.push(item);
     if (type === "fix") fixes.push(item);
     if (type === "perf") perf.push(item);
