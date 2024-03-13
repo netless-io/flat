@@ -43,6 +43,7 @@ export const ResourcePreviewPage = observer<ResourcePreviewPagePageProps>(
                     if (taskUUID && taskToken) {
                         return (
                             <StaticPreview
+                                projector={projector === "projector"}
                                 region={region as Region}
                                 taskToken={taskToken}
                                 taskUUID={taskUUID}

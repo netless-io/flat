@@ -9,7 +9,6 @@ import {
     isServerRequestError,
 } from "@netless/flat-server-api";
 import { errorTips } from "flat-components";
-import { isPPTX } from "../file";
 import { globalStore } from "../../global-store";
 
 export enum UploadStatusType {
@@ -143,10 +142,7 @@ export class UploadTask {
     public async finish(): Promise<void> {
         if (this.fileUUID) {
             try {
-                await uploadFinish({
-                    fileUUID: this.fileUUID,
-                    isWhiteboardProjector: isPPTX(this.file.name),
-                });
+                await uploadFinish({ fileUUID: this.fileUUID });
             } catch (e) {
                 console.error(e);
             }

@@ -5,7 +5,7 @@ import { Disposable } from "side-effect-manager";
 import { DocsViewer, DocsViewerPage, PageRenderer, Stepper } from "@netless/app-docs-viewer";
 import { IServiceFilePreview, CloudFile, FileResourceType } from "@netless/flat-services";
 import { queryConvertingTaskStatus } from "@netless/flat-service-provider-file-convert-netless";
-import { Region } from "@netless/flat-server-api";
+import { ConvertingTaskStatus, Region } from "@netless/flat-server-api";
 import { clamp, isSameRect, isSameSize, Rect, Size } from "../utils";
 
 export class StaticDocsViewer implements IServiceFilePreview {
@@ -258,6 +258,20 @@ export class StaticDocsViewer implements IServiceFilePreview {
         }
     }
 
+    private mapImagesToPages(
+        images: ConvertingTaskStatus["images"],
+        previews: ConvertingTaskStatus["previews"],
+    ): DocsViewerPage[] {
+        images = images || {};
+        previews = previews || {};
+        const pages: DocsViewerPage[] = [];
+        for (const page in images) {
+            const { width, height, url } = images[page];
+            pages.push({ width, height, src: url, thumbnail: previews[page] });
+        }
+        return pages;
+    }
+
     public async preview(file: CloudFile, container: HTMLElement): Promise<void> {
         if (
             file.resourceType === FileResourceType.WhiteboardConvert ||
@@ -270,7 +284,10 @@ export class StaticDocsViewer implements IServiceFilePreview {
                 region: this.region,
             });
 
-            if (result.progress?.convertedFileList) {
+            if (result.images) {
+                this.pagesScrollTop$.setValue(0);
+                this.pages$.setValue(this.mapImagesToPages(result.images, result.previews));
+            } else if (result.progress?.convertedFileList) {
                 this.pagesScrollTop$.setValue(0);
                 this.pages$.setValue(
                     result.progress.convertedFileList.map(item => ({

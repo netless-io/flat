@@ -53,6 +53,7 @@ export class WindowMain extends AbstractWindow<false> {
         );
     }
 
+    // @ts-ignore Don't load react extension which is annoying in debugging
     private static loadExtensions(win: CustomWindow, extensionName: "react-devtools"): void {
         const { REACT_DEVELOPER_TOOLS } = require("electron-devtools-vendor");
 

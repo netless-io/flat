@@ -228,3 +228,38 @@ export async function uploadTempPhotoFinish(fileUUID: string): Promise<void> {
         fileUUID,
     });
 }
+
+export interface ConvertingTaskStatus {
+    uuid: string;
+    type: "static" | "dynamic";
+    status: "Waiting" | "Converting" | "Finished" | "Fail" | "Abort";
+    errorCode?: string;
+    errorMessage?: string;
+    convertedPercentage?: number;
+    prefix?: string;
+    pageCount?: number;
+    previews?: { [page: number]: string };
+    note?: string;
+    images?: { [page: number]: { width: number; height: number; url: string } };
+    /** @deprecated This field is for compatible with legacy static convert. New resources should use `images` above. */
+    progress?: ConvertingTaskStatusLegacy["progress"];
+}
+
+export interface ConvertingTaskStatusLegacy {
+    uuid: string;
+    type: "static" | "dynamic";
+    status: "Waiting" | "Converting" | "Finished" | "Fail" | "Abort";
+    failedReason?: string;
+    progress?: {
+        totalPageSize: number;
+        convertedPageSize: number;
+        convertedPercentage: number;
+        convertedFileList: Array<{
+            width: number;
+            height: number;
+            conversionFileUrl: string;
+            preview?: string;
+        }>;
+        currentStep: "Extracting" | "Packaging" | "GeneratingPreview" | "MediaTranscode";
+    };
+}
