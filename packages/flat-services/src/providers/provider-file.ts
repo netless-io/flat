@@ -51,11 +51,11 @@ export class FlatServiceProviderFile implements IServiceFile {
         try {
             if (file.resourceType === FileResourceType.NormalResources) {
                 await insertService.insert(file);
-            }
-            const convertStatus = await this.checkConvertStatus(file, ext);
-
-            if (convertStatus === FileConvertStep.Done) {
-                await insertService.insert(file);
+            } else {
+                const convertStatus = await this.checkConvertStatus(file, ext);
+                if (convertStatus === FileConvertStep.Done) {
+                    await insertService.insert(file);
+                }
             }
         } catch (e) {
             this.toaster.emit("error", this.flatI18n.t("unable-to-insert-courseware"));

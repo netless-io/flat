@@ -5,11 +5,13 @@ import { Region } from "flat-components";
 import React, { useEffect, useState } from "react";
 import { queryConvertingTaskStatus } from "@netless/flat-stores";
 import { useSafePromise } from "../utils/hooks/lifecycle";
+import { ConvertingTaskStatus } from "@netless/flat-server-api";
 
 export interface StaticPreviewProps {
     taskUUID: string;
     taskToken: string;
     region: Region;
+    projector: boolean;
 }
 
 type ConvertedFileList =
@@ -21,10 +23,22 @@ type ConvertedFileList =
       }>
     | undefined;
 
+const mapImagesToConvertedFileList = (convert: ConvertingTaskStatus): ConvertedFileList => {
+    const images = convert.images || {};
+    const previews = convert.previews || {};
+    const result: NonNullable<ConvertedFileList> = [];
+    for (const page in images) {
+        const { width, height, url } = images[page];
+        result.push({ width, height, conversionFileUrl: url, preview: previews[page] });
+    }
+    return result;
+};
+
 export const StaticPreview = observer<StaticPreviewProps>(function DocumentPreview({
     taskUUID,
     taskToken,
     region,
+    projector,
 }) {
     const [convertList, setConvertList] = useState<ConvertedFileList>([]);
     const sp = useSafePromise();
@@ -37,11 +51,15 @@ export const StaticPreview = observer<StaticPreviewProps>(function DocumentPrevi
                     taskToken,
                     dynamic: false,
                     region,
-                    projector: false,
+                    projector,
                 }),
             );
 
-            setConvertList(convertResult.progress?.convertedFileList);
+            if (convertResult.images) {
+                setConvertList(mapImagesToConvertedFileList(convertResult));
+            } else if (convertResult.progress) {
+                setConvertList(convertResult.progress.convertedFileList);
+            }
         }
 
         getStaticResource().catch(console.warn);

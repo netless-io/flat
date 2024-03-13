@@ -234,8 +234,39 @@ export async function insertDocs(
                 taskId: taskUUID!,
                 url: convertingStatus.prefix,
             });
+            return;
+        }
+
+        if (convertingStatus.images) {
+            // other docs
+            await fastboardApp.manager.addApp({
+                kind: BuiltinApps.DocsViewer,
+                options: {
+                    scenePath: `/${taskUUID}/${uuidv4()}`,
+                    title: file.fileName,
+                    scenes: mapImagesToScenes(convertingStatus.images, convertingStatus.previews),
+                },
+            });
+            return;
         }
     }
+}
+
+function mapImagesToScenes(
+    images: {
+        [page: number]: { width: number; height: number; url: string };
+    },
+    previews: { [page: number]: string } = {},
+): SceneDefinition[] {
+    const scenes: SceneDefinition[] = [];
+    for (const page in images) {
+        const { width, height, url } = images[page];
+        scenes.push({
+            name: page,
+            ppt: { width, height, src: url, previewURL: previews[page] },
+        });
+    }
+    return scenes;
 }
 
 function extractLegacySlideParams(

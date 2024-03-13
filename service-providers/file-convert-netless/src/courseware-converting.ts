@@ -1,41 +1,11 @@
 import {
+    ConvertingTaskStatus,
     FileResourceType,
     getWhiteboardTaskData,
     metaType,
     Region,
     ResourceType,
 } from "@netless/flat-server-api";
-
-export interface ConvertingTaskStatus {
-    uuid: string;
-    type: "static" | "dynamic";
-    status: "Waiting" | "Converting" | "Finished" | "Fail" | "Abort";
-    errorCode?: string;
-    errorMessage?: string;
-    convertedPercentage?: number;
-    prefix?: string;
-    // TODO: `progress` is for static resources and will be changed in the future.
-    progress?: ConvertingTaskStatusLegacy["progress"];
-}
-
-export interface ConvertingTaskStatusLegacy {
-    uuid: string;
-    type: "static" | "dynamic";
-    status: "Waiting" | "Converting" | "Finished" | "Fail" | "Abort";
-    failedReason?: string;
-    progress?: {
-        totalPageSize: number;
-        convertedPageSize: number;
-        convertedPercentage: number;
-        convertedFileList: Array<{
-            width: number;
-            height: number;
-            conversionFileUrl: string;
-            preview?: string;
-        }>;
-        currentStep: "Extracting" | "Packaging" | "GeneratingPreview" | "MediaTranscode";
-    };
-}
 
 export interface QueryConvertingParams {
     dynamic: boolean;

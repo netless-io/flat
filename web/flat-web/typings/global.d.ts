@@ -12,5 +12,13 @@ declare namespace NodeJS {
         FEEDBACK_URL: string;
 
         CLOUD_RECORDING_DEFAULT_AVATAR?: string;
+        LOGIN_METHODS: string;
     }
+}
+
+declare interface Window {
+    __netlessUA?: string;
+    isElectron?: boolean;
+
+    node?: any;
 }
