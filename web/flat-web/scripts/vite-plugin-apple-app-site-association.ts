@@ -35,6 +35,20 @@ export function appleAppSiteAssociation(): Plugin {
                 console.log("Updated apple-app-site-association.json:", detail.appID);
             });
 
+            // Append all appIds to allow universal links for different region apps.
+            if (json.applinks.details.length > 0) {
+                const keys = Object.keys(AppleAppID) as (keyof typeof AppleAppID)[];
+                keys.forEach((key) => {
+                    const appId = AppleAppID[key];
+                    const appIdExist = json.applinks.details.some((detail) => detail.appID == appId);
+                    if (!appIdExist) {
+                        const appendingDetail = { ...json.applinks.details[0] };
+                        appendingDetail.appID = appId;
+                        json.applinks.details.push(appendingDetail);
+                    }
+                });
+            }
+
             await writeFile(file, JSON.stringify(json, null, 2), "utf8");
         },
     };
