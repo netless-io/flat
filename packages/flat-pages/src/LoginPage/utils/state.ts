@@ -36,6 +36,17 @@ export function useMachine(): [any, (type: ToggleEventsType) => void] {
     return [currentState, setCurrentState];
 }
 
+const isJavaScriptProtocol =
+    /^[\u0000-\u001F ]*j[\r\n\t]*a[\r\n\t]*v[\r\n\t]*a[\r\n\t]*s[\r\n\t]*c[\r\n\t]*r[\r\n\t]*i[\r\n\t]*p[\r\n\t]*t[\r\n\t]*\:/i;
+
+function sanitizeURL(url: string | null): string | null {
+    if (url && isJavaScriptProtocol.test(url)) {
+        console.warn("Refuse to redirect to", url);
+        return null;
+    }
+    return url;
+}
+
 export interface LoginState {
     currentState: any;
     setCurrentState: (type: ToggleEventsType) => void;
@@ -55,7 +66,7 @@ export function useLoginState(): LoginState {
     const [loginResult, setLoginResult] = useState<LoginProcessResult | null>(null);
 
     const [redirectURL] = useState(() =>
-        new URLSearchParams(window.location.search).get("redirect"),
+        sanitizeURL(new URLSearchParams(window.location.search).get("redirect")),
     );
 
     const [currentState, setCurrentState] = useMachine();
