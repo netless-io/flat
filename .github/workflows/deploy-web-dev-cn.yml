@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - "main"
-      - "only-deploy-prod-web"
+      - "only-deploy-dev-web"
 
 jobs:
   deploy-flat-web-dev:
