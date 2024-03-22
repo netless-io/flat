@@ -14,7 +14,7 @@
     "white-web-sdk": ">=2.16"
   },
   "devDependencies": {
-    "@netless/fastboard": "1.0.0-canary.10",
+    "@netless/fastboard": "1.0.0-canary.11",
     "@netless/window-manager": "1.0.0-canary.79",
     "mobx": "^6.6.1",
     "prettier": "^3.2.4",
