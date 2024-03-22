@@ -28,25 +28,14 @@ export function appleAppSiteAssociation(): Plugin {
             }
 
             const content = await readFile(file, "utf8");
-            const json = JSON.parse(content) as { applinks: { details: { appID: string }[] } };
+            const json = JSON.parse(content) as { applinks: { details: { appIDs: string[] }[] } };
 
-            json.applinks.details.forEach(detail => {
-                detail.appID = AppleAppID[region];
-                console.log("Updated apple-app-site-association.json:", detail.appID);
-            });
-
-            // Append all appIds to allow universal links for different region apps.
             if (json.applinks.details.length > 0) {
-                const keys = Object.keys(AppleAppID) as (keyof typeof AppleAppID)[];
-                keys.forEach((key) => {
-                    const appId = AppleAppID[key];
-                    const appIdExist = json.applinks.details.some((detail) => detail.appID == appId);
-                    if (!appIdExist) {
-                        const appendingDetail = { ...json.applinks.details[0] };
-                        appendingDetail.appID = appId;
-                        json.applinks.details.push(appendingDetail);
-                    }
-                });
+                if (region === "CN") {
+                    json.applinks.details[0].appIDs = [AppleAppID["CN"], AppleAppID["SG"]];
+                } else if (region === "SG") {
+                    json.applinks.details[0].appIDs = [AppleAppID["SG"], AppleAppID["CN"]];
+                }
             }
 
             await writeFile(file, JSON.stringify(json, null, 2), "utf8");
