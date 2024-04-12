@@ -7,6 +7,7 @@ import {
     UploadStartResult,
     RequestErrorCode,
     isServerRequestError,
+    FileResourceType,
 } from "@netless/flat-server-api";
 import { errorTips } from "flat-components";
 import { globalStore } from "../../global-store";
@@ -67,6 +68,7 @@ export class UploadTask {
                     fileName,
                     fileSize,
                     targetDirectoryPath: this.targetDirectoryPath,
+                    convertType: FileResourceType.WhiteboardProjector,
                 });
             } catch (e) {
                 // max concurrent upload count limit
@@ -79,6 +81,7 @@ export class UploadTask {
                         fileName,
                         fileSize,
                         targetDirectoryPath: this.targetDirectoryPath,
+                        convertType: FileResourceType.WhiteboardProjector,
                     });
                 } else {
                     throw e;

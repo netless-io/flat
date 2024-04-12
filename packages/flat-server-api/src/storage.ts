@@ -81,6 +81,7 @@ export interface UploadStartPayload {
     fileName: string;
     fileSize: number;
     targetDirectoryPath: string;
+    convertType: FileResourceType;
 }
 
 export interface UploadStartResult {
