@@ -1,12 +1,10 @@
-import { Form } from "antd";
-import { FormInstance, RuleObject } from "antd/lib/form";
-import { addMinutes, isAfter, isBefore, setHours, startOfDay } from "date-fns";
 import React from "react";
+import { Form } from "antd";
 import { FlatI18nTFunction } from "@netless/flat-i18n";
-import { EditRoomFormValues } from ".";
+import { FormInstance, RuleObject } from "antd/lib/form";
+import { addMinutes, isBefore } from "date-fns";
+import { EditRoomFormValues } from "./index";
 import {
-    compareDay,
-    compareHour,
     compareMinute,
     excludeRange,
     getRoughNow,
@@ -14,12 +12,14 @@ import {
 } from "../../../utils/room";
 import { FullTimePicker } from "../FullTimePicker";
 import { MIN_CLASS_DURATION } from "./constants";
+import { isAllowed } from "./rules";
 
 export function renderBeginTimePicker(
     t: FlatI18nTFunction,
     form: FormInstance<EditRoomFormValues>,
-    previousPeriodicRoomBeginTime?: number | null,
-    nextPeriodicRoomEndTime?: number | null,
+    prevBeginTime?: number | null,
+    nextBeginTime?: number | null,
+    nextEndTime?: number | null,
 ): React.ReactElement {
     return (
         <Form.Item label={t("begin-time")} name="beginTime" rules={[validateTime]}>
@@ -43,133 +43,59 @@ export function renderBeginTimePicker(
         };
     }
 
-    function disabledDate(date: Date): boolean {
-        if (previousPeriodicRoomBeginTime && nextPeriodicRoomEndTime) {
-            const isBeforeNow = isBefore(date, getRoughNow());
-            const isBeforePreTime = isBefore(date, previousPeriodicRoomBeginTime);
-            const isAfterNextTime = isAfter(date, nextPeriodicRoomEndTime);
-            return isBeforePreTime || isAfterNextTime || isBeforeNow;
-        } else if (nextPeriodicRoomEndTime && previousPeriodicRoomBeginTime === null) {
-            const isBeforeNow = isBefore(date, startOfDay(getRoughNow()));
-            const isAfterNextTime = isAfter(date, nextPeriodicRoomEndTime);
-            return isBeforeNow || isAfterNextTime;
-        } else if (previousPeriodicRoomBeginTime && nextPeriodicRoomEndTime === null) {
-            const isBeforePreTime = isBefore(date, previousPeriodicRoomBeginTime);
-            const isBeforeNow = isBefore(date, getRoughNow());
-            return isBeforePreTime || isBeforeNow;
+    // This function has to iterate through every (43200) minutes of a month to find the available time.
+    // There is a performance bottleneck.
+    function disabledDate(beginTime: Date): boolean {
+        beginTime = new Date(beginTime);
+        let allowed = false;
+        out: for (const hour of excludeRange(24)) {
+            for (const minute of excludeRange(60)) {
+                beginTime.setHours(hour);
+                beginTime.setMinutes(minute);
+                if (isAllowed(beginTime, null, prevBeginTime, nextBeginTime, nextEndTime)) {
+                    allowed = true;
+                    break out;
+                }
+            }
         }
-        return isBefore(date, startOfDay(getRoughNow()));
+        return !allowed;
     }
 
     function disabledHours(): number[] {
-        const beginTime: EditRoomFormValues["beginTime"] = form.getFieldValue("beginTime");
-
-        const now = getRoughNow();
-
-        const diff = compareDay(now, beginTime);
-        if (previousPeriodicRoomBeginTime && nextPeriodicRoomEndTime) {
-            const preBeginTime = new Date(previousPeriodicRoomBeginTime);
-            const nextEndTime = new Date(nextPeriodicRoomEndTime);
-            const diff = compareDay(preBeginTime, beginTime);
-            const endDiff = compareDay(nextEndTime, beginTime);
-
-            if (diff < 0) {
-                if (endDiff === 0) {
-                    if (nextEndTime.getMinutes() < 15) {
-                        return excludeRange(nextEndTime.getHours(), 23);
-                    }
-                    return excludeRange(nextEndTime.getHours() + 1, 23);
-                }
-                return [];
-            }
-
-            if (diff === 0) {
-                return excludeRange(preBeginTime.getHours());
-            }
-
-            return excludeRange(24);
-        } else if (previousPeriodicRoomBeginTime) {
-            const preBeginTime = new Date(previousPeriodicRoomBeginTime);
-            const diff = compareDay(preBeginTime, beginTime);
-
-            if (diff < 0) {
-                return [];
-            }
-
-            if (diff === 0) {
-                return excludeRange(preBeginTime.getHours());
+        let beginTime: EditRoomFormValues["beginTime"] = form.getFieldValue("beginTime");
+        // Clone beginTime to avoid modifying the original value.
+        beginTime = new Date(beginTime);
+        beginTime.setSeconds(0);
+        beginTime.setMilliseconds(0);
+        const result: number[] = [];
+        for (const hour of excludeRange(24)) {
+            beginTime.setHours(hour);
+            if (
+                !excludeRange(60).some(minute => {
+                    beginTime.setMinutes(minute);
+                    return isAllowed(beginTime, null, prevBeginTime, nextBeginTime, nextEndTime);
+                })
+            ) {
+                result.push(hour);
             }
         }
-
-        if (diff < 0) {
-            return [];
-        }
-
-        if (diff === 0) {
-            return excludeRange(now.getHours());
-        }
-
-        return excludeRange(24);
+        return result;
     }
 
     function disabledMinutes(selectedHour: number): number[] {
-        const beginTime: EditRoomFormValues["beginTime"] = form.getFieldValue("beginTime");
-        const now = getRoughNow();
-
-        const diff = compareHour(now, setHours(beginTime, selectedHour));
-
-        if (previousPeriodicRoomBeginTime && nextPeriodicRoomEndTime) {
-            const preBeginTime = new Date(previousPeriodicRoomBeginTime);
-            const nextEndTime = new Date(nextPeriodicRoomEndTime);
-            const diff = compareHour(preBeginTime, setHours(beginTime, selectedHour));
-
-            const sameHour = selectedHour === nextEndTime.getHours();
-
-            if (diff < 0) {
-                if (sameHour) {
-                    return excludeRange(nextEndTime.getMinutes(), 59);
-                }
-                const isPreHours = nextEndTime.getHours() - selectedHour === 1;
-
-                if (isPreHours) {
-                    if (nextEndTime.getMinutes() < 15) {
-                        const roomDurationCompareTime =
-                            MIN_CLASS_DURATION - nextEndTime.getMinutes();
-                        return excludeRange(60 - roomDurationCompareTime, 59);
-                    }
-                    return [];
-                }
-                return [];
+        let beginTime: EditRoomFormValues["beginTime"] = form.getFieldValue("beginTime");
+        beginTime = new Date(beginTime);
+        beginTime.setHours(selectedHour);
+        beginTime.setSeconds(0);
+        beginTime.setMilliseconds(0);
+        const result: number[] = [];
+        for (const minute of excludeRange(60)) {
+            beginTime.setMinutes(minute);
+            if (!isAllowed(beginTime, null, prevBeginTime, nextBeginTime, nextEndTime)) {
+                result.push(minute);
             }
-
-            if (diff === 0) {
-                return excludeRange(preBeginTime.getMinutes() + 1);
-            }
-
-            return excludeRange(59);
-        } else if (previousPeriodicRoomBeginTime) {
-            const preBeginTime = new Date(previousPeriodicRoomBeginTime);
-            const diff = compareHour(preBeginTime, setHours(beginTime, selectedHour));
-            if (diff < 0) {
-                return [];
-            }
-
-            if (diff === 0) {
-                return excludeRange(preBeginTime.getMinutes() + 1);
-            }
-
-            return excludeRange(59);
         }
-
-        if (diff < 0) {
-            return [];
-        }
-
-        if (diff === 0) {
-            return excludeRange(now.getMinutes());
-        }
-
-        return excludeRange(59);
+        return result;
     }
 
     /** make sure end time is at least min duration after begin time */
