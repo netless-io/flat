@@ -162,6 +162,7 @@ export interface PeriodicSubRoomInfo {
 export interface PeriodicSubRoomInfoResult {
     roomInfo: PeriodicSubRoomInfo;
     previousPeriodicRoomBeginTime: number | null;
+    nextPeriodicRoomBeginTime: number | null;
     nextPeriodicRoomEndTime: number | null;
     count: number;
 }

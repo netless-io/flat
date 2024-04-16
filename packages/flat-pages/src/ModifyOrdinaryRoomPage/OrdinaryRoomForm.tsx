@@ -8,9 +8,11 @@ import {
     LoadingPage,
     errorTips,
 } from "flat-components";
+import { useTranslate } from "@netless/flat-i18n";
 import { ordinaryRoomInfo, updateOrdinaryRoom } from "@netless/flat-server-api";
 import EditRoomPage from "../components/EditRoomPage";
 import { useSafePromise } from "../utils/hooks/lifecycle";
+
 export interface OrdinaryRoomFormProps {
     roomUUID: string;
 }
@@ -20,6 +22,7 @@ export const OrdinaryRoomForm = observer<OrdinaryRoomFormProps>(function RoomFor
 
     const history = useHistory();
     const sp = useSafePromise();
+    const t = useTranslate();
 
     const [initialValues, setInitialValues] = useState<EditRoomFormInitialValues>();
 
@@ -70,7 +73,7 @@ export const OrdinaryRoomForm = observer<OrdinaryRoomFormProps>(function RoomFor
                     type: values.type,
                 }),
             );
-            void message.success("修改成功");
+            void message.success(t("edit-success"));
             history.goBack();
         } catch (e) {
             console.error(e);

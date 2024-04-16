@@ -71,6 +71,7 @@ export interface EditRoomBodyProps {
     loading: boolean;
     onSubmit: (value: EditRoomFormValues) => void;
     previousPeriodicRoomBeginTime?: number | null;
+    nextPeriodicRoomBeginTime?: number | null;
     nextPeriodicRoomEndTime?: number | null;
     pmi?: string | null;
     autoPmiOn?: boolean;
@@ -88,6 +89,7 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
     onSubmit,
     updateAutoPmiOn,
     previousPeriodicRoomBeginTime,
+    nextPeriodicRoomBeginTime,
     nextPeriodicRoomEndTime,
 }) => {
     const history = useHistory();
@@ -169,9 +171,16 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
                             t,
                             form,
                             previousPeriodicRoomBeginTime,
+                            nextPeriodicRoomBeginTime,
                             nextPeriodicRoomEndTime,
                         )}
-                        {renderEndTimePicker(t, form, nextPeriodicRoomEndTime)}
+                        {renderEndTimePicker(
+                            t,
+                            form,
+                            previousPeriodicRoomBeginTime,
+                            nextPeriodicRoomBeginTime,
+                            nextPeriodicRoomEndTime,
+                        )}
                         {updateAutoPmiOn && (
                             <Form.Item
                                 className="edit-room-form-item no-margin pmi"

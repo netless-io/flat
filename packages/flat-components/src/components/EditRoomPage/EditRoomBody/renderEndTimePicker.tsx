@@ -1,17 +1,20 @@
-import { Form } from "antd";
-import { FormInstance, RuleObject } from "antd/lib/form";
-import { addMinutes, isAfter, isBefore, setHours } from "date-fns";
 import React from "react";
+import { Form } from "antd";
 import { FlatI18nTFunction } from "@netless/flat-i18n";
-import type { EditRoomFormValues } from ".";
-import { compareDay, compareHour, excludeRange } from "../../../utils/room";
+import { FormInstance, RuleObject } from "antd/lib/form";
+import { addMinutes, isBefore } from "date-fns";
+import { EditRoomFormValues } from "./index";
+import { excludeRange } from "../../../utils/room";
 import { FullTimePicker } from "../FullTimePicker";
 import { MIN_CLASS_DURATION } from "./constants";
+import { isAllowed } from "./rules";
 
 export function renderEndTimePicker(
     t: FlatI18nTFunction,
     form: FormInstance<EditRoomFormValues>,
-    nextPeriodicRoomEndTime?: number | null,
+    prevBeginTime?: number | null,
+    nextBeginTime?: number | null,
+    nextEndTime?: number | null,
 ): React.ReactElement {
     return (
         <Form.Item label={t("end-time")} name="endTime" rules={[validateTime]}>
@@ -36,93 +39,58 @@ export function renderEndTimePicker(
         };
     }
 
-    function disabledDate(date: Date): boolean {
+    function disabledDate(endTime: Date): boolean {
         const beginTime: EditRoomFormValues["beginTime"] = form.getFieldValue("beginTime");
-        if (nextPeriodicRoomEndTime) {
-            const isBeforeTime = compareDay(addMinutes(beginTime, MIN_CLASS_DURATION), date) > 0;
-            const isAfterTime = isAfter(date, nextPeriodicRoomEndTime);
-            return isBeforeTime || isAfterTime;
+        endTime = new Date(endTime);
+        let allowed = false;
+        out: for (const hour of excludeRange(24)) {
+            for (const minute of excludeRange(60)) {
+                endTime.setHours(hour);
+                endTime.setMinutes(minute);
+                if (isAllowed(beginTime, endTime, prevBeginTime, nextBeginTime, nextEndTime)) {
+                    allowed = true;
+                    break out;
+                }
+            }
         }
-        return compareDay(addMinutes(beginTime, MIN_CLASS_DURATION), date) > 0;
+        return !allowed;
     }
 
     function disabledHours(): number[] {
-        const { beginTime, endTime }: Pick<EditRoomFormValues, "beginTime" | "endTime"> =
-            form.getFieldsValue(["beginTime", "endTime"]);
-
-        const compareTime = addMinutes(beginTime, MIN_CLASS_DURATION);
-        const diff = compareDay(compareTime, endTime);
-
-        if (nextPeriodicRoomEndTime) {
-            const nextPeriodicEndTime = new Date(nextPeriodicRoomEndTime);
-            const endDiff = compareDay(nextPeriodicEndTime, endTime);
-
-            if (diff < 0) {
-                if (endDiff === 0) {
-                    return excludeRange(nextPeriodicEndTime.getHours() + 1, 23);
-                }
-                return [];
+        const beginTime: EditRoomFormValues["beginTime"] = form.getFieldValue("beginTime");
+        let endTime: EditRoomFormValues["endTime"] = form.getFieldValue("endTime");
+        endTime = new Date(endTime);
+        endTime.setSeconds(0);
+        endTime.setMilliseconds(0);
+        const result: number[] = [];
+        for (const hour of excludeRange(24)) {
+            endTime.setHours(hour);
+            if (
+                !excludeRange(60).some(minute => {
+                    endTime.setMinutes(minute);
+                    return isAllowed(beginTime, endTime, prevBeginTime, nextBeginTime, nextEndTime);
+                })
+            ) {
+                result.push(hour);
             }
-
-            if (diff === 0) {
-                if (endDiff === 0) {
-                    return excludeRange(nextPeriodicEndTime.getHours() + 1, 23);
-                }
-                return excludeRange(compareTime.getHours());
-            }
-
-            return excludeRange(24);
         }
-
-        if (diff < 0) {
-            return [];
-        }
-
-        if (diff === 0) {
-            return excludeRange(compareTime.getHours());
-        }
-
-        return excludeRange(24);
+        return result;
     }
 
     function disabledMinutes(selectedHour: number): number[] {
-        const { beginTime, endTime }: Pick<EditRoomFormValues, "beginTime" | "endTime"> =
-            form.getFieldsValue(["beginTime", "endTime"]);
-
-        const comparedTime = addMinutes(beginTime, MIN_CLASS_DURATION);
-        const selectedEndTime = setHours(endTime, selectedHour);
-
-        const diff = compareHour(comparedTime, selectedEndTime);
-
-        if (nextPeriodicRoomEndTime) {
-            const nextPeriodicEndTime = new Date(nextPeriodicRoomEndTime);
-            const endDiff = compareHour(nextPeriodicEndTime, endTime);
-
-            if (diff < 0) {
-                if (endDiff === 0) {
-                    return excludeRange(nextPeriodicEndTime.getMinutes() + 1, 59);
-                }
-                return [];
+        const beginTime: EditRoomFormValues["beginTime"] = form.getFieldValue("beginTime");
+        let endTime: EditRoomFormValues["endTime"] = form.getFieldValue("endTime");
+        endTime = new Date(endTime);
+        endTime.setHours(selectedHour);
+        endTime.setSeconds(0);
+        endTime.setMilliseconds(0);
+        const result: number[] = [];
+        for (const minute of excludeRange(60)) {
+            endTime.setMinutes(minute);
+            if (!isAllowed(beginTime, endTime, prevBeginTime, nextBeginTime, nextEndTime)) {
+                result.push(minute);
             }
-
-            if (diff === 0) {
-                if (endDiff === 0) {
-                    return excludeRange(nextPeriodicEndTime.getMinutes() + 1, 59);
-                }
-                return excludeRange(comparedTime.getMinutes());
-            }
-
-            return excludeRange(59);
         }
-
-        if (diff < 0) {
-            return [];
-        }
-
-        if (diff === 0) {
-            return excludeRange(comparedTime.getMinutes());
-        }
-
-        return excludeRange(59);
+        return result;
     }
 }

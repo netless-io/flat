@@ -13,6 +13,7 @@ import {
 import { useSafePromise } from "../utils/hooks/lifecycle";
 import EditRoomPage from "../components/EditRoomPage";
 import { RouteNameType, RouteParams, usePushHistory } from "../utils/routes";
+import { useTranslate } from "@netless/flat-i18n";
 import { periodicRoomInfo, updatePeriodicRoom } from "@netless/flat-server-api";
 import { useLoginCheck } from "../utils/use-login-check";
 
@@ -32,6 +33,7 @@ export const ModifyPeriodicRoomPage = observer<ModifyPeriodicRoomPageProps>(
         const history = useHistory();
         const pushHistory = usePushHistory();
         const sp = useSafePromise();
+        const t = useTranslate();
         const [isLoading, setLoading] = useState(false);
         const [initialValues, setInitialValues] = useState<EditRoomFormInitialValues>();
 
@@ -115,7 +117,7 @@ export const ModifyPeriodicRoomPage = observer<ModifyPeriodicRoomPageProps>(
                                   },
                     }),
                 );
-                void message.success("修改成功");
+                void message.success(t("edit-success"));
                 pushHistory(RouteNameType.HomePage);
             } catch (e) {
                 console.error(e);

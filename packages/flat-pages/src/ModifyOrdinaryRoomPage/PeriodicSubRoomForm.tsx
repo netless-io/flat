@@ -9,12 +9,9 @@ import {
     errorTips,
 } from "flat-components";
 import { periodicSubRoomInfo, updatePeriodicSubRoom } from "@netless/flat-server-api";
-import EditRoomPage from "../components/EditRoomPage";
 import { useSafePromise } from "../utils/hooks/lifecycle";
-
-/**
- * TODO: we forget set i18n in current file!!!
- */
+import EditRoomPage from "../components/EditRoomPage";
+import { useTranslate } from "@netless/flat-i18n";
 
 export interface PeriodicSubRoomFormProps {
     roomUUID: string;
@@ -29,11 +26,13 @@ export const PeriodicSubRoomForm = observer<PeriodicSubRoomFormProps>(function R
 
     const history = useHistory();
     const sp = useSafePromise();
+    const t = useTranslate();
 
     const [initialValues, setInitialValues] = useState<EditRoomFormInitialValues>();
     const [previousPeriodicRoomBeginTime, setPreviousPeriodicRoomBeginTime] = useState<
         number | null
     >(0);
+    const [nextPeriodicRoomBeginTime, setNextPeriodicRoomBeginTime] = useState<number | null>(0);
     const [nextPeriodicRoomEndTime, setNextPeriodicRoomEndTime] = useState<number | null>(0);
     useEffect(() => {
         sp(
@@ -43,17 +42,18 @@ export const PeriodicSubRoomForm = observer<PeriodicSubRoomFormProps>(function R
                 needOtherRoomTimeInfo: true,
             }),
         )
-            .then(({ roomInfo, previousPeriodicRoomBeginTime, nextPeriodicRoomEndTime }) => {
+            .then(data => {
                 setInitialValues({
-                    title: roomInfo.title,
-                    type: roomInfo.roomType,
-                    beginTime: new Date(roomInfo.beginTime),
-                    endTime: new Date(roomInfo.endTime),
+                    title: data.roomInfo.title,
+                    type: data.roomInfo.roomType,
+                    beginTime: new Date(data.roomInfo.beginTime),
+                    endTime: new Date(data.roomInfo.endTime),
                     isPeriodic: false,
-                    region: roomInfo.region,
+                    region: data.roomInfo.region,
                 });
-                setPreviousPeriodicRoomBeginTime(previousPeriodicRoomBeginTime);
-                setNextPeriodicRoomEndTime(nextPeriodicRoomEndTime);
+                setPreviousPeriodicRoomBeginTime(data.previousPeriodicRoomBeginTime);
+                setNextPeriodicRoomBeginTime(data.nextPeriodicRoomBeginTime);
+                setNextPeriodicRoomEndTime(data.nextPeriodicRoomEndTime);
             })
             .catch(e => {
                 console.error(e);
@@ -72,6 +72,7 @@ export const PeriodicSubRoomForm = observer<PeriodicSubRoomFormProps>(function R
         <EditRoomPage
             initialValues={initialValues}
             loading={isLoading}
+            nextPeriodicRoomBeginTime={nextPeriodicRoomBeginTime}
             nextPeriodicRoomEndTime={nextPeriodicRoomEndTime}
             previousPeriodicRoomBeginTime={previousPeriodicRoomBeginTime}
             type="periodicSub"
@@ -91,7 +92,7 @@ export const PeriodicSubRoomForm = observer<PeriodicSubRoomFormProps>(function R
                     endTime: values.endTime.valueOf(),
                 }),
             );
-            void message.success("修改成功");
+            void message.success(t("edit-success"));
             history.goBack();
         } catch (e) {
             console.error(e);
