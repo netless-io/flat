@@ -73,7 +73,7 @@ export const SMALL_CLASS_RECORDING_CONFIG: RecordingConfig = {
         ],
         backgroundConfig: [],
     },
-    maxIdleTime: 60,
+    maxIdleTime: 5 * 60,
     subscribeUidGroup: 3,
 };
 
