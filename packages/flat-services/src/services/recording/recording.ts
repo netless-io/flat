@@ -33,6 +33,9 @@ export abstract class IServiceRecording implements IService {
     /** Use with try-catch. */
     public abstract startRecording(): Promise<void>;
 
+    /** Refresh `isRecording` state. */
+    public abstract checkIsRecording(): Promise<void>;
+
     /** Use with try-catch. */
     public abstract stopRecording(): Promise<void>;
 

@@ -68,6 +68,9 @@ export class ClassroomStore {
     private readonly sideEffect = new SideEffectManager();
     private readonly rewardCooldown = new Map<string, number>();
 
+    // If it is `true`, the stop-recording is triggered by the user, do not show the message.
+    private recordingEndSentinel = false;
+
     public readonly roomUUID: string;
     public readonly ownerUUID: string;
     /** User uuid of the current user */
@@ -181,11 +184,12 @@ export class ClassroomStore {
             onDrop: this.onDrop,
         });
 
-        makeAutoObservable<this, "sideEffect" | "rewardCooldown">(this, {
+        makeAutoObservable<this, "sideEffect" | "rewardCooldown" | "recordingEndSentinel">(this, {
             rtc: observable.ref,
             rtm: observable.ref,
             sideEffect: false,
             rewardCooldown: false,
+            recordingEndSentinel: false,
             deviceStateStorage: false,
             classroomStorage: false,
             onStageUsersStorage: false,
@@ -206,6 +210,8 @@ export class ClassroomStore {
                 (isRecording: boolean) => {
                     if (isRecording) {
                         void message.success(FlatI18n.t("start-recording"));
+                    } else if (!this.recordingEndSentinel) {
+                        void message.info(FlatI18n.t("recording-end"));
                     }
                 },
             ),
@@ -777,6 +783,29 @@ export class ClassroomStore {
                         user.camera = false;
                     }
                 });
+                // When there's no active stream in the channel, the recording service
+                // stops automatically after `maxIdleTime`.
+                if (this.isRecording) {
+                    let hasStream = false;
+                    for (const userUUID in deviceStateStorage.state) {
+                        const deviceState = deviceStateStorage.state[userUUID];
+                        if (deviceState.camera || deviceState.mic) {
+                            hasStream = true;
+                            break;
+                        }
+                    }
+                    if (!hasStream) {
+                        this.sideEffect.setTimeout(
+                            () => {
+                                if (this.isRecording) {
+                                    this.recording.checkIsRecording().catch(console.warn);
+                                }
+                            },
+                            // Roughly 5 minutes later, see cloud-recording.ts.
+                            5 * 61 * 1000,
+                        );
+                    }
+                }
             }),
         );
 
@@ -1430,7 +1459,9 @@ export class ClassroomStore {
     }
 
     private async stopRecording(): Promise<void> {
+        this.recordingEndSentinel = true;
         await this.recording.stopRecording();
+        this.recordingEndSentinel = false;
     }
 
     private async initRTC(): Promise<void> {

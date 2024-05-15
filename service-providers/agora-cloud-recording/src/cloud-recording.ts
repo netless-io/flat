@@ -21,6 +21,7 @@ export type AgoraCloudRecordingRoomInfo = IServiceRecordingJoinRoomConfig;
 // TODO: We should save the recording state at the server side.
 export class AgoraCloudRecording extends IServiceRecording {
     private static readonly ReportingEndTimeKey = "reportingEndTime";
+    private static readonly LoopQueryKey = "loopQuery";
 
     private roomInfo: AgoraCloudRecordingRoomInfo | null;
     private recordingState: AgoraCloudRecordingState | null;
@@ -132,6 +133,7 @@ export class AgoraCloudRecording extends IServiceRecording {
         const { roomID } = this.roomInfo;
         const { resourceId, sid, mode } = this.recordingState;
 
+        this.sideEffect.flush(AgoraCloudRecording.LoopQueryKey);
         this.sideEffect.flush(AgoraCloudRecording.ReportingEndTimeKey);
         this.recordingState = null;
 
@@ -168,6 +170,10 @@ export class AgoraCloudRecording extends IServiceRecording {
             },
             agoraData: { clientRequest },
         });
+    }
+
+    public async checkIsRecording(): Promise<void> {
+        await this.queryRecordingStatus();
     }
 
     private async queryRecordingStatus(joinRoom = false): Promise<void> {
@@ -212,12 +218,25 @@ export class AgoraCloudRecording extends IServiceRecording {
             10 * 1000,
             AgoraCloudRecording.ReportingEndTimeKey,
         );
+        // Loop query status in each 2 minutes.
+        // https://doc.shengwang.cn/doc/cloud-recording/restful/best-practices/integration#%E5%91%A8%E6%9C%9F%E6%80%A7%E9%A2%91%E9%81%93%E6%9F%A5%E8%AF%A2
+        this.sideEffect.setInterval(
+            () => {
+                if (this.isRecording) {
+                    this.queryRecordingStatus();
+                } else {
+                    this.sideEffect.flush(AgoraCloudRecording.LoopQueryKey);
+                }
+            },
+            120 * 1000,
+            AgoraCloudRecording.LoopQueryKey,
+        );
     }
 }
 
 /**
  * @see {@link https://docs.agora.io/en/cloud-recording/reference/rest-api/rest}
- * @see {@link https://docs.agora.io/cn/cloud-recording/cloud_recording_api_rest}
+ * @see {@link https://doc.shengwang.cn/doc/cloud-recording/restful/landing-page}
  */
 export type AgoraCloudRecordingMode = "individual" | "mix";
 
