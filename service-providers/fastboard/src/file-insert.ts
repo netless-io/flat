@@ -224,19 +224,6 @@ export async function insertDocs(
             }
             return;
         }
-
-        if (convertingStatus.prefix) {
-            // new Projector PPTX conversion
-            await fastboardApp.insertDocs({
-                fileType: "pptx",
-                title: file.fileName,
-                scenePath: `/${taskUUID}/${uuidv4()}`,
-                taskId: taskUUID!,
-                url: convertingStatus.prefix,
-            });
-            return;
-        }
-
         if (convertingStatus.images) {
             // other docs
             await fastboardApp.manager.addApp({
@@ -246,6 +233,18 @@ export async function insertDocs(
                     title: file.fileName,
                     scenes: mapImagesToScenes(convertingStatus.images, convertingStatus.previews),
                 },
+            });
+            return;
+        }
+
+        if (convertingStatus.prefix) {
+            // new Projector PPTX conversion
+            await fastboardApp.insertDocs({
+                fileType: "pptx",
+                title: file.fileName,
+                scenePath: `/${taskUUID}/${uuidv4()}`,
+                taskId: taskUUID!,
+                url: convertingStatus.prefix,
             });
             return;
         }
