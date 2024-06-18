@@ -1,3 +1,13 @@
+## [2.3.4](https://github.com/netless-io/flat/compare/v2.3.4...v2.3.4) (2024-06-12)
+
+
+### Bug Fixes
+
+* **flat-components**: edit periodic sub room times ([#2141](https://github.com/netless-io/flat/issues/2141)) ([d70434f7](https://github.com/netless-io/flat/commit/d70434f7))
+* **flat-pages**: avoid JavaScript protocol in redirect URL ([#2135](https://github.com/netless-io/flat/issues/2135)) ([216c931e](https://github.com/netless-io/flat/commit/216c931e))
+
+
+
 ## [2.3.3](https://github.com/netless-io/flat/compare/v2.3.2...v2.3.3) (2024-03-08)
 
 
