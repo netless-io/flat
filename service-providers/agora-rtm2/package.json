@@ -1,21 +1,22 @@
 {
-  "name": "@netless/flat-service-provider-agora-rtc-web",
+  "name": "@netless/flat-service-provider-agora-rtm2",
   "version": "0.1.0",
-  "description": "Agora RTC Web",
+  "description": "Agora Realtime Messaging 2.0",
   "main": "src/index.ts",
   "private": true,
   "license": "MIT",
   "scripts": {
-    "build": "echo"
+    "build": "tsc"
   },
   "devDependencies": {
     "prettier": "^3.2.4",
     "typescript": "^4.8.3"
   },
   "dependencies": {
+    "@netless/flat-server-api": "workspace:*",
     "@netless/flat-services": "workspace:*",
-    "agora-rtc-sdk-ng": "^4.20.0",
+    "agora-rtm": "^2.1.10",
     "side-effect-manager": "^1.2.1",
-    "value-enhancer": "^1.3.2"
+    "uuid": "^9.0.0"
   }
 }

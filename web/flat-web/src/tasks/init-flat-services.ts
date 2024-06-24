@@ -54,8 +54,8 @@ export function initFlatServices(): void {
     });
 
     flatServices.register("textChat", async () => {
-        const { AgoraRTM } = await import("@netless/flat-service-provider-agora-rtm");
-        return new AgoraRTM(config.agora.appId);
+        const { AgoraRTM2 } = await import("@netless/flat-service-provider-agora-rtm2");
+        return new AgoraRTM2(config.agora.appId);
     });
 
     flatServices.register("whiteboard", async () => {
