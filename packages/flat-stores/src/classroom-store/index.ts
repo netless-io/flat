@@ -376,6 +376,7 @@ export class ClassroomStore {
             ownerUUID: this.ownerUUID,
             uid: this.userUUID,
             token: globalStore.rtmToken,
+            agoraAppId: globalStore.agoraAppId,
         });
 
         const fastboard = await this.whiteboardStore.joinWhiteboardRoom();
@@ -1508,6 +1509,7 @@ export class ClassroomStore {
                 shareScreenUID: String(globalStore.rtcShareScreen?.uid || -1),
                 shareScreenToken: globalStore.rtcShareScreen?.token || "",
                 mirror: preferencesStore.mirrorMode,
+                agoraAppId: globalStore.agoraAppId,
             });
 
             if (preferencesStore.cameraId) {
