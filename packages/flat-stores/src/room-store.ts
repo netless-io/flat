@@ -57,7 +57,6 @@ export interface RoomItem {
         expireAt: number;
         vipLevel: 0 | 1;
     };
-    agoraAppId?: string;
 }
 
 // Only keep sub-room ids. sub-room info are stored in ordinaryRooms.
@@ -145,7 +144,6 @@ export class RoomStore {
             ownerUUID: data.ownerUUID,
             roomType: data.roomType,
             billing: data.billing,
-            agoraAppId: data.agoraAppId,
         });
         return data;
     }

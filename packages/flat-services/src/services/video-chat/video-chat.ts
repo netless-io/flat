@@ -30,7 +30,6 @@ export interface IServiceVideoChatJoinRoomConfig {
     shareScreenUID: IServiceVideoChatUID;
     shareScreenToken: string;
     mirror?: boolean;
-    agoraAppId?: string | null;
 }
 
 export abstract class IServiceVideoChat implements IService {
