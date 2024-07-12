@@ -103,7 +103,6 @@ export interface JoinRoomResult {
     rtmToken: string;
     showGuide: boolean;
     region: Region;
-    agoraAppId?: string;
     billing?: {
         /** minutes */
         limit: number;

@@ -14,7 +14,6 @@ export interface IServiceTextChatJoinRoomConfig {
     ownerUUID: string;
     uid: string;
     token?: string | null;
-    agoraAppId?: string | null;
 }
 
 export abstract class IServiceTextChat implements IService {
