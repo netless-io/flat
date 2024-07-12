@@ -67,6 +67,7 @@ export class GlobalStore {
      * Room's region, services (currently only whiteboard) must use this value to join the room.
      */
     public region: Region | null = null;
+    public agoraAppId: string | null = null;
     public rtcToken: string | null = null;
     public rtcUID: number | null = null;
     public rtcShareScreen: {
@@ -219,6 +220,7 @@ export class GlobalStore {
                 | "rtcUID"
                 | "rtcShareScreen"
                 | "region"
+                | "agoraAppId"
             >
         >,
     ): void => {
@@ -230,6 +232,7 @@ export class GlobalStore {
             "rtcUID",
             "rtcShareScreen",
             "region",
+            "agoraAppId",
         ] as const;
         for (const key of keys) {
             const value = config[key];

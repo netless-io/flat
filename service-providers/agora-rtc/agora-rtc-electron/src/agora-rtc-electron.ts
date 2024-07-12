@@ -32,10 +32,11 @@ export class AgoraRTCElectron extends IServiceVideoChat {
     public readonly isMac: boolean;
     public readonly shareScreen = new AgoraRTCElectronShareScreen({ rtc: this });
 
-    public readonly APP_ID: string;
     public readonly rtcEngine: AgoraSdk;
 
     private readonly _roomSideEffect = new SideEffectManager();
+
+    public APP_ID: string;
 
     private _cameraID?: string;
     private _micID?: string;
@@ -203,6 +204,12 @@ export class AgoraRTCElectron extends IServiceVideoChat {
             }
             this.leaveRoom();
         }
+
+        if (config.agoraAppId && config.agoraAppId !== this.APP_ID) {
+            this.rtcEngine.release(true);
+            this.rtcEngine.initialize((this.APP_ID = config.agoraAppId));
+        }
+
         return this._join(config);
     }
 

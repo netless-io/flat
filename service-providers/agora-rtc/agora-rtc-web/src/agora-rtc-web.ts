@@ -42,8 +42,6 @@ export interface AgoraRTCWebConfig {
 }
 
 export class AgoraRTCWeb extends IServiceVideoChat {
-    public readonly APP_ID: string;
-
     public readonly shareScreen: AgoraRTCWebShareScreen;
 
     private readonly _roomSideEffect = new SideEffectManager();
@@ -52,6 +50,7 @@ export class AgoraRTCWeb extends IServiceVideoChat {
     private _pLeavingRoom?: Promise<unknown>;
     private _testingAudio?: HTMLAudioElement;
 
+    public APP_ID: string;
     public client?: IAgoraRTCClient;
     public mode?: IServiceVideoChatMode;
 
@@ -358,6 +357,7 @@ export class AgoraRTCWeb extends IServiceVideoChat {
         shareScreenUID,
         shareScreenToken,
         mirror,
+        agoraAppId,
     }: IServiceVideoChatJoinRoomConfig): Promise<void> {
         this._roomSideEffect.flushAll();
 
@@ -493,6 +493,10 @@ export class AgoraRTCWeb extends IServiceVideoChat {
                 return () => client.off("network-quality", handler);
             }),
         );
+
+        if (agoraAppId && agoraAppId !== this.APP_ID) {
+            this.APP_ID = agoraAppId;
+        }
 
         await client.join(
             this.APP_ID,

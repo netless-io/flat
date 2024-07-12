@@ -24,14 +24,14 @@ export class AgoraRTM extends IServiceTextChat {
     private _pJoiningRoom?: Promise<unknown>;
     private _pLeavingRoom?: Promise<unknown>;
 
-    public readonly client: RtmClient;
+    public client: RtmClient;
     public channel?: RtmChannel;
 
     private roomUUID?: string;
     private userUUID?: string;
     private token?: string;
 
-    public constructor(APP_ID: string) {
+    public constructor(public APP_ID: string) {
         super();
         if (!APP_ID) {
             throw new Error("APP_ID is not set");
@@ -185,11 +185,19 @@ export class AgoraRTM extends IServiceTextChat {
         token,
         roomUUID,
         ownerUUID,
+        agoraAppId,
     }: IServiceTextChatJoinRoomConfig): Promise<void> {
         this.token = token || (await generateRTMToken());
 
         if (!this.token) {
             throw new Error("Missing Agora RTM token");
+        }
+
+        if (agoraAppId && agoraAppId !== this.APP_ID) {
+            this.APP_ID = agoraAppId;
+            this.client = RtmEngine.createInstance(this.APP_ID, {
+                logFilter: RtmEngine.LOG_FILTER_WARNING,
+            });
         }
 
         this._roomSideEffect.add(() => {
