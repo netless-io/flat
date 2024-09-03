@@ -766,5 +766,13 @@
   "drop-to-board": "拖拽文件到白板",
   "mirror": "镜像",
   "mirror-mode": "镜像模式",
-  "edit-success": "修改成功"
+  "edit-success": "修改成功",
+  "cross-region-auth": {
+    "title":"跨境数据出镜授权",
+    "desc":"请注意，您正在加入 Agora Flat 海外版用户创建的房间。我们将严格遵守适用的法律法规要求进行数据出境安全评估，采用合理的物理隔离和安全防护措施，确保您的数据仅在您的授权许可下使用。具体内容参见{{serviceAgreement}}与{{privacyPolicy}}",
+    "serviceAgreement": "服务协议",
+    "privacyPolicy": "隐私政策",
+    "agree": "确定",
+    "disagree": "取消"
+  }
 }

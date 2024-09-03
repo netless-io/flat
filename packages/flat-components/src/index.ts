@@ -35,4 +35,4 @@ export * from "./components/Pmi";
 export * from "./containers/CloudStorageContainer";
 export * from "./theme/antd.mod";
 
-export { message } from "antd";
+export { message, Modal } from "antd";
