@@ -774,5 +774,8 @@
     "privacyPolicy": "Privacy Policy",
     "agree": "agree",
     "disagree": "disagree"
-  }
+  },
+  "collect-media-options": "Audio and video data acquisition",
+  "collect-media-turn-on": "Turn on",
+  "collect-media-turn-off": "Turn off"
 }

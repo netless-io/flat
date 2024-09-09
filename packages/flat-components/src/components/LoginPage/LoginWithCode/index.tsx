@@ -14,6 +14,7 @@ import { LoginAccount, PasswordLoginType, defaultCountryCode } from "../LoginAcc
 import { LoginSendCode } from "../LoginSendCode";
 import { phoneValidator } from "../LoginWithPassword/validators";
 import { codeValidator } from "./validators";
+import { FLAT_AGREEMENT_URL } from "@netless/flat-server-api/src/constants";
 export * from "../LoginButtons";
 export * from "./validators";
 
@@ -197,7 +198,15 @@ export const LoginWithCode: React.FC<LoginWithCodeProps> = ({
                         checked={agreed}
                         privacyURL={privacyURL}
                         serviceURL={serviceURL}
-                        onChange={setAgreed}
+                        onChange={checked => {
+                            if (checked) {
+                                requestAgreement({ t, privacyURL, serviceURL }).then(agreed => {
+                                    setAgreed(agreed);
+                                });
+                            } else {
+                                setAgreed(false);
+                            }
+                        }}
                     />
                     <Button
                         className="login-big-button"
@@ -223,12 +232,65 @@ export interface RequestAgreementParams {
     serviceURL?: string;
     t: FlatI18nTFunction;
 }
-
-export function requestAgreement({
+export interface PrivacyAgreementData {
+    title: string;
+    content: string;
+}
+export async function getPrivacy(props: {
+    privacyURL: string;
+    serviceURL: string;
+}): Promise<PrivacyAgreementData | undefined> {
+    const { privacyURL, serviceURL } = props;
+    if (FLAT_AGREEMENT_URL) {
+        const data = await fetch(FLAT_AGREEMENT_URL).then(response => {
+            return response.json();
+        });
+        if (data.content) {
+            data.content = data.content
+                .replace(/{{serviceURL}}/g, serviceURL)
+                .replace(/{{privacyURL}}/g, privacyURL);
+        }
+        return data;
+    }
+    return undefined;
+}
+export async function requestAgreement({
     t,
     privacyURL,
     serviceURL,
 }: RequestAgreementParams): Promise<boolean> {
+    if (privacyURL && serviceURL) {
+        const data = await getPrivacy({ privacyURL, serviceURL });
+        if (data) {
+            return await new Promise<boolean>(resolve => {
+                Modal.confirm({
+                    title: (
+                        <div
+                            style={{
+                                borderBottom: "1px solid #EEEEEE",
+                                textAlign: "center",
+                                lineHeight: "30px",
+                            }}
+                        >
+                            {data.title}
+                        </div>
+                    ),
+                    icon: null,
+                    content: (
+                        <div
+                            dangerouslySetInnerHTML={{
+                                __html: data.content,
+                            }}
+                        ></div>
+                    ),
+                    okText: t("cross-region-auth.agree"),
+                    cancelText: t("cross-region-auth.disagree"),
+                    onOk: () => resolve(true),
+                    onCancel: () => resolve(false),
+                });
+            });
+        }
+    }
     return new Promise<boolean>(resolve =>
         Modal.confirm({
             content: (
@@ -243,6 +305,7 @@ export function requestAgreement({
                     </a>
                 </div>
             ),
+            icon: null,
             onOk: () => resolve(true),
             onCancel: () => resolve(false),
         }),

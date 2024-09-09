@@ -436,6 +436,27 @@ export interface RemoveBindingResult {
     token: string;
 }
 
+export interface SetCollectionAgreementReq {
+    is_agree_collect_data: boolean;
+}
+export interface SetCollectionAgreementResult {
+    userUUID: string;
+}
+export interface GetCollectionAgreementResult {
+    isAgree: boolean;
+}
+export async function getCollectionAgreement(): Promise<GetCollectionAgreementResult> {
+    return await post<{}, GetCollectionAgreementResult>("user/agreement/get", {});
+}
+export async function setCollectionAgreement(
+    isAgree: boolean,
+): Promise<SetCollectionAgreementResult> {
+    return await post<SetCollectionAgreementReq, SetCollectionAgreementResult>(
+        "user/agreement/set",
+        { is_agree_collect_data: isAgree },
+    );
+}
+
 export async function removeBinding(target: LoginPlatform): Promise<RemoveBindingResult> {
     return await post<RemoveBindingPayload, RemoveBindingResult>("user/binding/remove", {
         target,

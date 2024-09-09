@@ -194,7 +194,15 @@ export const RegisterModal: React.FC<RegisterProps> = ({
                         checked={agreed}
                         privacyURL={privacyURL}
                         serviceURL={serviceURL}
-                        onChange={setAgreed}
+                        onChange={checked => {
+                            if (checked) {
+                                requestAgreement({ t, privacyURL, serviceURL }).then(agreed => {
+                                    setAgreed(agreed);
+                                });
+                            } else {
+                                setAgreed(false);
+                            }
+                        }}
                     />
 
                     <Button

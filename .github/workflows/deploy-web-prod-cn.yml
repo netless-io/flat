@@ -23,7 +23,10 @@ jobs:
           version: latest
 
       - name: Install dependencies
+        env:
+              FLAT_AGREEMENT_URL: ${{ vars.FLAT_AGREEMENT_URL }}
         run: |
+          echo "FLAT_AGREEMENT_URL=$FLAT_AGREEMENT_URL" >> config/CN/.env.production
           node ./scripts/ci/remove-workspace-packages.js web
           node ./scripts/ci/remove-package-scripts-hooks.js
           # failure automatically retries 3 times
