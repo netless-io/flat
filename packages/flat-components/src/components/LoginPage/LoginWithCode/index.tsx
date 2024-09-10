@@ -241,8 +241,13 @@ export async function getPrivacy(props: {
     serviceURL: string;
 }): Promise<PrivacyAgreementData | undefined> {
     const { privacyURL, serviceURL } = props;
+    // 仅中国地区,language为zh的情况下,使用中文隐私协议
+    const isZh = serviceURL.indexOf("apprtc.cn") > -1 && privacyURL.indexOf("/en") === -1;
     if (FLAT_AGREEMENT_URL) {
-        const data = await fetch(FLAT_AGREEMENT_URL).then(response => {
+        const url = isZh
+            ? FLAT_AGREEMENT_URL
+            : FLAT_AGREEMENT_URL.replace("privacy.json", "privacy_en.json");
+        const data = await fetch(url).then(response => {
             return response.json();
         });
         if (data.content) {

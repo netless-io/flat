@@ -6,7 +6,16 @@ import { observer } from "mobx-react-lite";
 import { wrap } from "./utils/disposer";
 import { useLoginState } from "./utils/state";
 import { WeChatLogin } from "./WeChatLogin";
-import { PRIVACY_URL, PRIVACY_URL_CN, SERVICE_URL, SERVICE_URL_CN } from "../constants/process";
+import {
+    PRIVACY_URL_CN_CN,
+    PRIVACY_URL_CN_EN,
+    PRIVACY_URL_EN_CN,
+    PRIVACY_URL_EN_EN,
+    SERVICE_URL_CN_CN,
+    SERVICE_URL_CN_EN,
+    SERVICE_URL_EN_CN,
+    SERVICE_URL_EN_EN,
+} from "../constants/process";
 import { useSafePromise } from "../utils/hooks/lifecycle";
 import { AppUpgradeModal } from "../components/AppUpgradeModal";
 
@@ -39,6 +48,7 @@ import {
     registerPhoneSendCode,
     rebindingPhoneSendCode,
     rebindingPhone,
+    FLAT_REGION,
 } from "@netless/flat-server-api";
 import { globalStore } from "@netless/flat-stores";
 
@@ -51,8 +61,25 @@ export const LoginPage = observer(function LoginPage() {
         useLoginState();
 
     const panel = useMemo(() => {
-        const privacyURL = language.startsWith("zh") ? PRIVACY_URL_CN : PRIVACY_URL;
-        const serviceURL = language.startsWith("zh") ? SERVICE_URL_CN : SERVICE_URL;
+        // const privacyURL = language.startsWith("zh") ? PRIVACY_URL_CN : PRIVACY_URL;
+        // const serviceURL = language.startsWith("zh") ? SERVICE_URL_CN : SERVICE_URL;
+
+        const privacyURL =
+            FLAT_REGION === "CN"
+                ? language.startsWith("zh")
+                    ? PRIVACY_URL_CN_CN
+                    : PRIVACY_URL_CN_EN
+                : language.startsWith("zh")
+                  ? PRIVACY_URL_EN_CN
+                  : PRIVACY_URL_EN_EN;
+        const serviceURL =
+            FLAT_REGION === "CN"
+                ? language.startsWith("zh")
+                    ? SERVICE_URL_CN_CN
+                    : SERVICE_URL_CN_EN
+                : language.startsWith("zh")
+                  ? SERVICE_URL_EN_CN
+                  : SERVICE_URL_EN_EN;
         const emailLanguage = language.startsWith("zh") ? "zh" : "en";
 
         const loginProps = {

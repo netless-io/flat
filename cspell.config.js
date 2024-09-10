@@ -2,6 +2,7 @@ module.exports = {
     version: "0.1",
     language: "en",
     words: [
+        "apprtc",
         "cspell",
         "vite",
         "vitejs",
