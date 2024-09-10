@@ -48,7 +48,7 @@
   },
   "dependencies": {
     "@netless/flat-service-provider-agora-rtc-electron": "workspace:*",
-    "electron-updater": "^5.2.1",
+    "electron-updater": "^6.3.0",
     "fs-extra": "^10.1.0",
     "jquery": "^3.6.1",
     "semver": "^7.3.7",
