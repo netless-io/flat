@@ -7,10 +7,15 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useLanguage, useTranslate } from "@netless/flat-i18n";
 import {
     FLAT_DOWNLOAD_URL,
-    PRIVACY_URL,
-    PRIVACY_URL_CN,
-    SERVICE_URL,
-    SERVICE_URL_CN,
+    FLAT_REGION,
+    PRIVACY_URL_CN_CN,
+    PRIVACY_URL_CN_EN,
+    PRIVACY_URL_EN_CN,
+    PRIVACY_URL_EN_EN,
+    SERVICE_URL_CN_CN,
+    SERVICE_URL_CN_EN,
+    SERVICE_URL_EN_CN,
+    SERVICE_URL_EN_EN,
 } from "../constants/process";
 import { isWeChatBrowser } from "../utils/user-agent";
 
@@ -25,8 +30,22 @@ export const WeChatRedirect = ({ url, open }: WeChatRedirectProps): React.ReactE
     const language = useLanguage();
     const [openCount, setOpenCount] = useState(0);
 
-    const privacyURL = language.startsWith("zh") ? PRIVACY_URL_CN : PRIVACY_URL;
-    const serviceURL = language.startsWith("zh") ? SERVICE_URL_CN : SERVICE_URL;
+    const privacyURL =
+        FLAT_REGION === "CN"
+            ? language.startsWith("zh")
+                ? PRIVACY_URL_CN_CN
+                : PRIVACY_URL_CN_EN
+            : language.startsWith("zh")
+              ? PRIVACY_URL_EN_CN
+              : PRIVACY_URL_EN_EN;
+    const serviceURL =
+        FLAT_REGION === "CN"
+            ? language.startsWith("zh")
+                ? SERVICE_URL_CN_CN
+                : SERVICE_URL_CN_EN
+            : language.startsWith("zh")
+              ? SERVICE_URL_EN_CN
+              : SERVICE_URL_EN_EN;
 
     const openApp = useCallback((): void => {
         window.location.href = url || "x-agora-flat-client://active";
