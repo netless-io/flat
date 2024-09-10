@@ -766,5 +766,16 @@
   "drop-to-board": "Drop file to whiteboard",
   "mirror": "Mirror",
   "mirror-mode": "Mirror Mode",
-  "edit-success": "Updated successfully"
+  "edit-success": "Updated successfully",
+  "cross-region-auth": {
+    "title":"Cross-border data exit authorization",
+    "desc":"Please note that you are joining a room created by Agora Flat Overseas users. We will strictly comply with applicable laws and regulations to conduct data exit security assessment, and adopt reasonable physical isolation and security protection measures to ensure that your data is only used under your authorization. See the {{serviceAgreement}} and {{privacyPolicy}} for details",
+    "serviceAgreement": "service agreement",
+    "privacyPolicy": "Privacy Policy",
+    "agree": "agree",
+    "disagree": "disagree"
+  },
+  "collect-media-options": "Audio and video data acquisition",
+  "collect-media-turn-on": "Turn on",
+  "collect-media-turn-off": "Turn off"
 }
