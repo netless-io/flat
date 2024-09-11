@@ -437,7 +437,7 @@ export interface RemoveBindingResult {
 }
 
 export interface SetCollectionAgreementReq {
-    is_agree_collect_data: boolean;
+    isAgree: boolean;
 }
 export interface SetCollectionAgreementResult {
     userUUID: string;
@@ -453,7 +453,7 @@ export async function setCollectionAgreement(
 ): Promise<SetCollectionAgreementResult> {
     return await post<SetCollectionAgreementReq, SetCollectionAgreementResult>(
         "user/agreement/set",
-        { is_agree_collect_data: isAgree },
+        { isAgree },
     );
 }
 
