@@ -70,16 +70,14 @@ const CollectionAgreement = () => {
     return (
         <div className="general-setting-item">
             <div className="general-setting-item-title">{t("collect-media-options")}</div>
-            <div className="join-room-settings">
-                <Radio.Group value={isAgree} onChange={changeCollectMediaState}>
-                    <Radio value={true}>
-                        <span className="radio-item-inner">{t("collect-media-turn-on")}</span>
-                    </Radio>
-                    <Radio value={false}>
-                        <span className="radio-item-inner">{t("collect-media-turn-off")}</span>
-                    </Radio>
-                </Radio.Group>
-            </div>
+            <Radio.Group value={isAgree} onChange={changeCollectMediaState}>
+                <Radio value={true}>
+                    <span className="radio-item-inner">{t("collect-media-turn-on")}</span>
+                </Radio>
+                <Radio value={false}>
+                    <span className="radio-item-inner">{t("collect-media-turn-off")}</span>
+                </Radio>
+            </Radio.Group>
         </div>
     );
 };
