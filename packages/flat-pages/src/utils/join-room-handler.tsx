@@ -52,8 +52,8 @@ export const joinRoomHandler = async (
                       : SERVICE_URL_EN_EN;
 
             const context = FlatI18n.t("cross-region-auth.desc", {
-                serviceAgreement: `<a href='${serviceURL}'>《${FlatI18n.t("cross-region-auth.serviceAgreement")}》</a>`,
-                privacyPolicy: `<a href='${privacyURL}'>《${FlatI18n.t("cross-region-auth.privacyPolicy")}》</a>`,
+                serviceAgreement: `<a rel='noreferrer' target='_blank' href='${serviceURL}'>《${FlatI18n.t("cross-region-auth.serviceAgreement")}》</a>`,
+                privacyPolicy: `<a rel='noreferrer' target='_blank' href='${privacyURL}'>《${FlatI18n.t("cross-region-auth.privacyPolicy")}》</a>`,
             });
             confirm({
                 title: (
