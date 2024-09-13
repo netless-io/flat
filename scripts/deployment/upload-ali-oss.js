@@ -77,7 +77,7 @@ const client = new OSS({
     // so change the variable to a function
     // see: https://github.com/ali-sdk/ali-oss/blob/d3583e8460a062a28e12bd719a1929ea659c1c5e/lib/browser/object.js#L69
     const generalAlibabaCloudOSSOptions = () => ({
-        timeout: 1000 * 60 * 2,
+        timeout: 1000 * 60 * 3,
     });
 
     const uploadBackupFile = objectInfo.map(({ backupPath, localPath, size }) => {
@@ -135,4 +135,5 @@ const client = new OSS({
     });
 
     await Promise.all(uploadEffectFile);
+    process.exit(0);
 })();

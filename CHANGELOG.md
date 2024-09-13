@@ -1,3 +1,13 @@
+## [2.3.5](https://github.com/netless-io/flat/compare/v2.3.4...v2.3.5) (2024-09-13)
+
+
+### Features
+
+* **web**: add cross region user information authorize confirm ([#2155](https://github.com/netless-io/flat/issues/2155)) ([bc104b78](https://github.com/netless-io/flat/commit/bc104b78))
+* **service-providers**: add RTM 2.0 ([#2126](https://github.com/netless-io/flat/issues/2126)) ([99d8f12f](https://github.com/netless-io/flat/commit/99d8f12f))
+
+
+
 ## [2.3.4](https://github.com/netless-io/flat/compare/v2.3.4...v2.3.4) (2024-06-12)
 
 
