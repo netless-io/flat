@@ -20,7 +20,7 @@
 
 <div align="center">
     <h1>Agora Flat</h1>
-    <p>项目 flat 是 <a href="https://www.flat.shengwang.cn/">Agora Flat</a> 开源教室的 Web 端、Windows 客户端与 macOS 客户端。</p>
+    <p>项目 flat 是 <a href="https://www.flat.apprtc.cn/">Agora Flat</a> 开源教室的 Web 端、Windows 客户端与 macOS 客户端。</p>
     <img src="/assets/flat-showcase.png">
 </div>
 
@@ -140,8 +140,8 @@ cd ./web/flat-web/ && pnpm start
 当使用 Flat 或其他 GitHub 徽标时，请务必遵循 [GitHub 徽标指南][github-logo]。
 
 [join-flat-slack]: https://github.com/netless-io/flat/issues/926
-[flat-homepage]: https://www.flat.shengwang.cn/#download
-[flat-web]: https://web.flat.shengwang.cn/
+[flat-homepage]: https://www.flat.apprtc.cn/#download
+[flat-web]: https://web.flat.apprtc.cn/
 [flat-server]: https://github.com/netless-io/flat-server
 [flat-android]: https://github.com/netless-io/flat-android
 [flat-storybook]: https://netless-io.github.io/flat/
