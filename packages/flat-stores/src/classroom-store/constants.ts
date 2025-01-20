@@ -9,3 +9,5 @@ export enum RoomStatusLoadingType {
     Pausing,
     Stopping,
 }
+
+export const TIMEOUT_MS = 5000; // Timeout for incomplete messages

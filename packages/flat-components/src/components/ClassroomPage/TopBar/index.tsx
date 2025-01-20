@@ -9,7 +9,6 @@ import {
 
 export * from "./TopBarRightBtn";
 export * from "./TopBarRoundBtn";
-
 export const TopBarDivider: FC = () => {
     return <div className="topbar-divider"></div>;
 };

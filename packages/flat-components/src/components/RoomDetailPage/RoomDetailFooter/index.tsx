@@ -80,12 +80,14 @@ export const RoomDetailFooter = /* @__PURE__ */ observer<RoomDetailFooterProps>(
                         {t("modify-room")}
                     </Button>
                 )}
-                <Button
-                    className="room-detail-footer-btn"
-                    onClick={() => setIsShowInviteModal(true)}
-                >
-                    {t("invitation")}
-                </Button>
+                {!room.isAI && (
+                    <Button
+                        className="room-detail-footer-btn"
+                        onClick={() => setIsShowInviteModal(true)}
+                    >
+                        {t("invitation")}
+                    </Button>
+                )}
                 <Button className="room-detail-footer-btn" type="primary" onClick={onJoinRoom}>
                     {t("join-room")}
                 </Button>

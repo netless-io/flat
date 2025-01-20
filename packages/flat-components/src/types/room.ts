@@ -21,6 +21,7 @@ export type RoomInfo = {
         videoURL?: string;
     }>;
     isPmi?: boolean;
+    isAI?: boolean;
 };
 
 export enum RoomType {

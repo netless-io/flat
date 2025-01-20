@@ -350,3 +350,54 @@ export interface RTMCensorResult {
 export function checkRTMCensor(payload: RTMCensorPayload): Promise<RTMCensorResult> {
     return post<RTMCensorPayload, RTMCensorResult>("agora/rtm/censor", payload);
 }
+
+export interface AgoraAIBasePayload {
+    request_id: string;
+    channel_name: string;
+    language: string;
+}
+export interface AgoraAIStartPayload extends AgoraAIBasePayload {
+    user_uid: number;
+    scene: string;
+    role: string;
+}
+
+export interface AgoraAIResult {
+    code: string;
+    data: any;
+    msg: string;
+}
+export async function agoraAIStart(payload: AgoraAIStartPayload): Promise<AgoraAIResult> {
+    // return await fetch("http://43.131.39.44:8082/start", {
+    //     method: "POST",
+    //     body: JSON.stringify({
+    //         request_id: payload.request_id,
+    //         channel_name: payload.channel_name,
+    //         user_uid: payload.user_uid,
+    //         timbre_type: payload.role,
+    //     }),
+    // }).then(res => {
+    //     return res.json();
+    // });
+    return post<AgoraAIStartPayload, AgoraAIResult>("agora/ai/start", payload);
+}
+
+export async function agoraAIPing(payload: AgoraAIBasePayload): Promise<any> {
+    // return await fetch("http://43.131.39.44:8082/ping", {
+    //     method: "POST",
+    //     body: JSON.stringify(payload),
+    // }).then(res => {
+    //     return res.json();
+    // });
+    return post<AgoraAIBasePayload, AgoraAIResult>("agora/ai/ping", payload);
+}
+
+export async function agoraAIStop(payload: AgoraAIBasePayload): Promise<AgoraAIResult> {
+    // return await fetch("http://43.131.39.44:8082/stop", {
+    //     method: "POST",
+    //     body: JSON.stringify(payload),
+    // }).then(res => {
+    //     return res.json();
+    // });
+    return post<AgoraAIBasePayload, AgoraAIResult>("agora/ai/stop", payload);
+}

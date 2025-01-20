@@ -4,6 +4,7 @@ import { IService } from "../typing";
 import { IServiceVideoChatMode, IServiceVideoChatRole } from "./constants";
 import { IServiceVideoChatEventData } from "./events";
 import { IServiceShareScreen } from "./share-screen";
+import type { IAgoraRTCRemoteUser, IRemoteAudioTrack } from "agora-rtc-sdk-ng";
 
 export type IServiceVideoChatUID = string;
 
@@ -80,6 +81,16 @@ export abstract class IServiceVideoChat implements IService {
     public abstract getMirrorMode(): boolean;
     public abstract setMirrorMode(mirrorMode: boolean): void;
 
+    public abstract listenAIRtcStreamMessage(
+        streamMessageHandler: (
+            uid: number,
+            stream: Uint8Array | number,
+            ...arg: any
+        ) => Promise<void>,
+        userJoinedHandler: (user: Pick<IAgoraRTCRemoteUser, "uid">) => Promise<void>,
+        userPublishHandler: (audioTrack: IRemoteAudioTrack) => Promise<void>,
+    ): void;
+
     public async setSpeakerVolume(_volume: number): Promise<void> {
         throw doesNotSupportError("setting speaker volume");
     }
@@ -114,6 +125,12 @@ export abstract class IServiceVideoChat implements IService {
 
     public stopSpeakerTest(): void {
         throw doesNotSupportError("speaker test");
+    }
+
+    public aiUserUUId: string | undefined;
+    public aiAudioTrack?: IRemoteAudioTrack;
+    public setAiUserUUId(uuid: string): void {
+        this.aiUserUUId = uuid;
     }
 }
 

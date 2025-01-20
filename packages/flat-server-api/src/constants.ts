@@ -73,3 +73,15 @@ export enum FileConvertStep {
     Done = "Done",
     Failed = "Failed",
 }
+
+export type AIRole = "lily" | "peppa" | "spongebob" | "sillybear" | "ironman" | "LuoTianYi";
+
+export type AIScene =
+    | "TakingOrders"
+    | "Shopping"
+    | "HotelBooking"
+    | "SelfIntroduction"
+    | "Interview"
+    | "ChatWithFriends"
+    | "";
+export type AILanguage = "zh" | "en";

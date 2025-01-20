@@ -8,7 +8,7 @@
         display: none !important;
     }
 
-    .ant-checkbox + span {
+    .ant-checkbox+span {
         font-size: 12px;
         color: var(--text);
     }
@@ -16,6 +16,109 @@
     .ant-form-item {
         margin-bottom: 0;
         margin-top: 13px;
+    }
+
+    .ai-teacher-roles {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-top: -8px;
+
+        .ai-teacher-role-item {
+            box-sizing: border-box;
+            width: 156px;
+            height: 99px;
+            border: 1px solid var(--text-weaker);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+            font-size: 13px;
+            margin-top: 8px;
+            cursor: pointer;
+
+            &:hover,
+            &.selected {
+                border: 2px solid var(--primary);
+                font-weight: 600;
+            }
+
+        }
+
+    }
+
+    .ai-teacher-scene {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        .ai-teacher-scene-item {
+            box-sizing: border-box;
+            width: 74px;
+            height: 70px;
+            font-size: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 8px;
+
+            &:hover,
+            &.selected {
+                border: 2px solid var(--primary);
+            }
+        }
+    }
+
+    .ai-teacher-language-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        .ant-radio-wrapper {
+            margin-right: 0px;
+        }
+
+        .ai-teacher-language-item-box {
+            box-sizing: border-box;
+            border: 1px solid var(--text-weaker);
+            width: 238px;
+            height: 52px;
+            padding: 0 16px;
+
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 8px;
+
+            >span {
+                width: 100%;
+                padding: 0;
+
+                &.ant-radio {
+                    width: 16px;
+                    height: 16px;
+                    margin-top: -4px;
+                }
+            }
+
+            .ai-teacher-language-item {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+
+                .ai-teacher-language-item-icon {
+                    margin-right: 8px;
+                }
+            }
+        }
+
     }
 }
 

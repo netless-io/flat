@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { RouteNameType, usePushHistory } from "../utils/routes";
 import { errorTips, useSafePromise } from "flat-components";
 import { FlatServices } from "@netless/flat-services";
+import { RoomStatus } from "@netless/flat-server-api";
 
 export type useClassRoomStoreConfig = Omit<
     ClassroomStoreConfig,
@@ -26,23 +27,23 @@ export function useClassroomStore(config: useClassRoomStoreConfig): ClassroomSto
         let isUnmounted = false;
         let classroomStore: ClassroomStore | undefined;
         const flatServices = FlatServices.getInstance();
-
         sp(
             Promise.all([
                 flatServices.requestService("videoChat"),
-                flatServices.requestService("textChat"),
                 flatServices.requestService("whiteboard"),
                 flatServices.requestService("recording"),
+                flatServices.requestService("textChat"),
             ]),
-        ).then(([videoChat, textChat, whiteboard, recording]) => {
-            if (!isUnmounted && videoChat && textChat && whiteboard && recording) {
-                classroomStore = new ClassroomStore({
+        ).then(([videoChat, whiteboard, recording, textChat]) => {
+            if (!isUnmounted && videoChat && whiteboard && recording && textChat) {
+                const classroomStoreConfig: ClassroomStoreConfig = {
                     ...config,
                     rtc: videoChat,
-                    rtm: textChat,
                     whiteboard,
                     recording,
-                });
+                    rtm: textChat,
+                };
+                classroomStore = new ClassroomStore(classroomStoreConfig);
                 setClassroomStore(classroomStore);
                 sp(classroomStore.init()).catch(e => {
                     errorTips(e);
@@ -66,5 +67,14 @@ export function useClassroomStore(config: useClassRoomStoreConfig): ClassroomSto
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    useEffect(() => {
+        if (classroomStore) {
+            const phase = classroomStore.whiteboardStore.phase;
+            const roomState = classroomStore.roomStatus;
+            if (phase === "disconnected" && roomState === RoomStatus.Stopped) {
+                pushHistory(RouteNameType.HomePage);
+            }
+        }
+    }, [classroomStore?.whiteboardStore.phase, classroomStore?.roomStatus]);
     return classroomStore;
 }

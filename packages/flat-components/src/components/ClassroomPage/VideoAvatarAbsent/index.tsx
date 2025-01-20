@@ -22,11 +22,13 @@ export interface VideoAvatarAbsentProps {
     onDragStart?: () => void;
     onDragEnd?: () => void;
     isDropTarget?: boolean;
+    isAI?: boolean;
 
     generateAvatar?: (uid: string) => string;
 }
 
 export const VideoAvatarAbsent: FC<VideoAvatarAbsentProps> = ({
+    isAI,
     avatarUser,
     small,
     isCreator,
@@ -67,7 +69,7 @@ export const VideoAvatarAbsent: FC<VideoAvatarAbsentProps> = ({
                 "is-drop-target": isDropTarget,
             })}
             data-user-uuid={avatarUser.userUUID}
-            draggable={isCreator && !portal}
+            draggable={isCreator && !portal && !!isDropTarget && !isAI}
             onDoubleClick={portal ? undefined : onDoubleClick}
             onDragEnd={onDragEnd}
             onDragStart={onDragStartImpl}
@@ -115,6 +117,68 @@ export const VideoAvatarAbsent: FC<VideoAvatarAbsentProps> = ({
                     ) : (
                         t("student-left-temporarily")
                     )}
+                </span>
+            </div>
+            {absentView && portal && createPortal(absentView, portal)}
+        </div>
+    ) : (
+        absentView
+    );
+};
+
+export interface VideoAIAvatarAbsentProps {
+    avatarUser?: User | null;
+    small?: boolean;
+    portal?: HTMLElement | null;
+    onDoubleClick?: () => void;
+}
+export const VideoAIAvatarAbsent: FC<VideoAIAvatarAbsentProps> = ({
+    portal,
+    avatarUser,
+    small,
+    onDoubleClick,
+}) => {
+    const t = useTranslate();
+    const isDark = useContext(DarkModeContext);
+
+    if (!avatarUser) {
+        return null;
+    }
+
+    const absentView = (
+        <div
+            className={classnames("video-avatar", {
+                "is-small": small,
+                "is-drop-target": false,
+            })}
+            data-user-uuid={avatarUser.userUUID}
+            onDoubleClick={onDoubleClick}
+        >
+            <div
+                className="video-avatar-image-blur-bg  no-filter"
+                style={{ backgroundImage: `url(${avatarUser.avatar})` }}
+            />
+            <div className="video-avatar-bottom">
+                <h1 className="video-avatar-user-name" title={avatarUser.name}>
+                    {avatarUser.name}
+                </h1>
+            </div>
+            <div className="video-avatar-is-left">{t("has-left")}</div>
+        </div>
+    );
+
+    return portal ? (
+        <div
+            className={classnames("video-avatar-absent", {
+                "is-small": small,
+            })}
+            data-user-uuid={avatarUser?.userUUID}
+        >
+            <div className="video-avatar-absent-block">
+                <Placeholder className="video-avatar-absent-img" isDark={isDark} />
+                <span className="video-avatar-absent-content">
+                    <span className="video-avatar-absent-name">{avatarUser.name}</span>
+                    <span className="video-avatar-absent-desc">{t("user-left-temporarily")}</span>
                 </span>
             </div>
             {absentView && portal && createPortal(absentView, portal)}

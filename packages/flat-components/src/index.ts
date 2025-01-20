@@ -34,5 +34,6 @@ export * from "./components/UsersPanel";
 export * from "./components/Pmi";
 export * from "./containers/CloudStorageContainer";
 export * from "./theme/antd.mod";
+export * from "./components/FlatIcons/icons/SVGFastForward15";
 
 export { message, Modal } from "antd";

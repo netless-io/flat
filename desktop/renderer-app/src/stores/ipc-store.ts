@@ -53,7 +53,8 @@ export class IPCStore {
             }
             case routeConfig[RouteNameType.BigClassPage].path:
             case routeConfig[RouteNameType.SmallClassPage].path:
-            case routeConfig[RouteNameType.OneToOnePage].path: {
+            case routeConfig[RouteNameType.OneToOnePage].path:
+            case routeConfig[RouteNameType.AIPage].path: {
                 this.ipcAsyncByMainWindow("set-win-size", {
                     ...constants.PageSize.Class,
                     autoCenter: true,
@@ -116,6 +117,7 @@ export class IPCStore {
             case routeConfig[RouteNameType.BigClassPage].path:
             case routeConfig[RouteNameType.SmallClassPage].path:
             case routeConfig[RouteNameType.OneToOnePage].path:
+            case routeConfig[RouteNameType.AIPage].path:
             case routeConfig[RouteNameType.ReplayPage].path: {
                 this.ipcAsyncByMainWindow("intercept-native-window-close", {
                     intercept: false,
@@ -154,6 +156,7 @@ export class IPCStore {
             routeConfig.LoginPage,
             routeConfig.BigClassPage,
             routeConfig.OneToOnePage,
+            routeConfig.AIPage,
             routeConfig.SmallClassPage,
         ].some(({ path }) => {
             return !!matchPath(pathname, {

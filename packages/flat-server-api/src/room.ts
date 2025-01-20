@@ -1,4 +1,4 @@
-import { RoomStatus, RoomType, Week, Region } from "./constants";
+import { RoomStatus, RoomType, Week, Region, AIRole, AIScene, AILanguage } from "./constants";
 import { post, postV2 } from "./utils";
 
 export interface CreateOrdinaryRoomPayload {
@@ -8,6 +8,13 @@ export interface CreateOrdinaryRoomPayload {
     region: Region;
     endTime?: number;
     pmi?: boolean;
+    isAI?: boolean;
+}
+
+export interface CreateAIRoomPayload extends CreateOrdinaryRoomPayload {
+    role: AIRole;
+    scene: AIScene;
+    language: AILanguage;
 }
 
 export interface CreateOrdinaryRoomResult {
@@ -111,6 +118,7 @@ export interface JoinRoomResult {
         maxUser: number;
         vipLevel: 0 | 1; // 0 = normal, 1 = pro
     };
+    isAI?: boolean;
 }
 
 export function joinRoom(uuid: string): Promise<JoinRoomResult> {
@@ -126,6 +134,7 @@ export interface OrdinaryRoomInfo {
     ownerUUID: string;
     ownerName: string;
     region: Region;
+    isAI?: boolean;
 }
 
 export interface OrdinaryRoomInfoPayload {
@@ -447,4 +456,13 @@ export async function uploadAvatarFinish(fileUUID: string): Promise<UploadAvatar
             fileUUID,
         },
     );
+}
+
+export interface SetGradeRoomPayload {
+    roomUUID: string;
+    userUUID: string;
+    grade: number;
+}
+export async function setGradeRoom(payload: SetGradeRoomPayload): Promise<void> {
+    await post<SetGradeRoomPayload, any>("user/grade/set", payload);
 }

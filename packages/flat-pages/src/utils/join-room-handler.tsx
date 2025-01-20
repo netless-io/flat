@@ -113,7 +113,11 @@ export const joinRoomHandler = async (
                 break;
             }
             case RoomType.OneToOne: {
-                pushHistory(RouteNameType.OneToOnePage, data);
+                if (data.isAI) {
+                    pushHistory(RouteNameType.AIPage, data);
+                } else {
+                    pushHistory(RouteNameType.OneToOnePage, data);
+                }
                 break;
             }
             default: {

@@ -8,6 +8,7 @@ import { LoginPage } from "@netless/flat-pages/src/LoginPage";
 import { BigClassPage } from "@netless/flat-pages/src/BigClassPage";
 import { SmallClassPage } from "@netless/flat-pages/src/SmallClassPage";
 import { OneToOnePage } from "@netless/flat-pages/src/OneToOnePage";
+import { AIPage } from "@netless/flat-pages/src/AIPage";
 import { ModifyPeriodicRoomPage } from "@netless/flat-pages/src/ModifyPeriodicRoomPage";
 import { PeriodicRoomDetailPage } from "@netless/flat-pages/src/PeriodicRoomDetailPage";
 import { GeneralSettingPage } from "@netless/flat-pages/src/UserSettingPage/GeneralSettingPage";
@@ -32,6 +33,7 @@ export enum RouteNameType {
     SmallClassPage = "SmallClassPage",
     BigClassPage = "BigClassPage",
     OneToOnePage = "OneToOnePage",
+    AIPage = "AIPage",
     RoomDetailPage = "RoomDetailPage",
     UserScheduledPage = "UserScheduledPage",
     PeriodicRoomDetailPage = "PeriodicRoomDetailPage",
@@ -55,7 +57,8 @@ export enum RouteNameType {
 export type ClassRouteName =
     | RouteNameType.SmallClassPage
     | RouteNameType.OneToOnePage
-    | RouteNameType.BigClassPage;
+    | RouteNameType.BigClassPage
+    | RouteNameType.AIPage;
 
 export const routeConfig = {
     [RouteNameType.SplashPage]: {
@@ -82,6 +85,11 @@ export const routeConfig = {
         title: "OneToOnePage",
         path: "/classroom/OneToOne/:roomUUID/:ownerUUID/",
         component: OneToOnePage,
+    },
+    [RouteNameType.AIPage]: {
+        title: "AIPage",
+        path: "/classroom/AIPage/:roomUUID/:ownerUUID/",
+        component: AIPage,
     },
     [RouteNameType.BigClassPage]: {
         title: "BigClassPage",

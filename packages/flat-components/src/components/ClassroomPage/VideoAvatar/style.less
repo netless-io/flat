@@ -63,6 +63,10 @@
     background-repeat: no-repeat;
     background-size: cover;
     filter: blur(16px) brightness(0.4);
+
+    &.no-filter {
+        filter: none;
+    }
 }
 
 .video-avatar-bottom {
@@ -87,6 +91,24 @@
     line-height: 1;
     color: #fff;
     user-select: none;
+}
+
+.video-avatar-chat-slot {
+    position: absolute;
+    z-index: 100;
+    left: 4px;
+    right: 4px;
+    bottom: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    height: 100%;
+
+    .chat-messages-box {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+    }
 }
 
 .video-avatar-media-ctrl {

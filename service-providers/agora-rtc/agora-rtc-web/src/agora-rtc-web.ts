@@ -1,8 +1,11 @@
+// eslint-disable-next-line eslint-comments/disable-enable-pair
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import AgoraRTC, {
     IAgoraRTCClient,
     IAgoraRTCRemoteUser,
     ICameraVideoTrack,
     IMicrophoneAudioTrack,
+    IRemoteAudioTrack,
     NetworkQuality,
 } from "agora-rtc-sdk-ng";
 import {
@@ -78,6 +81,8 @@ export class AgoraRTCWeb extends IServiceVideoChat {
     public get isJoinedRoom(): boolean {
         return Boolean(this.roomUUID);
     }
+
+    private aiAudioTrackHandler?: (audioTrack: IRemoteAudioTrack) => Promise<void>;
 
     public constructor({ APP_ID }: AgoraRTCWebConfig) {
         super();
@@ -166,6 +171,11 @@ export class AgoraRTCWeb extends IServiceVideoChat {
                     this.localMicTrack.stop();
                     this.localMicTrack.close();
                     this.localMicTrack = undefined;
+                }
+
+                if (this.aiAudioTrack) {
+                    this.aiAudioTrack.stop();
+                    this.aiAudioTrack = undefined;
                 }
 
                 this._roomSideEffect.flushAll();
@@ -287,6 +297,9 @@ export class AgoraRTCWeb extends IServiceVideoChat {
             for (const remoteAvatar of this._remoteAvatars.values()) {
                 remoteAvatar.setSpeakerId(deviceId);
             }
+            if (this.aiAudioTrack) {
+                this.aiAudioTrack.setPlaybackDevice(deviceId);
+            }
             this._speakerID = deviceId;
             this.events.emit("speaker-changed", deviceId);
         }
@@ -360,7 +373,6 @@ export class AgoraRTCWeb extends IServiceVideoChat {
         mirror,
     }: IServiceVideoChatJoinRoomConfig): Promise<void> {
         this._roomSideEffect.flushAll();
-
         const client = AgoraRTC.createClient({
             mode: mode === IServiceVideoChatMode.Broadcast ? "live" : "rtc",
             codec: "vp8",
@@ -418,9 +430,23 @@ export class AgoraRTCWeb extends IServiceVideoChat {
                     }
                     return;
                 }
-
                 try {
                     await client.subscribe(user, mediaType);
+                    if (
+                        this.aiUserUUId &&
+                        this.aiUserUUId === uid &&
+                        user.audioTrack &&
+                        mediaType === "audio"
+                    ) {
+                        this.aiAudioTrack = user.audioTrack;
+                        if (this._speakerID) {
+                            user.audioTrack.setPlaybackDevice(this._speakerID);
+                        }
+                        if (this.aiAudioTrackHandler) {
+                            await this.aiAudioTrackHandler(this.aiAudioTrack);
+                        }
+                        return;
+                    }
                     let avatar = this._remoteAvatars.get(uid);
                     if (avatar) {
                         if (mediaType === "audio") {
@@ -459,8 +485,17 @@ export class AgoraRTCWeb extends IServiceVideoChat {
                     }
                     return;
                 }
-
                 try {
+                    if (
+                        this.aiUserUUId &&
+                        this.aiUserUUId === uid &&
+                        user.audioTrack &&
+                        mediaType === "audio"
+                    ) {
+                        user.audioTrack.stop();
+                        this.aiAudioTrack = undefined;
+                        return;
+                    }
                     const avatar = this._remoteAvatars.get(uid);
                     if (avatar) {
                         if (mediaType === "audio") {
@@ -493,7 +528,6 @@ export class AgoraRTCWeb extends IServiceVideoChat {
                 return () => client.off("network-quality", handler);
             }),
         );
-
         await client.join(
             this.APP_ID,
             roomUUID,
@@ -557,6 +591,28 @@ export class AgoraRTCWeb extends IServiceVideoChat {
         }
         return this.localMicTrack;
     });
+
+    public listenAIRtcStreamMessage(
+        streamMessageHandler: (
+            uid: number,
+            stream: Uint8Array | number,
+            ...arg: any
+        ) => Promise<void>,
+        userJoinedHandler: (user: IAgoraRTCRemoteUser) => Promise<void>,
+        userPublishHandler: (audioTrack: IRemoteAudioTrack) => Promise<void>,
+    ) {
+        if (this.client) {
+            this._roomSideEffect.add(() => {
+                this.client?.on("stream-message", streamMessageHandler);
+                return () => this.client?.off("stream-message", streamMessageHandler);
+            });
+            this._roomSideEffect.add(() => {
+                this.client?.on("user-joined", userJoinedHandler);
+                return () => this.client?.off("user-joined", userJoinedHandler);
+            });
+            this.aiAudioTrackHandler = userPublishHandler;
+        }
+    }
 }
 
 function singleRun<TFn extends (...args: any[]) => Promise<any>>(fn: TFn): TFn {

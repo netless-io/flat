@@ -5,13 +5,15 @@ import { SVGSchedule } from "./icons/SVGSchedule/";
 import React from "react";
 import { Button } from "antd";
 import { useTranslate } from "@netless/flat-i18n";
+import { SVGAITeacher } from "./icons/SVGAITeacher";
 
-type HomePageHeroButtonType = "join" | "begin" | "schedule";
+type HomePageHeroButtonType = "join" | "begin" | "schedule" | "aiTeacher";
 
 const HomePageHeroButtonIcons: Record<HomePageHeroButtonType, React.FC> = {
     join: SVGJoin,
     begin: SVGBegin,
     schedule: SVGSchedule,
+    aiTeacher: SVGAITeacher,
 };
 
 export interface HomePageHeroButtonProps {

@@ -9,6 +9,8 @@ import { ChatTabTitle, ChatTabTitleProps } from "./ChatTabTitle";
 export type ChatPanelProps = {
     totalUserCount?: number;
     onClickTotalUsersCount?: () => void;
+    readOnly?: boolean;
+    cc?: React.ReactNode;
 } & ChatTabTitleProps &
     Omit<ChatMessagesProps, "visible">;
 
@@ -17,17 +19,20 @@ export const ChatPanel = /* @__PURE__ */ observer<ChatPanelProps>(function ChatP
 
     return (
         <div className="chat-panel">
-            <div className="chat-panel-header">
-                <ChatTabTitle>
-                    <span>{t("messages")}</span>
-                </ChatTabTitle>
-                {props.totalUserCount && (
-                    <span className="chat-tab-subtitle" onClick={props.onClickTotalUsersCount}>
-                        {t("total-users-count", { count: props.totalUserCount })}
-                    </span>
-                )}
-            </div>
-            <ChatMessages {...props} visible />
+            {!props.readOnly && (
+                <div className="chat-panel-header">
+                    <ChatTabTitle>
+                        <span>{t("messages")}</span>
+                    </ChatTabTitle>
+                    {props.totalUserCount && (
+                        <span className="chat-tab-subtitle" onClick={props.onClickTotalUsersCount}>
+                            {t("total-users-count", { count: props.totalUserCount })}
+                        </span>
+                    )}
+                </div>
+            )}
+            <ChatMessages {...props} visible readOnly={props.readOnly} />
+            {props.cc && <div className="chat-panel-cc">{props.cc}</div>}
         </div>
     );
 });

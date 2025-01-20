@@ -11,7 +11,7 @@ export interface ChatTypeBoxProps {
     isCreator: boolean;
     isBan: boolean;
     onBanChange: () => void;
-    onMessageSend: (text: string) => Promise<void>;
+    onMessageSend?: (text: string) => Promise<void>;
 }
 
 export const ChatTypeBox = /* @__PURE__ */ observer<ChatTypeBoxProps>(function ChatTypeBox({
@@ -30,6 +30,9 @@ export const ChatTypeBox = /* @__PURE__ */ observer<ChatTypeBoxProps>(function C
 
     async function sendMessage(): Promise<void> {
         if (isSending || trimmedText.length <= 0) {
+            return;
+        }
+        if (!onMessageSend) {
             return;
         }
 

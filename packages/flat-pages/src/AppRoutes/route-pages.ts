@@ -37,6 +37,10 @@ export const routePages: RoutePages = {
         title: "OneToOnePage",
         component: () => import("../OneToOnePage"),
     },
+    [RouteNameType.AIPage]: {
+        title: "AIPage",
+        component: () => import("../AIPage"),
+    },
     [RouteNameType.RoomDetailPage]: {
         title: "RoomDetailPage",
         hasHeader: true,

@@ -235,7 +235,11 @@ export class Fastboard extends IServiceWhiteboard {
                         }
                         if (room.isWritable && room.phase === RoomPhase.Connected) {
                             room.disableSerialization = false;
-                        } else if (this.allowDrawing) {
+                        } else if (
+                            this.allowDrawing &&
+                            (room.phase === RoomPhase.Connected ||
+                                room.phase === RoomPhase.Reconnecting)
+                        ) {
                             room.setWritable(true);
                         }
                     },

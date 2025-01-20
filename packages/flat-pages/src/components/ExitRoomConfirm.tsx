@@ -22,10 +22,12 @@ export interface ExitRoomConfirmProps {
     visible: boolean;
     isReturnLoading: boolean;
     isStopLoading: boolean;
+    rateModal?: React.ReactNode;
     onReturnMain: () => Promise<void>;
     onStopClass: () => Promise<void>;
     onCancel: () => void;
     confirm: (confirmType: ExitRoomConfirmType) => void;
+    setGrade?: () => Promise<void>;
 }
 
 export function useExitRoomConfirmModal({
@@ -117,6 +119,7 @@ export const ExitRoomConfirm = observer<Omit<ExitRoomConfirmProps, "confirm">>(
         confirmType,
         isReturnLoading,
         isStopLoading,
+        rateModal,
         onReturnMain,
         onStopClass,
         ...restProps
@@ -126,6 +129,7 @@ export const ExitRoomConfirm = observer<Omit<ExitRoomConfirmProps, "confirm">>(
                 <CloseRoomConfirmModal
                     {...restProps}
                     hangLoading={isReturnLoading}
+                    rateModal={rateModal}
                     stopLoading={isStopLoading}
                     onHang={onReturnMain}
                     onStop={onStopClass}

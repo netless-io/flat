@@ -49,7 +49,11 @@ export const UserWindows = observer<UserWindowsProps>(function UserWindows({ cla
     }, [boundingRect]);
 
     const users = (classroom.userWindowsGrid || [...classroom.userWindows.keys()]).map(userUUID => {
-        return { userUUID, window: classroom.userWindows.get(userUUID) };
+        const aiInfo = classroom.classroomStorage?.state.aiInfo || undefined;
+        if (classroom.isAIRoom && aiInfo && aiInfo.rtcUID === userUUID) {
+            return { userUUID, window: classroom.userWindows.get(userUUID), isAI: true };
+        }
+        return { userUUID, window: classroom.userWindows.get(userUUID), isAI: false };
     });
 
     const userWindowsLength = classroom.userWindowsGrid ? classroom.userWindowsGrid.length : 0;
@@ -144,17 +148,32 @@ export const UserWindows = observer<UserWindowsProps>(function UserWindows({ cla
                 paddingBottom: paddings.y,
             }}
         >
-            {users.map(({ userUUID, window }) => (
-                <UserAvatarWindow
-                    key={userUUID}
-                    baseRect={baseRect}
-                    classroom={classroom}
-                    mode={classroom.userWindowsMode}
-                    readonly={!classroom.isCreator}
-                    userUUID={userUUID}
-                    window={window}
-                />
-            ))}
+            {users.map(({ userUUID, window, isAI }) => {
+                if (isAI) {
+                    return (
+                        <UserAIAvatarWindow
+                            key={userUUID}
+                            baseRect={baseRect}
+                            classroom={classroom}
+                            mode={classroom.userWindowsMode}
+                            readonly={true}
+                            userUUID={userUUID}
+                            window={window}
+                        />
+                    );
+                }
+                return (
+                    <UserAvatarWindow
+                        key={userUUID}
+                        baseRect={baseRect}
+                        classroom={classroom}
+                        mode={classroom.userWindowsMode}
+                        readonly={!classroom.isCreator}
+                        userUUID={userUUID}
+                        window={window}
+                    />
+                );
+            })}
             {classroom.isDraggingAvatar && (
                 <div
                     className="user-windows-mask"
@@ -219,7 +238,7 @@ const UserAvatarWindow = observer<UserAvatarWindowProps>(function UserAvatarWind
     }, [classroom, realWindow, userUUID]);
 
     const onDoubleClick = useCallback(() => {
-        classroom.toggleUserWindowsMode();
+        !classroom.isAIRoom && classroom.toggleUserWindowsMode();
     }, [classroom]);
 
     const onDragEnd = useCallback(
@@ -275,13 +294,98 @@ const UserAvatarWindow = observer<UserAvatarWindowProps>(function UserAvatarWind
         <AvatarWindow
             key={userUUID}
             mode={mode}
-            readonly={readonly}
+            readonly={readonly || classroom.isAIRoom}
             rect={rect}
             zIndex={window.z}
             onClick={onClick}
             onDoubleClick={onDoubleClick}
             onDragEnd={onDragEnd}
             onDragging={onDragging}
+            onResize={onResize}
+        >
+            <UserWindowPortal classroom={classroom} mode={mode} userUUID={userUUID} />
+        </AvatarWindow>
+    );
+});
+
+const UserAIAvatarWindow = observer<UserAvatarWindowProps>(function UserAvatarWindow({
+    mode,
+    readonly,
+    userUUID,
+    window: realWindow,
+    baseRect,
+    classroom,
+}) {
+    const isUnMounted = useIsUnMounted();
+    const [tempWindow, setTempWindow] = useState<UserWindow | null>(null);
+
+    useEffect(() => {
+        if (tempWindow) {
+            const ticket = setTimeout(() => {
+                classroom.updateAvatarWindow(userUUID, tempWindow);
+                if (!isUnMounted.current) {
+                    setTempWindow(null);
+                }
+            }, 50);
+            return () => clearTimeout(ticket);
+        }
+        return;
+    }, [classroom, isUnMounted, tempWindow, userUUID]);
+
+    const window = tempWindow || realWindow || DEFAULT_WINDOW;
+    const rect: Rectangle = useMemo(
+        () => ({
+            x: window.x * baseRect.width + (baseRect.extraX || 0),
+            y: window.y * baseRect.height + (baseRect.extraY || 0),
+            width: window.width * baseRect.width,
+            height: window.height * baseRect.height,
+        }),
+        [baseRect, window],
+    );
+
+    const onClick = useCallback(() => {
+        realWindow && classroom.updateAvatarWindow(userUUID, realWindow);
+    }, [classroom, realWindow, userUUID]);
+
+    const onDoubleClick = useCallback(() => {
+        classroom.toggleUserWindowsMode();
+    }, [classroom]);
+
+    const onResize = useCallback(
+        (rect: Rectangle, handle: ResizeHandle | undefined) => {
+            rect.x -= baseRect.extraX || 0;
+            rect.y -= baseRect.extraY || 0;
+            const { x, y, width, height } = fixRect(
+                rect,
+                handle,
+                WINDOW_RATIO,
+                MIN_WIDTH_P * baseRect.width,
+                baseRect.width,
+                baseRect.height,
+            );
+            setTempWindow({
+                x: x / baseRect.width,
+                y: y / baseRect.height,
+                width: width / baseRect.width,
+                height: height / baseRect.height,
+                // give the temp window a very large z so that it renders correct,
+                // but set a correct z when we really update the storage.
+                // see classroom.updateAvatarWindow()
+                z: 2147483647,
+            });
+        },
+        [baseRect],
+    );
+
+    return (
+        <AvatarWindow
+            key={userUUID}
+            mode={mode}
+            readonly={readonly}
+            rect={rect}
+            zIndex={window.z}
+            onClick={onClick}
+            onDoubleClick={onDoubleClick}
             onResize={onResize}
         >
             <UserWindowPortal classroom={classroom} mode={mode} userUUID={userUUID} />

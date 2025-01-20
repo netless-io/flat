@@ -1,17 +1,18 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
-import { ChatPanel as ChatPanelImpl } from "flat-components";
+import { ChatMsg, ChatPanel as ChatPanelImpl } from "flat-components";
 import { ClassroomStore } from "@netless/flat-stores";
 import { generateAvatar } from "../../utils/generate-avatar";
 
 export interface ChatPanelProps {
     classRoomStore: ClassroomStore;
+    messages?: ChatMsg[];
 }
 
 // @TODO add rtm
 const noop = async (): Promise<void> => void 0;
 
-export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({ classRoomStore }) {
+export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({ classRoomStore, messages }) {
     return (
         <ChatPanelImpl
             generateAvatar={generateAvatar}
@@ -19,7 +20,7 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({ classRoom
             isBan={classRoomStore.isBan}
             isCreator={classRoomStore.isCreator}
             loadMoreRows={noop}
-            messages={classRoomStore.chatStore.messages}
+            messages={messages || classRoomStore.chatStore?.messages || []}
             openCloudStorage={() => classRoomStore.toggleCloudStoragePanel(true)}
             totalUserCount={classRoomStore.users.totalUserCount}
             unreadCount={classRoomStore.users.handRaisingJoiners.length || null}

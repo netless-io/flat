@@ -1,0 +1,95 @@
+.ai-page-class-page-container {
+    // PATCH: low version Electron bug
+    // if a element location on the window edge that has drag attributes and the frames of BrowserWindow options is false,
+    // then this window can't to resize size of window.
+    // so that wrap draggable elements and add padding property to achieve resize feature.
+    // TODO: upgrade new version of the Electron after remove the PATCH.
+    width: 100%;
+    height: 100%;
+    padding: 0.5px;
+}
+
+.ai-page-realtime-container {
+    -webkit-app-region: drag;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background: #f9f9f9;
+}
+
+.ai-page-realtime-box {
+    width: 100%;
+    height: 100%;
+    -webkit-app-region: no-drag;
+
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+
+    .topbar-box {
+        border-bottom: 1px solid var(--grey-0);
+    }
+}
+
+.ai-page-realtime-content {
+    flex: 1;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.ai-page-realtime-content-container {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.ai-page-rtc-avatar-container {
+    display: flex;
+    flex-direction: column;
+    gap: .5px;
+
+    .video-avatar,
+    .video-avatar-absent {
+        width: 288px;
+        height: 216px;
+    }
+}
+
+.flat-color-scheme-dark {
+
+    .ai-page-realtime-container,
+    .ai-page-realtime-box {
+        color: var(--text);
+        background-color: var(--grey-9);
+    }
+
+    .ai-page-realtime-box {
+        .topbar-box {
+            border-bottom: 1px solid var(--grey-8);
+        }
+    }
+}
+
+.ai-page-rate-ui {
+    .flat-icon-fill-color {
+        fill: #EADDFF;
+    }
+
+    .ant-rate-star-full {
+        .flat-icon-fill-color {
+            fill: #007AFF;
+        }
+
+        .is-good {
+            .flat-icon-fill-color {
+                fill: #FE4D00;
+            }
+        }
+    }
+}

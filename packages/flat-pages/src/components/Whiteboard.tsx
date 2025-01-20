@@ -228,7 +228,8 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                         )}
                     />
                     <UserWindows classroom={classRoomStore} />
-                    {!whiteboardStore.isCreator &&
+                    {!classRoomStore.isAIRoom &&
+                        !whiteboardStore.isCreator &&
                         classRoomStore.users.currentUser &&
                         !classRoomStore.users.currentUser.isSpeak && (
                             <div className="raise-hand-container">
@@ -239,7 +240,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                                 />
                             </div>
                         )}
-                    {whiteboardStore.isCreator && (
+                    {!classRoomStore.isAIRoom && whiteboardStore.isCreator && (
                         <div className="raise-hand-container">
                             <RaisingHand
                                 active={handRaisingCount > 0}
@@ -255,35 +256,39 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                     >
                         {renderScrollPage(t, page, maxPage)}
                     </div>
-                    <div
-                        className={classNames("hand-raising-panel", {
-                            "is-active": classRoomStore.isHandRaisingPanelVisible,
-                            "is-empty": handRaisingCount === 0,
-                        })}
-                    >
-                        {classRoomStore.users.handRaisingJoiners.map(user => (
-                            <div
-                                key={user.userUUID}
-                                className="hand-raising-user"
-                                title={user.name}
-                            >
-                                <HandRaisingJoinerAvatar
-                                    avatarSrc={user.avatar}
-                                    userUUID={user.userUUID}
-                                />
-                                <span className="hand-raising-user-name">{user.name}</span>
-                                <button
-                                    className="hand-raising-btn"
-                                    onClick={() => classRoomStore.onStaging(user.userUUID, true)}
+                    {!classRoomStore.isAIRoom && (
+                        <div
+                            className={classNames("hand-raising-panel", {
+                                "is-active": classRoomStore.isHandRaisingPanelVisible,
+                                "is-empty": handRaisingCount === 0,
+                            })}
+                        >
+                            {classRoomStore.users.handRaisingJoiners.map(user => (
+                                <div
+                                    key={user.userUUID}
+                                    className="hand-raising-user"
+                                    title={user.name}
                                 >
-                                    {t("agree")}
-                                </button>
-                            </div>
-                        ))}
-                        {handRaisingCount === 0 && (
-                            <div className="hand-raising-empty">{t("no-one-raising-hand")}</div>
-                        )}
-                    </div>
+                                    <HandRaisingJoinerAvatar
+                                        avatarSrc={user.avatar}
+                                        userUUID={user.userUUID}
+                                    />
+                                    <span className="hand-raising-user-name">{user.name}</span>
+                                    <button
+                                        className="hand-raising-btn"
+                                        onClick={() =>
+                                            classRoomStore.onStaging(user.userUUID, true)
+                                        }
+                                    >
+                                        {t("agree")}
+                                    </button>
+                                </div>
+                            ))}
+                            {handRaisingCount === 0 && (
+                                <div className="hand-raising-empty">{t("no-one-raising-hand")}</div>
+                            )}
+                        </div>
+                    )}
                     {tipsVisible && (
                         <div className="whiteboard-container-tips">
                             <div className="whiteboard-container-tips-content">

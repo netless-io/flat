@@ -16,7 +16,7 @@ import { errorTips, message } from "flat-components";
 import { RoomItem, roomStore } from "../room-store";
 import { User, UserStore } from "../user-store";
 import { WhiteboardStore } from "../whiteboard-store";
-import { globalStore } from "../global-store";
+import { globalStore, type AIInfo } from "../global-store";
 import { ClassModeType, RoomStatusLoadingType } from "./constants";
 import { ChatStore } from "./chat-store";
 import {
@@ -31,6 +31,8 @@ import {
 import { preferencesStore } from "../preferences-store";
 import { sampleSize } from "lodash-es";
 import { format } from "date-fns";
+import { AIChatStore } from "./ai-chat-store";
+import type { IAgoraRTCRemoteUser } from "agora-rtc-sdk-ng";
 
 export * from "./constants";
 export * from "./chat-store";
@@ -42,6 +44,7 @@ export interface ClassroomStoreConfig {
     rtm: IServiceTextChat;
     whiteboard: IServiceWhiteboard;
     recording: IServiceRecording;
+    isAIClass: boolean;
 }
 
 export type DeviceStateStorageState = Record<string, { camera: boolean; mic: boolean }>;
@@ -49,6 +52,7 @@ export type ClassroomStorageState = {
     ban: boolean;
     raiseHandUsers: string[];
     shareScreen: boolean;
+    aiInfo?: AIInfo;
 };
 export type OnStageUsersStorageState = Record<string, boolean>;
 export type WhiteboardStorageState = Record<string, boolean>;
@@ -146,6 +150,12 @@ export class ClassroomStore {
     public readonly chatStore: ChatStore;
     public readonly whiteboardStore: WhiteboardStore;
     public readonly recording: IServiceRecording;
+    public aiChatStore?: AIChatStore;
+
+    public isAIRoom = false;
+    public isAIExisted = false;
+    public isHasAIUser = false;
+    public rtcUID?: string;
 
     public constructor(config: ClassroomStoreConfig) {
         if (!globalStore.userUUID) {
@@ -161,6 +171,7 @@ export class ClassroomStore {
         this.rtc = config.rtc;
         this.rtm = config.rtm;
         this.recording = config.recording;
+        this.isAIRoom = config.isAIClass;
 
         this.chatStore = new ChatStore({
             roomUUID: this.roomUUID,
@@ -369,15 +380,6 @@ export class ClassroomStore {
     public async init(): Promise<void> {
         await roomStore.syncOrdinaryRoomInfo(this.roomUUID);
 
-        await this.initRTC();
-
-        await this.rtm.joinRoom({
-            roomUUID: this.roomUUID,
-            ownerUUID: this.ownerUUID,
-            uid: this.userUUID,
-            token: globalStore.rtmToken,
-        });
-
         const fastboard = await this.whiteboardStore.joinWhiteboardRoom();
 
         const deviceStateStorage = fastboard.syncedStore.connectStorage<DeviceStateStorageState>(
@@ -390,6 +392,7 @@ export class ClassroomStore {
                 ban: false,
                 raiseHandUsers: [],
                 shareScreen: false,
+                aiInfo: undefined,
             },
         );
         const onStageUsersStorage = fastboard.syncedStore.connectStorage<OnStageUsersStorageState>(
@@ -409,6 +412,60 @@ export class ClassroomStore {
         this.onStageUsersStorage = onStageUsersStorage;
         this.whiteboardStorage = whiteboardStorage;
         this.userWindowsStorage = userWindowsStorage;
+
+        if (this.roomType === RoomType.OneToOne && this.classroomStorage.state.aiInfo) {
+            if (!this.isAIRoom) {
+                if (globalStore.aiInfo) {
+                    globalStore.setAIInfo(undefined);
+                }
+                this.isAIRoom = true;
+            }
+        }
+
+        if (this.isAIRoom && globalStore.rtcUID) {
+            if (globalStore.aiInfo) {
+                this.setAiInfo(globalStore.aiInfo);
+                globalStore.setAIInfo(undefined);
+            }
+            if (this.classroomStorage?.state.aiInfo) {
+                const aiInfo = this.classroomStorage?.state.aiInfo;
+                this.aiChatStore = new AIChatStore({
+                    aiInfo,
+                    rtcUID: globalStore.rtcUID,
+                    roomUUID: this.roomUUID,
+                    ownerUUID: this.ownerUUID,
+                });
+                this.aiChatStore.onNewMessage = message => {
+                    if (this.isRecording) {
+                        fastboard.syncedStore.dispatchEvent("new-message", message);
+                    }
+                };
+                try {
+                    const bol = await this.aiChatStore.start();
+                    this.isAIExisted = bol;
+                } catch (error) {
+                    throw new Error(error.message);
+                }
+            }
+            this.rtcUID = globalStore.rtcUID?.toString();
+        }
+
+        await this.initRTC();
+
+        if (this.aiChatStore) {
+            this.rtc.listenAIRtcStreamMessage(
+                this.aiChatStore.handleStreamMsgChunk.bind(this.aiChatStore),
+                this.handleUserJoinedChunk.bind(this),
+                this.aiChatStore.aiAudioTrackHandler.bind(this),
+            );
+        }
+
+        await this.rtm.joinRoom({
+            roomUUID: this.roomUUID,
+            ownerUUID: this.ownerUUID,
+            uid: this.userUUID,
+            token: globalStore.rtmToken,
+        });
 
         const onStageUsers = Object.keys(onStageUsersStorage.state).filter(
             userUUID => onStageUsersStorage.state[userUUID],
@@ -598,6 +655,9 @@ export class ClassroomStore {
                         });
                     }
                 }
+                // if (diff.aiInfo) {
+                //     globalStore.setAIInfo(diff.aiInfo.newValue);
+                // }
             }),
         );
 
@@ -899,6 +959,9 @@ export class ClassroomStore {
 
     public hangClass = async (): Promise<void> => {
         // delay resolve for better UX
+        if (this.isAIRoom) {
+            await this.aiChatStore?.stop();
+        }
         await new Promise(resolve => setTimeout(resolve, 200));
     };
 
@@ -1218,6 +1281,12 @@ export class ClassroomStore {
         this.isBan = ban;
     }
 
+    public setAiInfo(aiInfo?: AIInfo): void {
+        if (this.classroomStorage && this.classroomStorage.isWritable) {
+            this.classroomStorage.setState({ aiInfo });
+        }
+    }
+
     public onStaging = (userUUID: string, onStage: boolean): void => {
         if (
             this.classMode === ClassModeType.Interaction ||
@@ -1432,6 +1501,9 @@ export class ClassroomStore {
                 }
                 case RoomStatus.Stopped: {
                     this.updateRoomStatusLoading(RoomStatusLoadingType.Stopping);
+                    if (this.isAIRoom && this.aiChatStore) {
+                        await this.aiChatStore.stop();
+                    }
                     await stopClass(this.roomUUID);
                     globalStore.updatePmiRoomListByRoomUUID(this.roomUUID);
                     break;
@@ -1563,5 +1635,24 @@ export class ClassroomStore {
         }
 
         this.adminMessage = text;
+    }
+
+    private async handleUserJoinedChunk(user: Pick<IAgoraRTCRemoteUser, "uid">): Promise<void> {
+        const { uid } = user;
+        const uidStr = uid.toString();
+        if (uid !== globalStore.rtcUID) {
+            const aiInfo = this.classroomStorage?.state.aiInfo || globalStore.aiInfo;
+            if (!aiInfo) {
+                return;
+            }
+            aiInfo.rtcUID = uidStr;
+            this.setAiInfo(aiInfo);
+            if (!this.isAIExisted) {
+                this.createMaximizedAvatarWindow(this.ownerUUID);
+                this.createMaximizedAvatarWindow(uidStr);
+            }
+            this.isHasAIUser = true;
+            this.rtc.setAiUserUUId(uidStr);
+        }
     }
 }
