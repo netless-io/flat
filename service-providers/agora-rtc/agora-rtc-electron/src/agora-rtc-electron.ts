@@ -65,7 +65,7 @@ export class AgoraRTCElectron extends IServiceVideoChat {
     public get isJoinedRoom(): boolean {
         return Boolean(this.roomUUID);
     }
-
+    private aiUserJoinedHandler?: (user: { uid: number }) => Promise<void>;
     public setRTCEngine(rtcEngine: AgoraSdk): void {
         (this.rtcEngine as AgoraSdk) = rtcEngine;
         this._init(rtcEngine);
@@ -511,6 +511,13 @@ export class AgoraRTCElectron extends IServiceVideoChat {
                     this.shareScreen.setActive(true);
                     return;
                 }
+                if (this.aiUserJoinedHandler) {
+                    this.aiUserJoinedHandler({ uid: uid_ });
+                }
+                if (this.aiUserUUId && this.aiUserUUId === uid) {
+                    this.rtcEngine.muteRemoteAudioStream(uid_, false);
+                    return;
+                }
                 let avatar = this._remoteAvatars.get(uid);
                 if (!avatar) {
                     avatar = new RTCRemoteAvatar({ rtc: this, uid });
@@ -528,6 +535,10 @@ export class AgoraRTCElectron extends IServiceVideoChat {
                 const uid: IServiceVideoChatUID = String(uid_);
                 if (this.shareScreenUID === uid) {
                     this.shareScreen.setActive(false);
+                    return;
+                }
+                if (this.aiUserUUId && this.aiUserUUId === uid) {
+                    this.rtcEngine.muteRemoteAudioStream(uid_, true);
                     return;
                 }
                 const avatar = this._remoteAvatars.get(uid);
@@ -593,5 +604,21 @@ export class AgoraRTCElectron extends IServiceVideoChat {
             token: shareScreenToken,
             uid: shareScreenUID,
         });
+    }
+    public override listenAIRtcStreamMessage(
+        streamMessageHandler: (
+            uid: number,
+            stream: Uint8Array | number,
+            ...arg: any
+        ) => Promise<void>,
+        userJoinedHandler: (user: { uid: number }) => Promise<void>,
+    ): void {
+        if (this.rtcEngine) {
+            this._roomSideEffect.add(() => {
+                this.rtcEngine.on("streamMessage", streamMessageHandler);
+                return () => this.rtcEngine.off("streamMessage", streamMessageHandler);
+            });
+            this.aiUserJoinedHandler = userJoinedHandler;
+        }
     }
 }

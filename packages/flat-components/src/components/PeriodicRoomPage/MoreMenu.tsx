@@ -60,11 +60,14 @@ export const MoreMenu: React.FC<MoreMenuProps> = ({
                                           },
                                       ]
                                     : []),
-                                {
-                                    key: "invitation",
-                                    label: t("invitation"),
-                                    onClick: () => setInviteRoomVisible(true),
-                                },
+                                ...((!room.isAI && [
+                                    {
+                                        key: "invitation",
+                                        label: t("invitation"),
+                                        onClick: () => setInviteRoomVisible(true),
+                                    },
+                                ]) ||
+                                    []),
                             ]}
                         />
                     );

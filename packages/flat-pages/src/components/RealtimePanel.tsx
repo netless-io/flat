@@ -35,7 +35,7 @@ export class RealtimePanel extends React.PureComponent<RealtimePanelProps> {
                     </div>
                     <div className="realtime-panel-chat-slot">{chatSlot}</div>
                 </div>
-                <SidebarHandler classroom={classroom} />
+                {!classroom.isAIRoom && <SidebarHandler classroom={classroom} />}
             </div>
         );
     }

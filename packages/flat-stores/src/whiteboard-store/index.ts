@@ -176,7 +176,6 @@ export class WhiteboardStore {
         const { room, manager } = fastboardAPP;
 
         this.updateRoom(room);
-
         this.updateWindowManager(manager);
 
         if (process.env.DEV) {

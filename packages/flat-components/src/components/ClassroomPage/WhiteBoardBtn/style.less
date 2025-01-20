@@ -1,0 +1,44 @@
+@topbar-icon-width: 24px;
+@topbar-right-btn-width: 32px;
+@topbar-right-btn-gap: 16px;
+
+.white-board-btn {
+    -webkit-app-region: no-drag;
+
+    display: block;
+    width: @topbar-right-btn-width;
+    height: @topbar-right-btn-width;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 ((@topbar-right-btn-gap - (@topbar-right-btn-width - @topbar-icon-width)) / 2);
+    padding: 4px;
+    cursor: pointer;
+    background-color: white;
+    border: none;
+    outline: none;
+    border-radius: 8px;
+
+    &:hover {
+        background-color: var(--blue-1);
+    }
+
+    &:disabled {
+        cursor: wait;
+        opacity: 0.5;
+    }
+}
+
+.flat-color-scheme-dark {
+    .topbar-right-btn {
+        background-color: transparent;
+
+        &:hover {
+            background-color: var(--grey-7);
+        }
+
+        &:active {
+            background-color: var(--grey-9);
+        }
+    }
+}

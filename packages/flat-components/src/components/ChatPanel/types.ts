@@ -18,4 +18,13 @@ export type ChatMsgUserGuide = {
     senderID: string;
 };
 
-export type ChatMsg = ChatMsgRoomMessage | ChatMsgNotice | ChatMsgBan | ChatMsgUserGuide;
+export type AIChatMsgUser = ChatMsgRoomMessage & {
+    isFinal: boolean;
+};
+
+export type ChatMsg =
+    | ChatMsgRoomMessage
+    | ChatMsgNotice
+    | ChatMsgBan
+    | ChatMsgUserGuide
+    | AIChatMsgUser;

@@ -378,7 +378,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
                     text: t("end-the-class"),
                 });
             }
-            if (room.roomUUID) {
+            if (room.roomUUID && !room.isAI) {
                 result.push({ key: "invite", text: t("invitation") });
             }
         }

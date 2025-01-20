@@ -4,6 +4,7 @@ import { Region } from "flat-components";
 import {
     cancelRoom,
     CancelRoomPayload,
+    CreateAIRoomPayload,
     createOrdinaryRoom,
     CreateOrdinaryRoomPayload,
     createPeriodicRoom,
@@ -57,6 +58,7 @@ export interface RoomItem {
         expireAt: number;
         vipLevel: 0 | 1;
     };
+    isAI?: boolean;
 }
 
 // Only keep sub-room ids. sub-room info are stored in ordinaryRooms.
@@ -108,6 +110,32 @@ export class RoomStore {
     /**
      * @returns roomUUID
      */
+    public async createAIRoom(payload: CreateAIRoomPayload): Promise<string> {
+        if (!globalStore.userUUID) {
+            throw new Error("cannot create room: user not login.");
+        }
+
+        const roomUUID = await createOrdinaryRoom(payload);
+        preferencesStore.setRegion(payload.region);
+        globalStore.setAIInfo({
+            role: payload.role,
+            scene: payload.scene || "",
+            language: payload.language,
+        });
+        const { ...restPayload } = payload;
+        this.updateRoom(roomUUID, globalStore.userUUID, {
+            ...restPayload,
+            roomUUID,
+        });
+
+        if (payload.pmi) {
+            globalStore.updatePmiRoomList();
+        }
+        return roomUUID;
+    }
+    /**
+     * @returns roomUUID
+     */
     public async createOrdinaryRoom(payload: CreateOrdinaryRoomPayload): Promise<string> {
         if (!globalStore.userUUID) {
             throw new Error("cannot create room: user not login.");
@@ -115,6 +143,7 @@ export class RoomStore {
 
         const roomUUID = await createOrdinaryRoom(payload);
         preferencesStore.setRegion(payload.region);
+        globalStore.setAIInfo(undefined);
         const { ...restPayload } = payload;
         this.updateRoom(roomUUID, globalStore.userUUID, {
             ...restPayload,

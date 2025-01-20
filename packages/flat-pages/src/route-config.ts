@@ -4,6 +4,7 @@ export enum RouteNameType {
     BigClassPage = "BigClassPage",
     SmallClassPage = "SmallClassPage",
     OneToOnePage = "OneToOnePage",
+    AIPage = "AIPage",
     UserScheduledPage = "UserScheduledPage",
     RoomDetailPage = "RoomDetailPage",
     PeriodicRoomDetailPage = "PeriodicRoomDetailPage",
@@ -36,6 +37,9 @@ export const routeConfig = {
     },
     [RouteNameType.OneToOnePage]: {
         path: "/classroom/OneToOne/:roomUUID/:ownerUUID/",
+    },
+    [RouteNameType.AIPage]: {
+        path: "/classroom/AIPage/:roomUUID/:ownerUUID/",
     },
     [RouteNameType.BigClassPage]: {
         path: "/classroom/BigClass/:roomUUID/:ownerUUID/",

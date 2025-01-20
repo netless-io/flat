@@ -6,6 +6,7 @@ import { createPortal } from "react-dom";
 import { useTranslate } from "@netless/flat-i18n";
 import { IconMic } from "./IconMic";
 import { SVGCamera, SVGCameraMute, SVGMicrophoneMute } from "../../FlatIcons";
+import { User } from "src/types/user";
 
 export interface VideoAvatarUser {
     name: string;
@@ -32,9 +33,13 @@ export interface VideoAvatarProps {
     onDragStart?: () => void;
     onDragEnd?: () => void;
     isDropTarget?: boolean;
+    isAI?: boolean;
+    chatSlot?: React.ReactNode;
 }
 
 export const VideoAvatar: React.FC<VideoAvatarProps> = ({
+    isAI,
+    chatSlot,
     portal,
     small,
     avatarUser,
@@ -51,7 +56,6 @@ export const VideoAvatar: React.FC<VideoAvatarProps> = ({
 }) => {
     const t = useTranslate();
     const [isAvatarLoadFailed, setAvatarLoadFailed] = useState(false);
-
     const avatar =
         generateAvatar && (isAvatarLoadFailed || !avatarUser.avatar)
             ? generateAvatar(userUUID)
@@ -77,7 +81,7 @@ export const VideoAvatar: React.FC<VideoAvatarProps> = ({
                 "is-drop-target": isDropTarget,
             })}
             data-user-uuid={avatarUser.userUUID}
-            draggable={isCreator && !portal}
+            draggable={isCreator && !portal && !!isDropTarget && !isAI}
             onDoubleClick={portal ? undefined : onDoubleClick}
             onDragEnd={onDragEnd}
             onDragStart={onDragStartImpl}
@@ -98,59 +102,115 @@ export const VideoAvatar: React.FC<VideoAvatarProps> = ({
                     />
                 </div>
             )}
-            <div className="video-avatar-bottom">
-                <h1 className="video-avatar-user-name" title={avatarUser.name}>
-                    {avatarUser.name}
-                </h1>
-                <div
-                    className={classnames("video-avatar-media-ctrl", {
-                        "is-portal": portal,
-                    })}
-                >
-                    <button
-                        className={classnames("video-avatar-media-ctrl-btn", {
-                            "is-muted": !avatarUser.camera,
-                            "is-small": small && !portal,
+            {(!chatSlot && (
+                <div className="video-avatar-bottom">
+                    <h1 className="video-avatar-user-name" title={avatarUser.name}>
+                        {avatarUser.name}
+                    </h1>
+                    <div
+                        className={classnames("video-avatar-media-ctrl", {
+                            "is-portal": portal,
                         })}
-                        disabled={isCameraCtrlDisable}
-                        title={t("camera")}
-                        onClick={() => {
-                            if (isCreator || userUUID === avatarUser.userUUID) {
-                                updateDeviceState(
-                                    avatarUser.userUUID,
-                                    !avatarUser.camera,
-                                    avatarUser.mic,
-                                );
-                            }
-                        }}
                     >
-                        {avatarUser.camera ? <SVGCamera /> : <SVGCameraMute />}
-                    </button>
-                    <button
-                        className={classnames("video-avatar-media-ctrl-btn", {
-                            "is-muted": !avatarUser.mic,
-                            "is-small": small && !portal,
-                        })}
-                        disabled={isMicCtrlDisable}
-                        title={t("microphone")}
-                        onClick={() => {
-                            if (isCreator || userUUID === avatarUser.userUUID) {
-                                updateDeviceState(
-                                    avatarUser.userUUID,
-                                    avatarUser.camera,
-                                    !avatarUser.mic,
-                                );
-                            }
-                        }}
-                    >
-                        {avatarUser.mic ? (
-                            <IconMic getVolumeLevel={getVolumeLevel} />
-                        ) : (
-                            <SVGMicrophoneMute />
-                        )}
-                    </button>
+                        <button
+                            className={classnames("video-avatar-media-ctrl-btn", {
+                                "is-muted": !avatarUser.camera,
+                                "is-small": small && !portal,
+                            })}
+                            disabled={isCameraCtrlDisable}
+                            title={t("camera")}
+                            onClick={() => {
+                                if (isCreator || userUUID === avatarUser.userUUID) {
+                                    updateDeviceState(
+                                        avatarUser.userUUID,
+                                        !avatarUser.camera,
+                                        avatarUser.mic,
+                                    );
+                                }
+                            }}
+                        >
+                            {avatarUser.camera ? <SVGCamera /> : <SVGCameraMute />}
+                        </button>
+                        <button
+                            className={classnames("video-avatar-media-ctrl-btn", {
+                                "is-muted": !avatarUser.mic,
+                                "is-small": small && !portal,
+                            })}
+                            disabled={isMicCtrlDisable}
+                            title={t("microphone")}
+                            onClick={() => {
+                                if (isCreator || userUUID === avatarUser.userUUID) {
+                                    updateDeviceState(
+                                        avatarUser.userUUID,
+                                        avatarUser.camera,
+                                        !avatarUser.mic,
+                                    );
+                                }
+                            }}
+                        >
+                            {avatarUser.mic ? (
+                                <IconMic getVolumeLevel={getVolumeLevel} />
+                            ) : (
+                                <SVGMicrophoneMute />
+                            )}
+                        </button>
+                    </div>
                 </div>
-            </div>
+            )) || (
+                <>
+                    <div className="video-avatar-chat-slot">{chatSlot}</div>
+                    <div className="video-avatar-bottom">
+                        <div
+                            className={classnames("video-avatar-media-ctrl", {
+                                "is-portal": portal,
+                            })}
+                        >
+                            <button
+                                className={classnames("video-avatar-media-ctrl-btn", {
+                                    "is-muted": !avatarUser.camera,
+                                    "is-small": small && !portal,
+                                })}
+                                disabled={isCameraCtrlDisable}
+                                title={t("camera")}
+                                onClick={() => {
+                                    if (isCreator || userUUID === avatarUser.userUUID) {
+                                        updateDeviceState(
+                                            avatarUser.userUUID,
+                                            !avatarUser.camera,
+                                            avatarUser.mic,
+                                        );
+                                    }
+                                }}
+                            >
+                                {avatarUser.camera ? <SVGCamera /> : <SVGCameraMute />}
+                            </button>
+                            <button
+                                className={classnames("video-avatar-media-ctrl-btn", {
+                                    "is-muted": !avatarUser.mic,
+                                    "is-small": small && !portal,
+                                })}
+                                disabled={isMicCtrlDisable}
+                                title={t("microphone")}
+                                onClick={() => {
+                                    if (isCreator || userUUID === avatarUser.userUUID) {
+                                        updateDeviceState(
+                                            avatarUser.userUUID,
+                                            avatarUser.camera,
+                                            !avatarUser.mic,
+                                        );
+                                    }
+                                }}
+                            >
+                                {avatarUser.mic ? (
+                                    <IconMic getVolumeLevel={getVolumeLevel} />
+                                ) : (
+                                    <SVGMicrophoneMute />
+                                )}
+                            </button>
+                        </div>
+                    </div>
+                </>
+            )}
         </div>
     );
 
@@ -159,6 +219,68 @@ export const VideoAvatar: React.FC<VideoAvatarProps> = ({
             className={classnames("video-avatar", "video-avatar-holder", {
                 "is-small": small,
                 "is-drop-target": isDropTarget,
+            })}
+            data-user-uuid={avatarUser.userUUID}
+        >
+            <span className="video-avatar-holder-name">{avatarUser.name}</span>
+            {createPortal(view, portal)}
+        </div>
+    ) : (
+        view
+    );
+};
+
+export interface VideoAIAvatarProps {
+    avatarUser?: User | null;
+    small?: boolean;
+    portal?: HTMLElement;
+    chatSlot?: React.ReactNode;
+    onDoubleClick?: () => void;
+}
+export const VideoAIAvatar: React.FC<VideoAIAvatarProps> = ({
+    portal,
+    small,
+    avatarUser,
+    onDoubleClick,
+    chatSlot,
+}) => {
+    // const t = useTranslate();
+
+    if (!avatarUser) {
+        return null;
+    }
+
+    const view = (
+        <div
+            className={classnames("video-avatar", {
+                "is-small": small && !portal,
+            })}
+            data-user-uuid={avatarUser?.userUUID}
+            onDoubleClick={onDoubleClick}
+        >
+            <div className="video-avatar-image-container">
+                <div
+                    className="video-avatar-image-blur-bg no-filter"
+                    style={{
+                        backgroundImage: `url(${avatarUser.avatar})`,
+                    }}
+                />
+            </div>
+            {(!chatSlot && (
+                <div className="video-avatar-bottom">
+                    <h1 className="video-avatar-user-name" title={avatarUser.name}>
+                        {avatarUser.name}
+                    </h1>
+                    <div className={"video-avatar-media-ctrl"}></div>
+                </div>
+            )) || <div className="video-avatar-chat-slot">{chatSlot}</div>}
+        </div>
+    );
+
+    return portal ? (
+        <div
+            className={classnames("video-avatar", "video-avatar-holder", {
+                "is-small": small,
             })}
             data-user-uuid={avatarUser.userUUID}
         >

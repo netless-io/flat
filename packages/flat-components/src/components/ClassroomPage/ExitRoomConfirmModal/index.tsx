@@ -1,6 +1,9 @@
-import React, { FC } from "react";
+/* eslint-disable eslint-comments/disable-enable-pair */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+import React, { FC, useEffect } from "react";
 import { Button, Modal } from "antd";
 import { useTranslate } from "@netless/flat-i18n";
+import { SVGGood } from "../../FlatIcons/icons/SVGGood";
 
 export interface StopClassConfirmModalProps {
     visible: boolean;
@@ -37,9 +40,11 @@ export interface CloseRoomConfirmModalProps {
     visible: boolean;
     hangLoading: boolean;
     stopLoading: boolean;
+    rateModal?: React.ReactNode;
     onHang: () => void;
     onStop: () => void;
     onCancel: () => void;
+    setGrade?: () => Promise<void>;
 }
 
 /**
@@ -50,31 +55,93 @@ export const CloseRoomConfirmModal: FC<CloseRoomConfirmModalProps> = ({
     visible,
     hangLoading,
     stopLoading,
+    rateModal,
     onHang,
     onStop,
     onCancel,
+    setGrade,
 }) => {
     const t = useTranslate();
+    const [loading, setLoading] = React.useState(false);
+    const [showRateModal, setShowRateModal] = React.useState(false);
+    const [open, setOpen] = React.useState(visible);
+    const handleOk = async () => {
+        setLoading(true);
+        try {
+            if (setGrade) {
+                await setGrade();
+            }
+            setLoading(false);
+            setShowRateModal(false);
+            onStop();
+        } catch (error) {
+            console.error(error);
+            setLoading(false);
+            setShowRateModal(false);
+            onCancel();
+        }
+    };
+    const handCancel = async () => {
+        setShowRateModal(false);
+        onStop();
+    };
+    useEffect(() => {
+        setOpen(visible);
+    }, [visible]);
     return (
-        <Modal
-            footer={[
-                <Button key="Cancel" onClick={onCancel}>
-                    {t("cancel")}
-                </Button>,
-                <Button key="ReturnMain" loading={hangLoading} onClick={onHang}>
-                    {t("hang-up-the-room")}
-                </Button>,
-                <Button key="StopClass" loading={stopLoading} type="primary" onClick={onStop}>
-                    {t("end-the-class")}
-                </Button>,
-            ]}
-            open={visible}
-            title={t("close-option")}
-            onCancel={onCancel}
-            onOk={onCancel}
-        >
-            <p>{t("exit-room-tips")}</p>
-        </Modal>
+        <>
+            <Modal
+                footer={[
+                    <Button key="Cancel" onClick={onCancel}>
+                        {t("cancel")}
+                    </Button>,
+                    <Button key="ReturnMain" loading={hangLoading} onClick={onHang}>
+                        {t("hang-up-the-room")}
+                    </Button>,
+                    <Button
+                        key="StopClass"
+                        loading={stopLoading}
+                        type="primary"
+                        onClick={() => {
+                            if (rateModal) {
+                                setShowRateModal(true);
+                                setOpen(false);
+                            } else {
+                                onStop();
+                            }
+                        }}
+                    >
+                        {t("end-the-class")}
+                    </Button>,
+                ]}
+                open={open}
+                title={t("close-option")}
+                onCancel={onCancel}
+                onOk={onCancel}
+            >
+                <p>{t("exit-room-tips")}</p>
+            </Modal>
+            {showRateModal && (
+                <Modal
+                    footer={[
+                        <Button key="submit" loading={loading} type="primary" onClick={handleOk}>
+                            {t("home-page-AI-teacher-modal.rate.submit")}
+                        </Button>,
+                    ]}
+                    open={true}
+                    title={
+                        <div style={{ display: "flex", alignItems: "stretch" }}>
+                            <span>{t("home-page-AI-teacher-modal.rate.title")} </span>
+                            <SVGGood />
+                        </div>
+                    }
+                    onCancel={handCancel}
+                    onOk={handleOk}
+                >
+                    {rateModal}
+                </Modal>
+            )}
+        </>
     );
 };
 

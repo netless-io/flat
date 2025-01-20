@@ -6,6 +6,9 @@ import {
     createOrGetPmi,
     listPmi,
     COOKIE_DOMAIN,
+    AIRole,
+    AIScene,
+    AILanguage,
 } from "@netless/flat-server-api";
 import { autorun, runInAction } from "mobx";
 import { autoPersistStore } from "./utils/auto-persist-store";
@@ -33,6 +36,13 @@ export type JoinedRoom = {
     title: string;
     /** invite code */
     uuid: string;
+};
+
+export type AIInfo = {
+    role: AIRole;
+    scene: AIScene;
+    language: AILanguage;
+    rtcUID?: string;
 };
 
 /**
@@ -90,6 +100,15 @@ export class GlobalStore {
      * This array holds the rooms that its avatars have been hidden.
      */
     public hideAvatarsRoomUUIDs: string[] | undefined = undefined;
+    /**
+     * Whether the current room is an AI room.
+     */
+    public aiInfo?: AIInfo;
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    public setAIInfo = (aiInfo?: AIInfo) => {
+        this.aiInfo = aiInfo;
+    };
 
     public get pmiRoomExist(): boolean {
         return (this.pmiRoomList && this.pmiRoomList.length > 0) || false;

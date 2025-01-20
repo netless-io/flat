@@ -21,6 +21,7 @@ export function useURLAppLauncher(): void {
             RouteNameType.SmallClassPage,
             RouteNameType.OneToOnePage,
             RouteNameType.BigClassPage,
+            RouteNameType.AIPage,
         ];
 
         for (const name of classPages) {

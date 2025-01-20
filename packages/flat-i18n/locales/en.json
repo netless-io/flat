@@ -86,7 +86,53 @@
   "home-page-hero-button-type": {
     "begin": "Begin",
     "join": "Join",
-    "schedule": "Schedule"
+    "schedule": "Schedule",
+    "aiTeacher": "AI Teacher"
+  },
+  "home-page-AI-teacher-modal": {
+    "title": "Mode",
+    "role": "Role",
+    "scene": "Scene",
+    "language": "Language",
+    "button": {
+      "jump": "Jump",
+      "confirm": "Start now"
+    },
+    "rate": {
+      "title": "If it's easy for flat to call you, give it a rating",
+      "submit": "OK"
+    }
+  },
+  "home-page-AI-teacher-scenes": {
+    "role": {
+      "lily": "Lily(Outgoing oral English teacher)",
+      "peppaPig": "Peppa Pig",
+      "spongeBob": "SpongeBob SquarePants",
+      "sillyBear": "Silly Bear",
+      "ironMan": "Iron Man",
+      "luoTianYi": "Luo Tian Yi"
+    },
+    "scene": {
+      "takingOrders": "Taking Orders",
+      "shopping": "Shopping",
+      "hotelBooking": "Hotel Booking",
+      "selfIntroduction": "Self-introduction",
+      "interview": "Interview",
+      "chatWithFriends": "Chat With Friends"
+    },
+    "language": {
+      "zh": "Chinese",
+      "en": "English"
+    }
+  },
+  "home-page-AI-teacher-class":{
+    "icon": {
+      "TurnOnWhiteboard": "Open the whiteboard",
+      "TurnOffWhiteboard": "Close the whiteboard"
+    },
+    "guidance": {
+      "TurnOffWhiteboard": "Click again to close the whiteboard"
+    }
   },
   "room-status": {
     "upcoming": "Upcoming",

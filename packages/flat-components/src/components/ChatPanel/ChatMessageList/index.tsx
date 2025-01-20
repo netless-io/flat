@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useUpdate } from "react-use";
 import { Observer, observer } from "mobx-react-lite";
 import {
@@ -180,6 +180,37 @@ export const ChatMessageList = /* @__PURE__ */ observer<ChatMessageListProps>(
                     </AutoSizer>
                 )}
             </InfiniteLoader>
+        );
+    },
+);
+
+export const ReadOnlyChatMessageList = /* @__PURE__ */ observer<ChatMessageListProps>(
+    function ReadOnlyChatMessageList({ userUUID, messages, getUserByUUID, generateAvatar }) {
+        const showMessages = useMemo(() => {
+            return messages
+                .reduce((preValue, curValue, curIndex: number) => {
+                    if (curIndex === 0) {
+                        preValue.unshift(curValue);
+                    } else if (preValue[0].timestamp < curValue.timestamp) {
+                        preValue.unshift(curValue);
+                    }
+                    return preValue;
+                }, [] as ChatMsg[])
+                .slice(0, 2);
+        }, [messages]);
+        return (
+            <div className="chat-message-list">
+                {showMessages.map(message => (
+                    <ChatMessage
+                        key={message.uuid}
+                        generateAvatar={generateAvatar}
+                        message={message}
+                        messageUser={getUserByUUID(message.senderID)}
+                        userUUID={userUUID}
+                        onMount={() => void 0}
+                    />
+                ))}
+            </div>
         );
     },
 );

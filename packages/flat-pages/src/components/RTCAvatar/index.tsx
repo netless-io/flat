@@ -13,10 +13,16 @@ export type RTCAvatarProps = Omit<
     "getVolumeLevel" | "avatarUser" | "portal" | "generateAvatar"
 > &
     VideoAvatarAbsentProps &
-    AvatarCanvasProps & { getPortal: (userUUID: string) => HTMLElement | undefined };
+    AvatarCanvasProps & {
+        getPortal: (userUUID: string) => HTMLElement | undefined;
+        isAI?: boolean;
+        chatSlot?: React.ReactNode;
+    };
 
 export const RTCAvatar: FC<RTCAvatarProps> = /* @__PURE__ */ observer<RTCAvatarProps>(
     function RTCAvatar({
+        isAI,
+        chatSlot,
         userUUID,
         avatarUser,
         rtcAvatar,
@@ -35,8 +41,10 @@ export const RTCAvatar: FC<RTCAvatarProps> = /* @__PURE__ */ observer<RTCAvatarP
                 {(getVolumeLevel, canvas) => (
                     <VideoAvatar
                         avatarUser={avatarUser}
+                        chatSlot={chatSlot}
                         generateAvatar={generateAvatar}
                         getVolumeLevel={getVolumeLevel}
+                        isAI={isAI}
                         isCreator={isCreator}
                         isDropTarget={isDropTarget}
                         portal={getPortal(avatarUser.userUUID)}
@@ -55,6 +63,7 @@ export const RTCAvatar: FC<RTCAvatarProps> = /* @__PURE__ */ observer<RTCAvatarP
             <VideoAvatarAbsent
                 avatarUser={avatarUser}
                 generateAvatar={generateAvatar}
+                isAI={isAI}
                 isAvatarUserCreator={isAvatarUserCreator}
                 isCreator={isCreator}
                 isDropTarget={isDropTarget}
