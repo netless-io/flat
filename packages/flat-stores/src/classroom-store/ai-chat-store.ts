@@ -2,6 +2,7 @@ import { AIChatMsgUser, ChatMsg } from "flat-components";
 import { makeAutoObservable, observable } from "mobx";
 import { SideEffectManager } from "side-effect-manager";
 import { TIMEOUT_MS } from "./constants";
+import { FlatI18n } from "@netless/flat-i18n";
 import {
     agoraAIPing,
     AgoraAIResult,
@@ -79,11 +80,19 @@ export class AIChatStore {
         if (r.code === "10002") {
             const res = await agoraAIStart(payload);
             if (res.code !== "0") {
-                throw new Error(`AI service start failed: ${res.msg}`);
+                if (res.code === "10001") {
+                    throw new Error(FlatI18n.t(`home-page-AI-teacher-class.message.${res.code}`));
+                } else {
+                    throw new Error(`AI service start failed: ${res.msg}`);
+                }
             }
             bol = false;
         } else if (r.code !== "0") {
-            throw new Error(`AI service is ${r.msg}`);
+            if (r.code === "10001") {
+                throw new Error(FlatI18n.t(`home-page-AI-teacher-class.message.${r.code}`));
+            } else {
+                throw new Error(`AI service is ${r.msg}`);
+            }
         }
         this.pingTasker();
         return bol;

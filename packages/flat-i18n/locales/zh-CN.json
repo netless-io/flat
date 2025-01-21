@@ -132,6 +132,9 @@
     },
     "guidance": {
       "TurnOffWhiteboard": "再次点击可以关闭白板"
+    },
+    "message": {
+      "10001": "AI对话需求过于火热，请稍后再试"
     }
   },
   "class-room-type": {
