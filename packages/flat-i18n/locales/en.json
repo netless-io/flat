@@ -134,7 +134,7 @@
       "TurnOffWhiteboard": "Click again to close the whiteboard"
     },
     "message": {
-      "100001": "AI conversation demand is too hot, please try again later"
+      "10001": "AI conversation demand is too hot, please try again later"
     }
   },
   "room-status": {
