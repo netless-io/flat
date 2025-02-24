@@ -104,9 +104,6 @@
     "overrides": {
       "@types/eslint": "^8",
       "@types/react": "^17"
-    },
-    "patchedDependencies": {
-      "app-builder-lib@22.14.13": "patches/app-builder-lib@22.14.13.patch"
     }
   }
 }
