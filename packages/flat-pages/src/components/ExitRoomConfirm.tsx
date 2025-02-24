@@ -23,6 +23,8 @@ export interface ExitRoomConfirmProps {
     isReturnLoading: boolean;
     isStopLoading: boolean;
     rateModal?: React.ReactNode;
+    showRateModal?: boolean;
+    setShowRateModal?: (showRateModal: boolean) => void;
     onReturnMain: () => Promise<void>;
     onStopClass: () => Promise<void>;
     onCancel: () => void;
@@ -120,6 +122,8 @@ export const ExitRoomConfirm = observer<Omit<ExitRoomConfirmProps, "confirm">>(
         isReturnLoading,
         isStopLoading,
         rateModal,
+        showRateModal,
+        setShowRateModal,
         onReturnMain,
         onStopClass,
         ...restProps
@@ -130,6 +134,8 @@ export const ExitRoomConfirm = observer<Omit<ExitRoomConfirmProps, "confirm">>(
                     {...restProps}
                     hangLoading={isReturnLoading}
                     rateModal={rateModal}
+                    setShowRateModal={setShowRateModal}
+                    showRateModal={showRateModal}
                     stopLoading={isStopLoading}
                     onHang={onReturnMain}
                     onStop={onStopClass}
