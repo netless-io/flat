@@ -3,7 +3,6 @@
 import React, { FC, useEffect } from "react";
 import { Button, Modal } from "antd";
 import { useTranslate } from "@netless/flat-i18n";
-import { SVGGood } from "../../FlatIcons/icons/SVGGood";
 
 export interface StopClassConfirmModalProps {
     visible: boolean;
@@ -41,6 +40,8 @@ export interface CloseRoomConfirmModalProps {
     hangLoading: boolean;
     stopLoading: boolean;
     rateModal?: React.ReactNode;
+    showRateModal?: boolean;
+    setShowRateModal?: (show: boolean) => void;
     onHang: () => void;
     onStop: () => void;
     onCancel: () => void;
@@ -56,35 +57,14 @@ export const CloseRoomConfirmModal: FC<CloseRoomConfirmModalProps> = ({
     hangLoading,
     stopLoading,
     rateModal,
+    showRateModal,
+    setShowRateModal,
     onHang,
     onStop,
     onCancel,
-    setGrade,
 }) => {
     const t = useTranslate();
-    const [loading, setLoading] = React.useState(false);
-    const [showRateModal, setShowRateModal] = React.useState(false);
     const [open, setOpen] = React.useState(visible);
-    const handleOk = async () => {
-        setLoading(true);
-        try {
-            if (setGrade) {
-                await setGrade();
-            }
-            setLoading(false);
-            setShowRateModal(false);
-            onStop();
-        } catch (error) {
-            console.error(error);
-            setLoading(false);
-            setShowRateModal(false);
-            onCancel();
-        }
-    };
-    const handCancel = async () => {
-        setShowRateModal(false);
-        onStop();
-    };
     useEffect(() => {
         setOpen(visible);
     }, [visible]);
@@ -103,7 +83,7 @@ export const CloseRoomConfirmModal: FC<CloseRoomConfirmModalProps> = ({
                         loading={stopLoading}
                         type="primary"
                         onClick={() => {
-                            if (rateModal) {
+                            if (setShowRateModal) {
                                 setShowRateModal(true);
                                 setOpen(false);
                             } else {
@@ -121,26 +101,7 @@ export const CloseRoomConfirmModal: FC<CloseRoomConfirmModalProps> = ({
             >
                 <p>{t("exit-room-tips")}</p>
             </Modal>
-            {showRateModal && (
-                <Modal
-                    footer={[
-                        <Button key="submit" loading={loading} type="primary" onClick={handleOk}>
-                            {t("home-page-AI-teacher-modal.rate.submit")}
-                        </Button>,
-                    ]}
-                    open={true}
-                    title={
-                        <div style={{ display: "flex", alignItems: "stretch" }}>
-                            <span>{t("home-page-AI-teacher-modal.rate.title")} </span>
-                            <SVGGood />
-                        </div>
-                    }
-                    onCancel={handCancel}
-                    onOk={handleOk}
-                >
-                    {rateModal}
-                </Modal>
-            )}
+            {(showRateModal && rateModal) || null}
         </>
     );
 };

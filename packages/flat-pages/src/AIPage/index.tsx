@@ -3,7 +3,7 @@ import "./AIPage.less";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useTranslate } from "@netless/flat-i18n";
 import { observer } from "mobx-react-lite";
-import { message, Popover } from "antd";
+import { Button, message, Modal, Popover } from "antd";
 import {
     NetworkStatus,
     TopBar,
@@ -17,6 +17,7 @@ import {
     SVGWhiteBoardOff,
     SVGRate,
     SVGAIChatMsgCC,
+    SVGGood,
 } from "flat-components";
 
 import { RealtimePanel } from "../components/RealtimePanel";
@@ -55,9 +56,11 @@ export const AIPage = withClassroomStore<AIPageProps>(
         const { confirm, ...exitConfirmModalProps } = useExitRoomConfirmModal(classroomStore);
 
         const isRealtimeSideOpen = !whiteboardStore.isRightSideClose;
-        const [value, setValue] = useState(0);
+        const [grade, setGrade] = useState(0);
         const [isFirst, setIsFirst] = useState(false);
         const [show, setShow] = useState(true);
+        const [showRateModal, setShowRateModal] = React.useState(false);
+        const [loading, setLoading] = React.useState(false);
 
         useEffect(() => {
             if (classroomStore.userWindowsMode === "normal") {
@@ -107,6 +110,25 @@ export const AIPage = withClassroomStore<AIPageProps>(
             }
             return null;
         }, [classroomStore.isHasAIUser]);
+        const handleOk: () => Promise<void> = async () => {
+            setLoading(true);
+            try {
+                await setGradeRoom({
+                    roomUUID: classroomStore.roomUUID,
+                    userUUID: classroomStore.userUUID,
+                    grade,
+                });
+                setLoading(false);
+                setShowRateModal(false);
+                exitConfirmModalProps.onStopClass();
+            } catch (error) {
+                console.error(error);
+                setLoading(false);
+                setShowRateModal(false);
+                exitConfirmModalProps.onCancel();
+            }
+        };
+
         return (
             (aiUser && (
                 <div className="ai-page-class-page-container">
@@ -135,25 +157,46 @@ export const AIPage = withClassroomStore<AIPageProps>(
                             <ExitRoomConfirm
                                 isCreator={classroomStore.isCreator}
                                 rateModal={
-                                    <Rate
-                                        character={<SVGRate active={value > 3} />}
-                                        className="ai-page-rate-ui"
-                                        style={{ color: value > 3 ? "#FE4D00" : "#007AFF" }}
-                                        value={value}
-                                        onHoverChange={(value: number) => {
-                                            if (value) {
-                                                setValue(value);
-                                            }
-                                        }}
-                                    />
+                                    <Modal
+                                        closable={false}
+                                        footer={[
+                                            <Button
+                                                key="submit"
+                                                disabled={grade <= 0}
+                                                loading={loading}
+                                                type="primary"
+                                                onClick={handleOk}
+                                            >
+                                                {t("home-page-AI-teacher-modal.rate.submit")}
+                                            </Button>,
+                                        ]}
+                                        maskClosable={false}
+                                        open={true}
+                                        title={
+                                            <div style={{ display: "flex", alignItems: "stretch" }}>
+                                                <span>
+                                                    {t("home-page-AI-teacher-modal.rate.title")}{" "}
+                                                </span>
+                                                <SVGGood />
+                                            </div>
+                                        }
+                                        onOk={handleOk}
+                                    >
+                                        <Rate
+                                            character={<SVGRate active={grade > 3} />}
+                                            className="ai-page-rate-ui"
+                                            style={{ color: grade > 3 ? "#FE4D00" : "#007AFF" }}
+                                            value={grade}
+                                            onHoverChange={(grade: number) => {
+                                                if (grade) {
+                                                    setGrade(grade);
+                                                }
+                                            }}
+                                        />
+                                    </Modal>
                                 }
-                                setGrade={() => {
-                                    return setGradeRoom({
-                                        roomUUID: classroomStore.roomUUID,
-                                        userUUID: classroomStore.userUUID,
-                                        grade: value,
-                                    });
-                                }}
+                                setShowRateModal={setShowRateModal}
+                                showRateModal={showRateModal}
                                 {...exitConfirmModalProps}
                             />
                             <RoomStatusStoppedModal
