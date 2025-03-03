@@ -1,7 +1,7 @@
 import { AIChatMsgUser, ChatMsg } from "flat-components";
 import { makeAutoObservable, observable } from "mobx";
 import { SideEffectManager } from "side-effect-manager";
-import { TIMEOUT_MS } from "./constants";
+import { AI_Chat_Bot_ID, TIMEOUT_MS } from "./constants";
 import { FlatI18n } from "@netless/flat-i18n";
 import {
     agoraAIPing,
@@ -71,9 +71,11 @@ export class AIChatStore {
             request_id: this.config.ownerUUID,
             channel_name: this.config.roomUUID,
             user_uid: this.config.rtcUID,
+            is_new: true,
             language,
             scene,
             role,
+            bot_id: AI_Chat_Bot_ID,
         };
         const r = await this.ping();
         let bol = true;
@@ -107,6 +109,7 @@ export class AIChatStore {
             request_id: this.config.ownerUUID,
             channel_name: this.config.roomUUID,
             language: this.config.aiInfo.language,
+            is_new: true,
         });
     }
 
@@ -115,6 +118,7 @@ export class AIChatStore {
             request_id: this.config.ownerUUID,
             channel_name: this.config.roomUUID,
             language: this.config.aiInfo.language,
+            is_new: true,
         });
     }
 
