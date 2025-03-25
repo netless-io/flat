@@ -181,6 +181,8 @@ export const RequestErrorMessage = {
     [RequestErrorCode.OAuthSecretUUIDNotFound]: "oauth-secret-uuid-not-found",
 
     [RequestErrorCode.CaptchaFailed]: "captcha-failed",
+    [RequestErrorCode.CaptchaInvalid]: "captcha-invalid",
+    [RequestErrorCode.CaptchaRequired]: "captcha-required",
 };
 
 export class ServerRequestError extends Error {
