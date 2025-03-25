@@ -1,6 +1,8 @@
+/* eslint-disable eslint-comments/disable-enable-pair */
+/* eslint-disable react-hooks/exhaustive-deps */
 import "./MainRoomMenu.less";
 
-import React, { FC, useContext } from "react";
+import React, { FC, useContext, useMemo } from "react";
 import { Col, Row } from "antd";
 import { Region } from "flat-components";
 import { AILanguage, AIRole, AIScene, RoomType } from "@netless/flat-server-api";
@@ -25,6 +27,14 @@ export const MainRoomMenu: FC = () => {
         }
     };
 
+    const AIRoomBox = useMemo(() => {
+        const isCnWeb = window.location.host.includes(".apprtc.cn");
+        if (!isCnWeb) {
+            return <CreateAIRoomBox onCreateRoom={createAIRoom} />;
+        }
+        return null;
+    }, [window.location.host]);
+
     return (
         <div className="main-room-menu-container">
             <Row gutter={24}>
@@ -37,9 +47,7 @@ export const MainRoomMenu: FC = () => {
                 <Col span={6}>
                     <ScheduleRoomBox />
                 </Col>
-                <Col span={6}>
-                    <CreateAIRoomBox onCreateRoom={createAIRoom} />
-                </Col>
+                <Col span={6}>{AIRoomBox}</Col>
             </Row>
         </div>
     );
