@@ -23,7 +23,11 @@ export interface LoginWithCodeProps {
     privacyURL?: LoginAgreementProps["privacyURL"];
     serviceURL?: LoginAgreementProps["serviceURL"];
     onClickButton: LoginButtonsProps["onClick"];
-    sendVerificationCode: (countryCode: string, phone: string) => Promise<boolean>;
+    sendVerificationCode: (
+        countryCode: string,
+        phone: string,
+        captchaVerifyParam?: string,
+    ) => Promise<boolean>;
     loginOrRegister: (countryCode: string, phone: string, code: string) => Promise<boolean>;
     loginWithPassword: () => void;
 }
@@ -115,9 +119,9 @@ export const LoginWithCode: React.FC<LoginWithCodeProps> = ({
         [agreed, onClickButton, privacyURL, serviceURL, t],
     );
 
-    const handleSendVerificationCode = async (): Promise<boolean> => {
+    const handleSendVerificationCode = async (captchaVerifyParam?: string): Promise<boolean> => {
         const { phone } = form.getFieldsValue();
-        return sendVerificationCode(countryCode, phone);
+        return sendVerificationCode(countryCode, phone, captchaVerifyParam);
     };
 
     const formValidateStatus = useCallback(() => {
@@ -125,7 +129,6 @@ export const LoginWithCode: React.FC<LoginWithCodeProps> = ({
             form.getFieldsError().every(field => field.errors.length <= 0) &&
                 Object.values(form.getFieldsValue()).every(v => !!v),
         );
-
         if (form.getFieldValue("phone") && !form.getFieldError("phone").length) {
             setIsAccountValidated(true);
         } else {
@@ -182,6 +185,7 @@ export const LoginWithCode: React.FC<LoginWithCodeProps> = ({
                         <Form.Item name="code" rules={[codeValidator]}>
                             <LoginSendCode
                                 isAccountValidated={isAccountValidated}
+                                isCaptcha={true}
                                 sendVerificationCode={handleSendVerificationCode}
                                 type={type}
                             />

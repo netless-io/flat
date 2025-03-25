@@ -6,6 +6,9 @@ export const SERVER_DOMAINS = process.env.FLAT_SERVER_DOMAINS as unknown as Reco
 export const CURRENT_SERVER_DOMAIN = process.env.FLAT_SERVER_DOMAIN;
 export const FLAT_AGREEMENT_URL = process.env.FLAT_AGREEMENT_URL;
 
+export const FLAT_WEB_ALIYUN_PREFIX = process.env.FLAT_WEB_ALIYUN_PREFIX;
+export const FLAT_WEB_SCENE_ID = process.env.FLAT_WEB_SCENE_ID;
+
 export const COOKIE_DOMAIN = CURRENT_SERVER_DOMAIN
     ? CURRENT_SERVER_DOMAIN.slice(CURRENT_SERVER_DOMAIN.indexOf(".") + 1)
     : "";

@@ -34,7 +34,11 @@ export interface RegisterProps {
     privacyURL?: LoginAgreementProps["privacyURL"];
     serviceURL?: LoginAgreementProps["serviceURL"];
     onClickButton: LoginButtonsProps["onClick"];
-    sendVerificationCode: (type: PasswordLoginType, key: string) => Promise<boolean>;
+    sendVerificationCode: (
+        type: PasswordLoginType,
+        key: string,
+        captchaVerifyParam?: string,
+    ) => Promise<boolean>;
     register: (
         type: PasswordLoginType,
         key: LoginKeyType,
@@ -87,10 +91,14 @@ export const RegisterModal: React.FC<RegisterProps> = ({
 
     const phone = type === PasswordLoginType.Phone;
 
-    const handleSendVerificationCode = async (): Promise<boolean> => {
+    const handleSendVerificationCode = async (captchaVerifyParam?: string): Promise<boolean> => {
         const { key: keyValue } = form.getFieldsValue();
 
-        return sendVerificationCode(type, phone ? countryCode + keyValue : keyValue);
+        return sendVerificationCode(
+            type,
+            phone ? countryCode + keyValue : keyValue,
+            captchaVerifyParam,
+        );
     };
 
     const doRegister = useCallback(async () => {
@@ -180,6 +188,7 @@ export const RegisterModal: React.FC<RegisterProps> = ({
                         <Form.Item name="code" rules={[codeValidator]}>
                             <LoginSendCode
                                 isAccountValidated={isAccountValidated}
+                                isCaptcha={true}
                                 sendVerificationCode={handleSendVerificationCode}
                                 type={type}
                             />

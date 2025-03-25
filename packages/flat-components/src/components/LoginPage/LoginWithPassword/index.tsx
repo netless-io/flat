@@ -46,7 +46,11 @@ export interface LoginWithPasswordProps {
     register: () => void;
     onClickButton: LoginButtonsProps["onClick"];
     loginWithVerificationCode: () => void;
-    sendVerificationCode: (type: PasswordLoginType, key: string) => Promise<boolean>;
+    sendVerificationCode: (
+        type: PasswordLoginType,
+        key: string,
+        captchaVerifyParam?: string,
+    ) => Promise<boolean>;
     resetPassword: (
         type: PasswordLoginType,
         key: LoginKeyType,
@@ -169,10 +173,14 @@ export const LoginWithPassword: React.FC<LoginWithPasswordProps> = ({
         setClickedReset(false);
     }, [countryCode, form, phone, resetPassword, sp, t, type]);
 
-    const handleSendVerificationCode = async (): Promise<boolean> => {
+    const handleSendVerificationCode = async (captchaVerifyParam?: string): Promise<boolean> => {
         const { key: keyValue } = form.getFieldsValue();
 
-        return sendVerificationCode(type, phone ? countryCode + keyValue : keyValue);
+        return sendVerificationCode(
+            type,
+            phone ? countryCode + keyValue : keyValue,
+            captchaVerifyParam,
+        );
     };
 
     const onClick = useCallback(
@@ -341,7 +349,7 @@ export interface ResetPasswordPageProps {
     t: FlatI18nTFunction;
     setType: (type: PasswordLoginType) => void;
     setCountryCode: (code: string) => void;
-    handleSendVerificationCode: () => Promise<boolean>;
+    handleSendVerificationCode: (captchaVerifyParam?: string) => Promise<boolean>;
     setPage: (page: PasswordLoginPageType) => void;
     doReset: () => void;
 }
@@ -390,6 +398,7 @@ export function resetPasswordPage({
                 <Form.Item name="code" rules={[codeValidator]}>
                     <LoginSendCode
                         isAccountValidated={isAccountValidated}
+                        isCaptcha={true}
                         sendVerificationCode={handleSendVerificationCode}
                         type={type}
                     />

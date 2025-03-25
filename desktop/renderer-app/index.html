@@ -5,6 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <title>Flat</title>
+    <script>
+        const region = process.env.FLAT_REGION || "CN";
+        window.AliyunCaptchaConfig = {
+          // 必填，验证码示例所属地区，支持中国内地（cn）、新加坡（sgp）
+          region: region === "CN" ? region.toLowerCase() : "sgp",
+          // 必填，身份标。开通阿里云验证码2.0后，您可以在控制台概览页面的实例基本信息卡片区域，获取身份标
+          prefix: process.env.FLAT_WEB_ALIYUN_PREFIX,
+        };
+    </script>
+    <script
+        type="text/javascript"
+        src="https://o.alicdn.com/captcha-frontend/aliyunCaptcha/AliyunCaptcha.js"
+    ></script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

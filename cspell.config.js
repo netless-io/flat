@@ -9,6 +9,7 @@ module.exports = {
         "courseware",
         "PPTURL",
         "aliyun",
+        "nypf9bgg", // aliyun captcha scene ID
         "regx",
         "bootup",
         "btns",

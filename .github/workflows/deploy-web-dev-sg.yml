@@ -29,7 +29,12 @@ jobs:
           cache: "pnpm"
 
       - name: Install dependencies
+        env:
+            FLAT_WEB_ALIYUN_PREFIX: ${{ vars.FLAT_WEB_ALIYUN_PREFIX }}
+            FLAT_WEB_SCENE_ID: ${{ vars.FLAT_WEB_SCENE_ID }}
         run: |
+          echo "FLAT_WEB_ALIYUN_PREFIX=$FLAT_WEB_ALIYUN_PREFIX" >> config/CN/.env.development
+          echo "FLAT_WEB_SCENE_ID=$FLAT_WEB_SCENE_ID" >> config/CN/.env.development
           node ./scripts/ci/remove-workspace-packages.js web
           node ./scripts/ci/remove-package-scripts-hooks.js
           # failure automatically retries 3 times

@@ -98,8 +98,8 @@ export const LoginPage = observer(function LoginPage() {
                             wrap(loginPhone(countryCode + phone, Number(code)).then(onLoginResult))
                         }
                         loginWithPassword={() => setCurrentState("SWITCH_TO_PASSWORD")}
-                        sendVerificationCode={async (countryCode, phone) =>
-                            wrap(loginPhoneSendCode(countryCode + phone))
+                        sendVerificationCode={async (countryCode, phone, captchaVerifyParam) =>
+                            wrap(loginPhoneSendCode(countryCode + phone, captchaVerifyParam))
                         }
                     />
                 );
@@ -133,11 +133,11 @@ export const LoginPage = observer(function LoginPage() {
                                       }),
                             )
                         }
-                        sendVerificationCode={async (type, key) =>
+                        sendVerificationCode={async (type, key, captchaVerifyParam) =>
                             wrap(
                                 type === PasswordLoginType.Email
                                     ? registerEmailSendCode(key, emailLanguage)
-                                    : registerPhoneSendCode(key),
+                                    : registerPhoneSendCode(key, captchaVerifyParam),
                             )
                         }
                     />
@@ -241,11 +241,11 @@ export const LoginPage = observer(function LoginPage() {
                                       }),
                             )
                         }
-                        sendVerificationCode={async (type, key) =>
+                        sendVerificationCode={async (type, key, captchaVerifyParam) =>
                             wrap(
                                 type === PasswordLoginType.Email
                                     ? resetEmailSendCode(key, emailLanguage)
-                                    : resetPhoneSendCode(key),
+                                    : resetPhoneSendCode(key, captchaVerifyParam),
                             )
                         }
                     />

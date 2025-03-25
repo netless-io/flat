@@ -84,6 +84,10 @@ export enum RequestErrorCode {
     OAuthUUIDNotFound = 130000, // oauth uuid not found
     OAuthClientIDNotFound, // oauth client id not found
     OAuthSecretUUIDNotFound, // oauth secret uuid not found
+
+    CaptchaFailed = 150000, // captcha failed
+    CaptchaInvalid, // captcha invalid
+    CaptchaRequired, // captcha required
 }
 
 export const RequestErrorMessage = {
@@ -175,6 +179,8 @@ export const RequestErrorMessage = {
     [RequestErrorCode.OAuthUUIDNotFound]: "oauth-uuid-not-found",
     [RequestErrorCode.OAuthClientIDNotFound]: "oauth-client-id-not-found",
     [RequestErrorCode.OAuthSecretUUIDNotFound]: "oauth-secret-uuid-not-found",
+
+    [RequestErrorCode.CaptchaFailed]: "captcha-failed",
 };
 
 export class ServerRequestError extends Error {

@@ -70,14 +70,22 @@ export async function agoraSSOLoginCheck(loginID: string): Promise<AgoraSSOLogin
 
 export interface PhoneSendCodePayload {
     phone: string; // +8612345678901
+    captchaVerifyParam?: string;
 }
 
 export type PhoneSendCodeResult = {};
 
-export async function loginPhoneSendCode(phone: string): Promise<PhoneSendCodeResult> {
-    return await postNotAuth<PhoneSendCodePayload, PhoneSendCodeResult>("login/phone/sendMessage", {
-        phone,
-    });
+export async function loginPhoneSendCode(
+    phone: string,
+    captchaVerifyParam?: string,
+): Promise<PhoneSendCodeResult> {
+    return await postNotAuth<PhoneSendCodePayload, PhoneSendCodeResult>(
+        "login/phone/sendMessage/captcha",
+        {
+            phone,
+            captchaVerifyParam,
+        },
+    );
 }
 
 export interface LoginPhonePayload {
@@ -143,11 +151,15 @@ export async function registerPhone(
     });
 }
 
-export async function registerPhoneSendCode(phone: string): Promise<PhoneSendCodeResult> {
+export async function registerPhoneSendCode(
+    phone: string,
+    captchaVerifyParam?: string,
+): Promise<PhoneSendCodeResult> {
     return await postV2NotAuth<PhoneSendCodePayload, PhoneSendCodeResult>(
-        "register/phone/send-message",
+        "register/phone/send-message/captcha",
         {
             phone,
+            captchaVerifyParam,
         },
     );
 }
@@ -231,11 +243,15 @@ export async function resetPwdWithPhone(
     });
 }
 
-export async function resetPhoneSendCode(phone: string): Promise<PhoneSendCodeResult> {
+export async function resetPhoneSendCode(
+    phone: string,
+    captchaVerifyParam?: string,
+): Promise<PhoneSendCodeResult> {
     return await postV2NotAuth<PhoneSendCodePayload, PhoneSendCodeResult>(
-        "reset/phone/send-message",
+        "reset/phone/send-message/captcha",
         {
             phone,
+            captchaVerifyParam,
         },
     );
 }

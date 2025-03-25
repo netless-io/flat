@@ -32,8 +32,15 @@ Overview.args = {
         );
         return new Promise(resolve => setTimeout(() => resolve(password === "123456"), 1000));
     },
-    sendVerificationCode: (type: PasswordLoginType, key: string) => {
-        message.info("send code. current type: " + type + ". value is: " + key);
+    sendVerificationCode: (type: PasswordLoginType, key: string, captchaVerifyParam?: string) => {
+        message.info(
+            "send code. current type: " +
+                type +
+                ". value is: " +
+                key +
+                ". And the captchaVerifyParam is: " +
+                captchaVerifyParam,
+        );
         return new Promise(resolve => setTimeout(() => resolve(true), 1000));
     },
     backToLogin: () => {

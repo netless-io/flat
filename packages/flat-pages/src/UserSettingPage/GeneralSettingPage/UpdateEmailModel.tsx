@@ -124,6 +124,7 @@ export const UpdateEmailModel: React.FC<UpdateEmailModelProps> = ({
                 <Form.Item name="code" rules={[codeValidator]}>
                     <LoginSendCode
                         isAccountValidated={isAccountValidated}
+                        isCaptcha={false}
                         sendVerificationCode={sendVerificationCode}
                         type={type}
                     />
