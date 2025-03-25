@@ -28,7 +28,7 @@ jobs:
       - name: Install PNPM
         uses: pnpm/action-setup@v2
         with:
-          version: latest
+          version: 9.9.0
 
       - name: Restore Cache
         uses: actions/setup-node@v3
