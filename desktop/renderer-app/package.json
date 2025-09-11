@@ -38,7 +38,7 @@
     "@netless/flat-services": "workspace:*",
     "@netless/flat-stores": "workspace:*",
     "antd": "^4.23.2",
-    "axios": "^1.6.2",
+    "axios": "^1.12.0",
     "classnames": "^2.3.1",
     "date-fns": "^2.29.3",
     "dotenv-expand": "^9.0.0",

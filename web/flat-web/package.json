@@ -40,7 +40,7 @@
     "@zip.js/zip.js": "^2.6.29",
     "agora-rtm-sdk": "^1.6.0",
     "antd": "^4.23.2",
-    "axios": "^1.6.2",
+    "axios": "^1.12.0",
     "classnames": "^2.3.1",
     "date-fns": "^2.29.3",
     "emittery": "^1.0.0",
