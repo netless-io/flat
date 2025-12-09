@@ -37,7 +37,7 @@
     "electron-devtools-vendor": "^1.1.0",
     "file-loader": "^6.2.0",
     "flat-types": "workspace:*",
-    "js-yaml": "^4.1.0",
+    "js-yaml": "^4.1.1",
     "move-cli": "^2.0.0",
     "nodemon": "^2.0.20",
     "rimraf": "^3.0.2",
