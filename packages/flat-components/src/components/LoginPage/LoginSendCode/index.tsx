@@ -43,6 +43,7 @@ export const LoginSendCode: React.FC<LoginSendCodeProps> = ({
     const captchaRef = useRef<any>(null);
     const captchaVerifyParam = useRef<string | undefined>(undefined);
     const isAccountValidatedRef = useRef(isAccountValidated);
+    const initCaptchaRef = useRef<((_isCaptcha: boolean) => void) | null>(null);
 
     // 保持 ref 与 prop 同步
     useEffect(() => {
@@ -74,14 +75,23 @@ export const LoginSendCode: React.FC<LoginSendCodeProps> = ({
                         setCountdown(--count);
                         if (count === 0) {
                             clearInterval(timer);
+                            if (initCaptchaRef.current) {
+                                initCaptchaRef.current(isCaptcha);
+                            }
                         }
                     }, 1000);
                 } else {
+                    if (initCaptchaRef.current) {
+                        initCaptchaRef.current(isCaptcha);
+                    }
                     message.error(t("send-verify-code-failed"));
                 }
             } catch (error) {
                 if (!isUnMountRef.current) {
                     setSendingCode(false);
+                }
+                if (initCaptchaRef.current) {
+                    initCaptchaRef.current(isCaptcha);
                 }
 
                 // we say the phone is already binding when error message contains `RequestErrorCode.SMSAlreadyBinding`
@@ -90,7 +100,6 @@ export const LoginSendCode: React.FC<LoginSendCodeProps> = ({
                     onRebinding();
                     return;
                 }
-
                 errorTips(error);
             }
         }
@@ -109,9 +118,12 @@ export const LoginSendCode: React.FC<LoginSendCodeProps> = ({
     );
 
     // 验证码验证不通过回调函数
-    const fail = useCallback((error: any) => {
-        console.error(error);
-    }, []);
+    const fail = useCallback(
+        (error: any) => {
+            console.error(error);
+        },
+        [isCaptcha],
+    );
 
     const initCaptcha = useCallback(
         (_isCaptcha: boolean) => {
@@ -139,6 +151,11 @@ export const LoginSendCode: React.FC<LoginSendCodeProps> = ({
         },
         [success, fail, sendCode],
     );
+
+    // 更新 ref，以便 fail 回调可以访问
+    useEffect(() => {
+        initCaptchaRef.current = initCaptcha;
+    }, [initCaptcha]);
 
     const verifyBtnClick = useCallback(() => {
         if (type === PasswordLoginType.Email) {
