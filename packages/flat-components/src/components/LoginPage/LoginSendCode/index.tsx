@@ -75,15 +75,23 @@ export const LoginSendCode: React.FC<LoginSendCodeProps> = ({
                         setCountdown(--count);
                         if (count === 0) {
                             clearInterval(timer);
-                            initCaptcha(isCaptcha);
+                            if (initCaptchaRef.current) {
+                                initCaptchaRef.current(isCaptcha);
+                            }
                         }
                     }, 1000);
                 } else {
+                    if (initCaptchaRef.current) {
+                        initCaptchaRef.current(isCaptcha);
+                    }
                     message.error(t("send-verify-code-failed"));
                 }
             } catch (error) {
                 if (!isUnMountRef.current) {
                     setSendingCode(false);
+                }
+                if (initCaptchaRef.current) {
+                    initCaptchaRef.current(isCaptcha);
                 }
 
                 // we say the phone is already binding when error message contains `RequestErrorCode.SMSAlreadyBinding`
@@ -92,7 +100,6 @@ export const LoginSendCode: React.FC<LoginSendCodeProps> = ({
                     onRebinding();
                     return;
                 }
-
                 errorTips(error);
             }
         }
@@ -114,9 +121,6 @@ export const LoginSendCode: React.FC<LoginSendCodeProps> = ({
     const fail = useCallback(
         (error: any) => {
             console.error(error);
-            if (initCaptchaRef.current) {
-                initCaptchaRef.current(isCaptcha);
-            }
         },
         [isCaptcha],
     );
