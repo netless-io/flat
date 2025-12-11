@@ -80,6 +80,7 @@ module.exports = {
         "unhide",
         "nsis",
         "respawn",
+        "UDZO", // electron-builder DMG format
 
         // file type
         "avif",
