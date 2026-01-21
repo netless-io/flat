@@ -24,7 +24,7 @@
     "date-fns": "^2.29.3",
     "flat-components": "workspace:*",
     "flat-types": "workspace:*",
-    "lodash-es": "^4.17.21",
+    "lodash-es": "^4.17.23",
     "mobx": "^6.6.1",
     "mobx-react-lite": "^3.4.0",
     "polly-js": "^1.8.3",

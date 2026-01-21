@@ -60,7 +60,7 @@
     "i18next": "^21.9.1",
     "i18next-browser-languagedetector": "^6.1.5",
     "less-loader": "^10.2.0",
-    "lodash-es": "^4.17.21",
+    "lodash-es": "^4.17.23",
     "react-i18next": "^11.18.6",
     "sass": "^1.54.8",
     "sass-loader": "^12.6.0",
