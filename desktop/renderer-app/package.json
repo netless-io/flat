@@ -45,7 +45,7 @@
     "emittery": "^1.0.0",
     "flat-components": "workspace:*",
     "fs-extra": "^10.1.0",
-    "lodash-es": "^4.17.21",
+    "lodash-es": "^4.18.1",
     "mobx": "^6.6.1",
     "mobx-react-lite": "^3.4.0",
     "node-downloader-helper": "^2.1.4",
