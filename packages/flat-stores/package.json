@@ -31,6 +31,6 @@
     "hls.js": "^1.4.12",
     "polly-js": "^1.8.3",
     "side-effect-manager": "^1.2.1",
-    "uuid": "^9.0.0"
+    "uuid": "^14.0.0"
   }
 }
