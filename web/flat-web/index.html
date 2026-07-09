@@ -7,10 +7,24 @@
     <title>Flat</title>
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="/favicon_en.ico" type="image/x-icon" lang="en" />
+    <script>
+        const region = process.env.FLAT_REGION || "CN";
+        window.AliyunCaptchaConfig = {
+          // 必填，验证码示例所属地区，支持中国内地（cn）、新加坡（sgp）
+          region: region === "CN" ? region.toLowerCase() : "sgp",
+          // 必填，身份标。开通阿里云验证码2.0后，您可以在控制台概览页面的实例基本信息卡片区域，获取身份标
+          prefix: process.env.FLAT_WEB_ALIYUN_PREFIX,
+        };
+    </script>
+    <script
+        type="text/javascript"
+        src="https://o.alicdn.com/captcha-frontend/aliyunCaptcha/AliyunCaptcha.js"
+    ></script>
 </head>
 <!-- COMMIT HASH: FLAG_COMMIT_HASH -->
 <body>
     <div id="app"></div>
+    <div id="captcha-element"></div>
     <script type="module" src="/src/index.ts"></script>
 </body>
 </html>

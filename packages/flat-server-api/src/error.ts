@@ -47,6 +47,7 @@ export enum RequestErrorCode {
     UserPasswordIncorrect, // user password (for update) incorrect
     UserOrPasswordIncorrect, // user or password (for login) incorrect
     UserPmiDrained, // user pmi drained
+    UserBlacklisted, // user is blacklisted, login/register rejected
 
     RecordNotFound = 500000,
 
@@ -84,6 +85,10 @@ export enum RequestErrorCode {
     OAuthUUIDNotFound = 130000, // oauth uuid not found
     OAuthClientIDNotFound, // oauth client id not found
     OAuthSecretUUIDNotFound, // oauth secret uuid not found
+
+    CaptchaFailed = 150000, // captcha failed
+    CaptchaInvalid, // captcha invalid
+    CaptchaRequired, // captcha required
 }
 
 export const RequestErrorMessage = {
@@ -138,6 +143,7 @@ export const RequestErrorMessage = {
     [RequestErrorCode.UserPasswordIncorrect]: "user-password-incorrect",
     [RequestErrorCode.UserOrPasswordIncorrect]: "user-account-or-password-incorrect",
     [RequestErrorCode.UserPmiDrained]: "user-pmi-drained",
+    [RequestErrorCode.UserBlacklisted]: "user-blacklisted",
 
     [RequestErrorCode.RecordNotFound]: "replay-does-not-exist",
 
@@ -175,6 +181,10 @@ export const RequestErrorMessage = {
     [RequestErrorCode.OAuthUUIDNotFound]: "oauth-uuid-not-found",
     [RequestErrorCode.OAuthClientIDNotFound]: "oauth-client-id-not-found",
     [RequestErrorCode.OAuthSecretUUIDNotFound]: "oauth-secret-uuid-not-found",
+
+    [RequestErrorCode.CaptchaFailed]: "captcha-failed",
+    [RequestErrorCode.CaptchaInvalid]: "captcha-invalid",
+    [RequestErrorCode.CaptchaRequired]: "captcha-required",
 };
 
 export class ServerRequestError extends Error {

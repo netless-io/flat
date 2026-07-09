@@ -1,4 +1,5 @@
 import { useRef, useEffect, useCallback, useState, useContext } from "react";
+import { message } from "antd";
 import { Account, globalStore } from "@netless/flat-stores";
 import { RouteNameType } from "../../route-config";
 import { joinRoomHandler } from "../../utils/join-room-handler";
@@ -13,6 +14,7 @@ import { LoginProcessResult } from "@netless/flat-server-api";
 import { LoginButtonProviderType } from "flat-components";
 import { LoginDisposer } from "./disposer";
 import { NODE_ENV } from "../../constants/process";
+import { useTranslate } from "@netless/flat-i18n";
 
 export function useMachine(): [any, (type: ToggleEventsType) => void] {
     const { initialState } = loginMachine;
@@ -57,6 +59,7 @@ export interface LoginState {
 
 export function useLoginState(): LoginState {
     const pushHistory = usePushHistory();
+    const t = useTranslate();
 
     const urlParams = useURLParams();
     const windowsBtn = useContext(WindowsSystemBtnContext);
@@ -70,6 +73,13 @@ export function useLoginState(): LoginState {
     );
 
     const [currentState, setCurrentState] = useMachine();
+
+    useEffect(() => {
+        const errorReason = new URLSearchParams(window.location.search).get("error");
+        if (errorReason === "blacklisted") {
+            message.error(t("user-blacklisted"));
+        }
+    }, [t]);
 
     useEffect(() => {
         // update state to binding phone

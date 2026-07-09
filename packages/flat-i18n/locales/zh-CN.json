@@ -198,6 +198,9 @@
   "bind-phone": "绑定手机号",
   "rebinding-phone": "合并账号",
   "need-bind-phone": "根据相关政策法规，需要绑定手机号",
+  "captcha-failed": "验证码校验错误",
+  "captcha-invalid": "当前验证码无效",
+  "captcha-required": "这步操作需要验证码校验",
   "back": "返回",
   "remove-room": "移除房间",
   "cancel-room": "取消房间",
@@ -595,6 +598,7 @@
   "wait-for-teacher-to-enter": "房间未开始，请等待老师进入",
   "the-pmi-room-already-exists": "PMI房间已存在",
   "user-pmi-drained": "用户PMI已分配完，请联系管理员",
+  "user-blacklisted": "该账号已停用，请联系管理员",
   "pmi-room-exist": "个人房间已存在，请先取消已存在的房间",
   "pmi-help": "你的专属房间号，可使用该固定号码创建房间",
   "personal-room-id": "个人房间号",
@@ -824,7 +828,6 @@
     "agree": "同意",
     "disagree": "取消"
   },
-  "collect-media-options": "音视频数据采集",
   "collect-media-turn-on": "开启",
   "collect-media-turn-off": "关闭"
 }

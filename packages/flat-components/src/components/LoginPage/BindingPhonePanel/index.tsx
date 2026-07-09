@@ -18,6 +18,7 @@ export interface BindingPhonePanelProps {
     sendBindingPhoneCode: (
         countryCode: string,
         phone: string,
+        captchaVerifyParam?: string,
     ) => Promise<BindingPhoneSendCodeResult>;
     needRebindingPhone: (phone: string) => void;
 }
@@ -111,6 +112,7 @@ export const BindingPhonePanel: React.FC<BindingPhonePanelProps> = ({
                     <Form.Item name="code" rules={[codeValidator]}>
                         <LoginSendCode
                             isAccountValidated={isAccountValidated}
+                            isCaptcha={false}
                             sendVerificationCode={sendVerificationCode}
                             type={type}
                             onRebinding={onRebinding}

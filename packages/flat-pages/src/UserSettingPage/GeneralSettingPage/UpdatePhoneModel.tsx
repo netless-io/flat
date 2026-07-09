@@ -129,6 +129,7 @@ export const UpdatePhoneModel: React.FC<UpdatePhoneModelProps> = ({
                 <Form.Item name="code" rules={[codeValidator]}>
                     <LoginSendCode
                         isAccountValidated={isAccountValidated}
+                        isCaptcha={false}
                         sendVerificationCode={sendVerificationCode}
                         type={type}
                     />

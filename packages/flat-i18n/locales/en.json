@@ -197,6 +197,9 @@
   "privacy-agreement": "Privacy Policy",
   "service-policy": "Term of Service",
   "app-welcome": "Welcome to {{appName}}",
+  "captcha-failed": "Captcha failed",
+  "captcha-invalid": "Captcha invalid",
+  "captcha-required": "Captcha required",
   "back": "Back",
   "also-cancel-the-series-of-periodic-rooms": "At the same time cancel the series of periodic rooms",
   "cancel-of-periodic-rooms": "Cancel",
@@ -595,6 +598,7 @@
   "wait-for-teacher-to-enter": "The room hasn't started yet. Please wait for the teacher to enter",
   "the-pmi-room-already-exists": "The PMI room already exists",
   "user-pmi-drained": "User PMI used up, please contact the administrator",
+  "user-blacklisted": "This account has been frozen. Please contact the administrator",
   "pmi-room-exist": "PMI room already exists, please cancel existing PMI room first",
   "pmi-help": "Your own room number, you can use this fixed number to create a room",
   "personal-room-id": "PMI",
@@ -824,7 +828,6 @@
     "agree": "agree",
     "disagree": "disagree"
   },
-  "collect-media-options": "Audio and video data acquisition",
   "collect-media-turn-on": "Turn on",
   "collect-media-turn-off": "Turn off"
 }

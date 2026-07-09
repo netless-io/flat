@@ -3,6 +3,7 @@ import { defineConfig } from "vite";
 import { dotenv } from "@netless/flat-vite-plugins/dotenv";
 import { reactVirtualized } from "@netless/flat-vite-plugins/react-virtualized";
 import { injectHtmlHash } from "./scripts/vite-plugin-html-hash";
+import { injectHtmlEnv } from "./scripts/vite-plugin-html-env";
 import { inlineAssets } from "./scripts/vite-plugin-inline-assets";
 import { injectGtag } from "./scripts/vite-plugin-html-gtag";
 import { generateFavicon } from "./scripts/vite-plugin-favicon";
@@ -29,6 +30,7 @@ export default defineConfig({
     plugins: [
         reactPlugin,
         dotenv(autoChooseConfig()),
+        injectHtmlEnv(),
         injectGtag(),
         injectHtmlHash(),
         inlineAssets(),

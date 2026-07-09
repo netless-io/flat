@@ -23,11 +23,9 @@ import {
     LoginPlatform,
     deleteAccount,
     deleteAccountValidate,
-    getCollectionAgreement,
     loginCheck,
     removeBinding,
     rename,
-    setCollectionAgreement,
 } from "@netless/flat-server-api";
 
 import { PreferencesStoreContext, GlobalStoreContext } from "../../components/StoreProvider";
@@ -45,42 +43,12 @@ import { BindGitHub } from "./binding/GitHub";
 import { BindGoogle } from "./binding/Google";
 import { BindingField } from "./BindingField";
 import { useBindingList } from "./binding";
-import { Region } from "../../utils/join-room-handler";
+// import { Region } from "../../utils/join-room-handler";
 
 enum SelectLanguage {
     Chinese,
     English,
 }
-
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-const CollectionAgreement = () => {
-    const [isAgree, setAgree] = useState(true);
-    const t = useTranslate();
-    const sp = useSafePromise();
-    useEffect(() => {
-        sp(getCollectionAgreement()).then(res => {
-            setAgree(res.isAgree);
-        });
-    }, [sp]);
-    async function changeCollectMediaState(event: CheckboxChangeEvent): Promise<void> {
-        const isAgree = Boolean(event.target.value);
-        await sp(setCollectionAgreement(isAgree));
-        setAgree(isAgree);
-    }
-    return (
-        <div className="general-setting-item">
-            <div className="general-setting-item-title">{t("collect-media-options")}</div>
-            <Radio.Group value={isAgree} onChange={changeCollectMediaState}>
-                <Radio value={true}>
-                    <span className="radio-item-inner">{t("collect-media-turn-on")}</span>
-                </Radio>
-                <Radio value={false}>
-                    <span className="radio-item-inner">{t("collect-media-turn-off")}</span>
-                </Radio>
-            </Radio.Group>
-        </div>
-    );
-};
 
 export const GeneralSettingPage = observer(function GeneralSettingPage() {
     const globalStore = useContext(GlobalStoreContext);
@@ -105,10 +73,6 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
     const personalLink = useMemo(
         () => `${FLAT_WEB_BASE_URL}/join/${globalStore.pmi}`,
         [globalStore.pmi],
-    );
-    const serverRegion = useMemo(
-        () => globalStore.serverRegionConfig?.server.region,
-        [globalStore.serverRegionConfig?.server.region],
     );
     const loginButtons = useMemo(
         () => process.env.LOGIN_METHODS.split(",") as LoginButtonProviderType[],
@@ -438,12 +402,12 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
                     </div>
                 </div>
                 <hr />
-                {serverRegion === Region.CN_HZ && (
+                {/* {serverRegion === Region.CN_HZ && (
                     <>
                         <CollectionAgreement />
                         <hr />
                     </>
-                )}
+                )} */}
 
                 <div className="general-setting-item">
                     <span className="general-setting-item-title">{t("delete-account")}</span>

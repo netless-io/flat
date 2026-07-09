@@ -142,6 +142,13 @@ export const SensitivePage = observer(function SensitivePage() {
         [t],
     );
 
+    useEffect(() => {
+        document.getElementById("app")?.style.setProperty("overflow-y", "scroll");
+        return () => {
+            document.getElementById("app")?.style.removeProperty("overflow-y");
+        };
+    }, []);
+
     if (!token) {
         return <Redirect to="/login" />;
     }

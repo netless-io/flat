@@ -1,6 +1,7 @@
 {
   "name": "flat-monorepo",
   "private": true,
+  "packageManager": "pnpm@9.9.0",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "prepare": "husky install",

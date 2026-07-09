@@ -68,6 +68,7 @@ module.exports = {
                 "flat-pages",
                 "pnpm",
                 "server",
+                "dmg",
             ],
         ],
         "scope-case": [2, "always", ["lower-case", "kebab-case"]],

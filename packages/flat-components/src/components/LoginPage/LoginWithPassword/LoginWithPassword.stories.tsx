@@ -46,8 +46,15 @@ Overview.args = {
     loginWithVerificationCode: () => {
         message.info("login with verification code");
     },
-    sendVerificationCode: (type: PasswordLoginType, key: string) => {
-        message.info("send code with " + type + " to " + key);
+    sendVerificationCode: (type: PasswordLoginType, key: string, captchaVerifyParam?: string) => {
+        message.info(
+            "send code with " +
+                type +
+                " to " +
+                key +
+                ". And the captchaVerifyParam is: " +
+                captchaVerifyParam,
+        );
         return new Promise(resolve => setTimeout(() => resolve(false), 1000));
     },
     resetPassword: (type: PasswordLoginType, { key }, code: string, password: string) => {

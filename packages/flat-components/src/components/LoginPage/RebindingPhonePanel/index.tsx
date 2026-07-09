@@ -15,7 +15,11 @@ export interface RebindingPhonePanelProps {
     defaultPhone: string;
     cancelRebindingPhone: () => void;
     rebindingPhone: (countryCode: string, phone: string, code: string) => Promise<boolean>;
-    sendRebindingPhoneCode: (countryCode: string, phone: string) => Promise<any>;
+    sendRebindingPhoneCode: (
+        countryCode: string,
+        phone: string,
+        captchaVerifyParam?: string,
+    ) => Promise<any>;
 }
 
 interface RebindingFormValues {
@@ -100,6 +104,7 @@ export const RebindingPhonePanel: React.FC<RebindingPhonePanelProps> = ({
                     <Form.Item name="code" rules={[codeValidator]}>
                         <LoginSendCode
                             isAccountValidated={isAccountValidated}
+                            isCaptcha={false}
                             sendVerificationCode={sendVerificationCode}
                             type={type}
                         />

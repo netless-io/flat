@@ -9,6 +9,7 @@ module.exports = {
         "courseware",
         "PPTURL",
         "aliyun",
+        "nypf9bgg", // aliyun captcha scene ID
         "regx",
         "bootup",
         "btns",
@@ -79,6 +80,7 @@ module.exports = {
         "unhide",
         "nsis",
         "respawn",
+        "UDZO", // electron-builder DMG format
 
         // file type
         "avif",

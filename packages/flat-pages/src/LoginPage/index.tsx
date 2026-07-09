@@ -98,8 +98,10 @@ export const LoginPage = observer(function LoginPage() {
                             wrap(loginPhone(countryCode + phone, Number(code)).then(onLoginResult))
                         }
                         loginWithPassword={() => setCurrentState("SWITCH_TO_PASSWORD")}
-                        sendVerificationCode={async (countryCode, phone) =>
-                            wrap(loginPhoneSendCode(countryCode + phone))
+                        sendVerificationCode={async (countryCode, phone, captchaVerifyParam) =>
+                            loginPhoneSendCode(countryCode + phone, captchaVerifyParam).then(
+                                () => true,
+                            )
                         }
                     />
                 );
@@ -133,12 +135,11 @@ export const LoginPage = observer(function LoginPage() {
                                       }),
                             )
                         }
-                        sendVerificationCode={async (type, key) =>
-                            wrap(
-                                type === PasswordLoginType.Email
-                                    ? registerEmailSendCode(key, emailLanguage)
-                                    : registerPhoneSendCode(key),
-                            )
+                        sendVerificationCode={async (type, key, captchaVerifyParam) =>
+                            (type === PasswordLoginType.Email
+                                ? registerEmailSendCode(key, emailLanguage)
+                                : registerPhoneSendCode(key, captchaVerifyParam)
+                            ).then(() => true)
                         }
                     />
                 );
@@ -241,12 +242,11 @@ export const LoginPage = observer(function LoginPage() {
                                       }),
                             )
                         }
-                        sendVerificationCode={async (type, key) =>
-                            wrap(
-                                type === PasswordLoginType.Email
-                                    ? resetEmailSendCode(key, emailLanguage)
-                                    : resetPhoneSendCode(key),
-                            )
+                        sendVerificationCode={async (type, key, captchaVerifyParam) =>
+                            (type === PasswordLoginType.Email
+                                ? resetEmailSendCode(key, emailLanguage)
+                                : resetPhoneSendCode(key, captchaVerifyParam)
+                            ).then(() => true)
                         }
                     />
                 );
