@@ -29,8 +29,8 @@ jobs:
         run: |
           echo "FLAT_WEB_ALIYUN_PREFIX=$FLAT_WEB_ALIYUN_PREFIX" >> config/CN/.env.production
           echo "FLAT_WEB_SCENE_ID=$FLAT_WEB_SCENE_ID" >> config/CN/.env.production
-          node ./scripts/ci/remove-workspace-packages.js web
-          node ./scripts/ci/remove-package-scripts-hooks.js
+          pnpm exec esbuild-dev --cjs ./scripts/ci/remove-workspace-packages.ts web
+          pnpm exec esbuild-dev --cjs ./scripts/ci/remove-package-scripts-hooks.ts
           # failure automatically retries 3 times
           pnpm i || pnpm i || pnpm i
 

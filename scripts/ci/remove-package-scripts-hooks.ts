@@ -17,3 +17,4 @@ for (const scriptName in packageJSONContent.scripts) {
 fs.writeFileSync(rootPackageJSONPath, JSON.stringify(packageJSONContent, null, 2), {
     encoding: "utf-8",
 });
+export {};
