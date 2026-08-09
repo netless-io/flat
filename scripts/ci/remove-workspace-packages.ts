@@ -1,7 +1,9 @@
 const fs = require("fs");
 const { workspacePath } = require("../constants");
 
-const content = {};
+const content: { packages: string[] } = {
+    packages: [],
+};
 
 const retentionPackageName = process.argv[2];
 
@@ -24,3 +26,4 @@ const text = `packages:\n  - ${content.packages.join("\n  - ")}`;
 fs.writeFileSync(workspacePath, text, {
     encoding: "utf-8",
 });
+export {};

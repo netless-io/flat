@@ -18,12 +18,13 @@ const macArtifactsRegExp = [
     /^(Flat|Flint)-.+\.zip$/,
 ];
 
-module.exports.winBuildPath = region => {
+module.exports.winBuildPath = (region: string) => {
     return join(buildPath, region, "win");
 };
-module.exports.macBuildPath = region => {
+module.exports.macBuildPath = (region: string) => {
     return join(buildPath, region, "mac");
 };
 
 module.exports.winArtifactsRegExp = winArtifactsRegExp;
 module.exports.macArtifactsRegExp = macArtifactsRegExp;
+export {};

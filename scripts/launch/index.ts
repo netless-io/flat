@@ -1,13 +1,13 @@
 const { spawnSync } = require("child_process");
 
-function system(cmd, printStdout = true) {
+function system(cmd: string, printStdout = true) {
     return spawnSync(cmd, {
         stdio: printStdout ? "inherit" : "pipe",
         shell: true,
     });
 }
 
-function parseStdout({ stdout }) {
+function parseStdout({ stdout }: { stdout: Buffer }): string {
     return stdout.toString().trim();
 }
 
@@ -27,3 +27,4 @@ if (process.platform === "win32") {
         system("osascript ./scripts/launch/mac/launch_terminal.scpt " + suffix);
     }
 }
+export {};

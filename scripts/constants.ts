@@ -1,4 +1,4 @@
-const { join } = require("path");
+import { join } from "path";
 
 const rootPath = join(__dirname, "..");
 const configPath = join(rootPath, "config");

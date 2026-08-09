@@ -14,28 +14,22 @@ if (!process.env.FLAT_REGION) {
     process.exit(1);
 }
 
-/**
- * file info list
- * @typedef {Array<{
- *     localPath: string,
- *     name: string,
- *     size: number,
- * }>} FileInfoList
- */
+type FileInfo = {
+    localPath: string;
+    name: string;
+    size: number;
+};
 
-/**
- * get file path and file size in specify directory
- * @param {string} p - specify directory
- * @return {FileInfoList} file info list
- */
-const getFilesAndSizeInDir = p => {
-    const result = [];
+type FileInfoList = FileInfo[];
+
+const getFilesAndSizeInDir = (p: string): FileInfoList => {
+    const result: FileInfoList = [];
 
     if (!fs.existsSync(p)) {
         return result;
     }
 
-    fs.readdirSync(p).forEach(name => {
+    fs.readdirSync(p).forEach((name: string) => {
         const stat = fs.lstatSync(path.join(p, name));
 
         if (stat.isFile()) {
@@ -50,13 +44,7 @@ const getFilesAndSizeInDir = p => {
     return result;
 };
 
-/**
- * in the file list, get artifacts files
- * @param {RegExp[]} regex - match artifacts files regex list
- * @param {FileInfoList} fileList - list of files to be detected
- * @return {FileInfoList} artifacts files
- */
-const getArtifactsFiles = (regex, fileList) => {
+const getArtifactsFiles = (regex: RegExp[], fileList: FileInfoList): FileInfoList => {
     for (const regx of regex) {
         if (fileList.some(file => regx.test(file.name))) continue;
         throw new Error(`Can't find a file that matches the ${regx} RegExp`);
@@ -74,14 +62,8 @@ module.exports.macArtifactsFiles = getArtifactsFiles(
     getFilesAndSizeInDir(macBuildPath(process.env.FLAT_REGION)),
 );
 
-/**
- * set up different directories according to different files and platforms
- * @param {string} folder - bucket folder name
- * @param {"win" | "mac"} platform - platform to which the file belongs
- * @return {function} accept the file name and mode to match
- */
-module.exports.uploadRule = (folder, platform) => {
-    const prefix = mode => {
+module.exports.uploadRule = (folder: string, platform: "win" | "mac") => {
+    const prefix = (mode: "backup" | "effect"): string => {
         if (mode === "backup") {
             return `v${version}/${platform}`;
         }
@@ -92,25 +74,16 @@ module.exports.uploadRule = (folder, platform) => {
 
         return `latest/stable/${platform}`;
     };
-    /**
-     * @param {string} filename - file name
-     * @param {"effect" | "backup"} mode - origin: really used for upgrading, backup: for backup
-     * @return {string} finally object name (oss / s3 file path)
-     */
-    return (filename, mode) => {
+    return (filename: string, mode: "effect" | "backup"): string => {
         return `${folder}/${prefix(mode)}/${filename}`;
     };
 };
 
-/**
- * array chunk
- * @param {Array<any>} array - origin array
- * @param {number} chunk_size - chunk number
- * @return {Array<any>[]}
- */
-module.exports.arrayChunks = (array, chunk_size) => {
+const arrayChunks = <T>(array: T[], chunk_size: number): T[][] => {
     return Array(Math.ceil(array.length / chunk_size))
-        .fill()
+        .fill(null)
         .map((_, index) => index * chunk_size)
         .map(begin => array.slice(begin, begin + chunk_size));
 };
+module.exports.arrayChunks = arrayChunks;
+export {};

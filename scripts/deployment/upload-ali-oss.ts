@@ -39,7 +39,7 @@ const client = new OSS({
     repl.on("SIGINT", () => {
         repl && repl.close();
     });
-    const answer = await new Promise(resolve => {
+    const answer = await new Promise<string>(resolve => {
         repl.question(`is that ok? (y/N) `, a => resolve(a || "N"));
     });
     if (answer[0].toLowerCase() !== "y") {
@@ -137,3 +137,4 @@ const client = new OSS({
     await Promise.all(uploadEffectFile);
     process.exit(0);
 })();
+export {};

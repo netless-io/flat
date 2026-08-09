@@ -8,9 +8,9 @@
     "lint": "lint-staged --cwd .",
     "check-spelling": "cspell --no-progress \"**/*.{md,ts,tsx,js,css,less,json,yml,yaml,html,sh}\"",
     "storybook": "pnpm -F flat-components start",
-    "start": "node scripts/launch/index.js",
-    "start:cn": "cross-env FLAT_REGION=CN node scripts/launch/index.js",
-    "start:sg": "cross-env FLAT_REGION=SG node scripts/launch/index.js",
+    "start": "esbuild-dev --cjs scripts/launch/index.ts",
+    "start:cn": "cross-env FLAT_REGION=CN esbuild-dev --cjs scripts/launch/index.ts",
+    "start:sg": "cross-env FLAT_REGION=SG esbuild-dev --cjs scripts/launch/index.ts",
     "start:web": "pnpm -F flat-web start",
     "ship": "pnpm -F renderer-app build && pnpm -F flat ship",
     "ship:mac": "pnpm -F renderer-app build && pnpm -F flat ship:mac",
@@ -18,8 +18,8 @@
     "ship:all": "pnpm -F renderer-app build && pnpm -F flat build && pnpm -F flat pack:win && pnpm -F flat pack:mac",
     "ship:cn:all": "cross-env FLAT_REGION=CN pnpm ship:all",
     "ship:sg:all": "cross-env FLAT_REGION=SG pnpm ship:all",
-    "pub:cn": "cross-env FLAT_REGION=CN node scripts/deployment/upload-ali-oss.js",
-    "pub:sg": "cross-env FLAT_REGION=SG node scripts/deployment/upload-ali-oss.js"
+    "pub:cn": "cross-env FLAT_REGION=CN esbuild-dev --cjs scripts/deployment/upload-ali-oss.ts",
+    "pub:sg": "cross-env FLAT_REGION=SG esbuild-dev --cjs scripts/deployment/upload-ali-oss.ts"
   },
   "license": "MIT",
   "devDependencies": {
